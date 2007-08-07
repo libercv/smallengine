@@ -1,2 +1,0 @@
-
-#include "waymap.h"
