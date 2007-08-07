@@ -72,7 +72,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="libjpeg.lib"
-				AdditionalLibraryDirectories="&quot;C:\Documents and Settings\David.SMITH\Mis documentos\Mis Proyectos\Small\lib&quot;"
+				AdditionalLibraryDirectories="&quot;C:\Documents and Settings\David\Mis documentos\Mis Proyectos\Small\lib&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -141,7 +141,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="&quot;C:\Documents and Settings\David\Mis documentos\Mis Proyectos\Small\lib&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"

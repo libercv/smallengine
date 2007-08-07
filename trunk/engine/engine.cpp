@@ -182,7 +182,7 @@ void Engine::Render(void)
 	Cameras[iCamera].Look();
 
 	glEnable(GL_COLOR_MATERIAL);
-	//glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 	glShadeModel(GL_SMOOTH);
 
 	//Drawing3D::Instance().DrawSkyBox(0,-0.0001,0,400,200,400);
@@ -227,6 +227,7 @@ void Engine::Render(void)
 	for(ObjectItor=Objects.begin(); ObjectItor!=Objects.end(); ObjectItor++)
 		(*ObjectItor).Render();
 	
+	/*
 	if( iCamera != 0 )
 	{
 		glPushAttrib( GL_LIGHTING_BIT | GL_DEPTH_BITS );
@@ -260,12 +261,14 @@ void Engine::Render(void)
 		}
 		glPopAttrib();
 	}
+	*/
+
 
 	/*
 	glPushAttrib( GL_LIGHTING_BIT | GL_DEPTH_BITS);
 	{
 		//glDisable( GL_DEPTH_TEST );
-
+		
 		glDisable( GL_LIGHTING );
 
 		//Map.Render();
@@ -281,6 +284,7 @@ void Engine::Render(void)
 	}
 	glPopAttrib();
 	*/
+
 
 	// Pintamos los bounding boxes que al ser translucidos deben ser pintados al final
 	// para que dejen ver todo lo que hay detrás

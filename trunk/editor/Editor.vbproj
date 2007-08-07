@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50215</ProductVersion>
+    <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{7237D5DD-6AB4-438F-A6A8-AB6F4E1E6DD7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -68,7 +68,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GLView.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

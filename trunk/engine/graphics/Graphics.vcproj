@@ -65,7 +65,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="&quot;C:\Documents and Settings\David\Mis documentos\Mis Proyectos\Small\lib&quot;"
 				IgnoreAllDefaultLibraries="true"
 				IgnoreDefaultLibraryNames=""
 			/>
@@ -135,7 +135,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="&quot;C:\Documents and Settings\David\Mis documentos\Mis Proyectos\Small\lib&quot;"
 				IgnoreAllDefaultLibraries="true"
 				IgnoreDefaultLibraryNames=""
 			/>

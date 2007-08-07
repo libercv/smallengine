@@ -7,7 +7,7 @@
 //#include	<GL/glut.h>
 
 
-#include	"md2.h"
+#include "md2.h"
 #include <iostream>
 
 // precalculated normal vectors
