@@ -251,13 +251,17 @@ void Q3BSP::FindTextureExtension(char *strFileName)
 	char strTGAPath[MAX_PATH]    = {0}; 
 	FILE *fp = NULL;
 
-	//FIXME: Hay que ver qué pasa con el path. En principi lo lleva en nombre del archivo incorporado
+	// PENDIENTE: Hay que ver qué pasa con el path. En principi lo lleva en nombre del archivo incorporado
+	// 08.08.2007 PENDIENTE: debemos quedarnos solo con el nombre de la textura, despreciar el path y añadirle el path adecuado
+	// PENDIENTE: Crear una clase estática de donde sacar los paths (Aux::ResourcesFolder o algo así)
+
 	// Get the current path we are in
 	//GetCurrentDirectory(MAX_PATH, strJPGPath);
 
 	// Add on a '\' and the file name to the end of the current path.
 	// We create 2 seperate strings to test each image extension.
 	//strcat(strJPGPath, "\\");
+
 	strcat(strJPGPath, strFileName);
 	strcpy(strTGAPath, strJPGPath);
 	

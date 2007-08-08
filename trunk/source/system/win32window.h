@@ -7,7 +7,7 @@
 #include <gl/glu.h>
 
 #include "iwindow.h"
-#include "../../game/game.h"
+//#include "game.h"
 
 namespace Small
 {

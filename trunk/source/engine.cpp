@@ -79,7 +79,7 @@ void Engine::Update(void)
 	{
 		fSpeed = sSpeed = 0;
 
-		Lights[0].Position.y = 150;
+		// Lights[0].Position.y = 150;
 
 		for(ObjectItor=Objects.begin(); ObjectItor!=Objects.end(); ObjectItor++)
 			(*ObjectItor).Update();
