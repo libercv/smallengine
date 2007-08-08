@@ -1,9 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "../engine/system/window.h"
-#include "../engine/engine.h"
-#include "../engine/ui/menu.h"
+#include "system/window.h"
+#include "engine.h"
+#include "ui/menu.h"
 
 namespace Small
 {

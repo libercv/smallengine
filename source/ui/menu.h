@@ -13,15 +13,21 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-#include "../graphics/texture.h"
-
 #ifdef WINDOWS
 	#include "../system/win32input.h"
 #else
 	#include "../system/linuxinput.h"
 #endif
 
-#include "../../game/game.h"
+// PENDIENTE: quizá "menu" no debería de ver "texture"... no sé
+#include "../graphics/texture.h"
+
+#include "../engine.h"
+
+
+/*
+#include "game.h"
+*/
 
 namespace Small
 {

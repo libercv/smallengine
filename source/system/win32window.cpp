@@ -136,7 +136,8 @@ bool Window::Open(char *pTitle, int px, int py, int pWidth, int pHeight, int pCo
 	SetForegroundWindow(hWnd);
 	SetFocus(hWnd);
 
-	Drawing3D::Instance().Init();
+	// PENDIENTE: quizá este no sea el mejor sitio para inicializar Drawing3D
+	// Drawing3D::Instance().Init();
 	
 	return true;
 }
@@ -236,7 +237,8 @@ LRESULT CALLBACK Window::MsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 			break;
 
 		case WM_QUIT:
-			Game::Instance().State = StateDone;
+			// PENDIENTE: desde "window" no se debería de ver "game"
+			// Game::Instance().State = StateDone;
 
 		case WM_SIZE:
 			OnResize(LOWORD(lParam), HIWORD(lParam));			

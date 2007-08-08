@@ -12,7 +12,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-#include "../game/game.h"
+#include "game.h"
 //#include "system/system.h"
 #include "system/input.h"
 #include "graphics/drawing3d.h"
