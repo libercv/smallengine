@@ -37,17 +37,7 @@ bool Window::Open(char *Title, int x, int y, int Width, int Height, int Depth, b
 	// Conectar al servidor
 	this->dpy = XOpenDisplay(0);
 	this->screen = DefaultScreen(this->dpy);
-	XF86VidModeGetAllModeLines(this->dpy, this->screen, &modeNum, &modes);
-	// Guardamos la resoluci para luego restablecerla
-	this->deskMode = *modes[0];
-	// Buscamos un modo con la resolucion adecuada
-	for (i=0; i<modeNum; i++)
-	{
-		if((modes[i]->hdisplay==Width) && (modes[i]->vdisplay==Height))
-		{
-			bestMode = i;
-		}
-	}
+	
 	// Escoger la visual
 	vi = glXChooseVisual(this->dpy, this->screen, attrListDbl);
 	
@@ -61,8 +51,20 @@ bool Window::Open(char *Title, int x, int y, int Width, int Height, int Depth, b
 	attr.colormap = cmap;
 	attr.border_pixel= 0;
 
+/*
 	if (this->fs)
 	{
+	      XF86VidModeGetAllModeLines(this->dpy, this->screen, &modeNum, &modes);
+	// Guardamos la resoluci para luego restablecerla
+	this->deskMode = *modes[0];
+	// Buscamos un modo con la resolucion adecuada
+	for (i=0; i<modeNum; i++)
+	{
+		if((modes[i]->hdisplay==Width) && (modes[i]->vdisplay==Height))
+		{
+			bestMode = i;
+		}
+	}
 		XF86VidModeSwitchToMode(this->dpy, this->screen, modes[bestMode]);
 		XF86VidModeSetViewPort(this->dpy, this->screen, 0 ,0);
 		dpyWidth = modes[bestMode]->hdisplay;
@@ -83,6 +85,7 @@ bool Window::Open(char *Title, int x, int y, int Width, int Height, int Depth, b
 	}
 	else
 	{
+*/
 		attr.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | ButtonPressMask | StructureNotifyMask | FocusChangeMask | PointerMotionMask;
 		this->win = XCreateWindow(this->dpy, RootWindow(this->dpy, vi->screen), 0, 0,
 			Width, Height, 0, vi->depth, InputOutput, vi->visual, 
@@ -93,7 +96,7 @@ bool Window::Open(char *Title, int x, int y, int Width, int Height, int Depth, b
 		XMapRaised(this->dpy, this->win);
 		// Colocamos el ratón en la ventana
 		XGrabPointer(this->dpy, this->win, true, 0, GrabModeAsync, GrabModeAsync, this->win, None, CurrentTime);
-	}
+//	}
 	
 	// Situamos el ratón en el centro de la ventana
 	XWarpPointer(this->dpy, None, this->win, 0, 0, 0, 0, this->width/2, this->height/2);
@@ -118,12 +121,14 @@ void Window::Close(void)
 		glXDestroyContext(this->dpy, this->ctx);
 		this->ctx = NULL;
 	}
+/*
 	if (this->fs)
 	{
 		XF86VidModeSwitchToMode(this->dpy, this->screen, &this->deskMode);
 		XF86VidModeSetViewPort(this->dpy, this->screen, 0, 0);
 	}
 	else
+*/
 		XUngrabPointer(this->dpy, CurrentTime);
 	
 	XKeyboardControl _kb;
