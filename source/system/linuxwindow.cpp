@@ -26,12 +26,15 @@ bool Window::Open(char *Title, int x, int y, int Width, int Height, int Depth, b
 	::Window winDummy;
 	unsigned int borderDummy;
 
+	
 	// Atributos para el "single buffer"
 	int attrListSgl[]={GLX_RGBA, GLX_RED_SIZE, 4, GLX_GREEN_SIZE, 4, GLX_BLUE_SIZE, 4, GLX_DEPTH_SIZE, 16, None};
 	// Atributos para "double buffer"   
 	int attrListDbl[]={GLX_RGBA, GLX_DOUBLEBUFFER, GLX_RED_SIZE, 4, GLX_GREEN_SIZE, 4, GLX_BLUE_SIZE, 4, GLX_DEPTH_SIZE, 16, None};
 
-	this->fs = FullScreen;
+	// FIXME: A piñón... prefiero trabajar en ventana.
+	this->fs=false;
+	//this->fs = FullScreen;
 	// Mejor modo el actual
 	bestMode=0;  
 	// Conectar al servidor
@@ -51,7 +54,6 @@ bool Window::Open(char *Title, int x, int y, int Width, int Height, int Depth, b
 	attr.colormap = cmap;
 	attr.border_pixel= 0;
 
-/*
 	if (this->fs)
 	{
 	      XF86VidModeGetAllModeLines(this->dpy, this->screen, &modeNum, &modes);
@@ -85,7 +87,7 @@ bool Window::Open(char *Title, int x, int y, int Width, int Height, int Depth, b
 	}
 	else
 	{
-*/
+
 		attr.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | ButtonPressMask | StructureNotifyMask | FocusChangeMask | PointerMotionMask;
 		this->win = XCreateWindow(this->dpy, RootWindow(this->dpy, vi->screen), 0, 0,
 			Width, Height, 0, vi->depth, InputOutput, vi->visual, 
@@ -96,7 +98,7 @@ bool Window::Open(char *Title, int x, int y, int Width, int Height, int Depth, b
 		XMapRaised(this->dpy, this->win);
 		// Colocamos el ratón en la ventana
 		XGrabPointer(this->dpy, this->win, true, 0, GrabModeAsync, GrabModeAsync, this->win, None, CurrentTime);
-//	}
+	}
 	
 	// Situamos el ratón en el centro de la ventana
 	XWarpPointer(this->dpy, None, this->win, 0, 0, 0, 0, this->width/2, this->height/2);
@@ -121,14 +123,14 @@ void Window::Close(void)
 		glXDestroyContext(this->dpy, this->ctx);
 		this->ctx = NULL;
 	}
-/*
+
 	if (this->fs)
 	{
 		XF86VidModeSwitchToMode(this->dpy, this->screen, &this->deskMode);
 		XF86VidModeSetViewPort(this->dpy, this->screen, 0, 0);
 	}
 	else
-*/
+
 		XUngrabPointer(this->dpy, CurrentTime);
 	
 	XKeyboardControl _kb;
