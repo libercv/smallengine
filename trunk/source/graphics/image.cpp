@@ -13,7 +13,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "image.h"
-#include "jpeglib.h"
+#include <jpeglib.h>
 #include <iostream>
 #include <string>
 

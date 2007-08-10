@@ -51,7 +51,7 @@ namespace Small
 		void DrawSkyBox(float x, float y, float z, float width, float height, float length);
 		void DrawPoint(void);
 		void DrawBox(float x1, float y1, float z1, float x2, float y2, float z2);
-		void Drawing3D::DrawUnalignedBox(Vector4d Points[8]);
+		void DrawUnalignedBox(Vector4d Points[8]);
 	}; // class Drawing3D
 } // namespace Small
 
