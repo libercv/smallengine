@@ -2,7 +2,7 @@
 #ifndef WAYMAP_H
 #define WAYMAP_H
 
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <Windows.h>
 #endif
 

@@ -7,6 +7,6 @@ int APIENTRY WinMain( HINSTANCE hInstance,
 					int nCmdShow )
 {
 	// PENDIENTE: implementar un Init()
-	Small::Game::Instance().Run();
+	Small::Engine::Instance().Run();
 	// PENDIENTE: implementar un Destroy()
 }

@@ -2,7 +2,7 @@
 #define ENTITY_H
 
 // PENDIENTE: sacar todo lo referente a OpenGL de aqui y meter en Graphics.
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <windows.h>
 #endif
 

@@ -9,14 +9,11 @@ Object::Object() : Entity()
 {
 	Model=NULL;
 	HotSpot = X_MIDDLE | Y_BOTTOM | Z_MIDDLE;
-	kk=0;
 }
 
 void Object::Update(void)
 {
 	Entity::Update();
-
-	kk += (Timer::Instance().GetElapsedTime()) / 1000.0f;
 }
 
 void Object::Render(void)
@@ -27,15 +24,19 @@ void Object::Render(void)
 	if( Model )
 	{
 		// PENDIENTE: crear clase Box3d
-		//box_t bbox;
-		//Model->GetInterpolatedBoundingBox( bbox );
+		box_t bbox;
+		Model->GetInterpolatedBoundingBox( bbox );
 
 		glMatrixMode(GL_MODELVIEW);
 
 		glPushMatrix();
-			//glTranslatef(Position.x, Position.y - bbox[1], Position.z);
+			glTranslatef(Position.x, Position.y - bbox[1], Position.z);
 			BillboardXZ(View);
-			Model->DrawModel(kk);
+
+			// PENDIENTE: deberíamos recibir el tiempo transcurrido como parámetro y no acceder a Timer
+			// PENDIENTE: Model no trabaja con el tiempo transcurrido entre frames sino con el tiempo
+			// transcurrido desde el inicio del programa.
+			Model->DrawModel(Timer::Instance().GetTime()/1000.0f);
 		glPopMatrix();
 
 		/*

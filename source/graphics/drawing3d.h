@@ -1,7 +1,7 @@
 #ifndef DRAWING3D_H
 #define DRAWING3D_H
 
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <Windows.h>
 #endif
 

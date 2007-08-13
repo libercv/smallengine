@@ -6,14 +6,17 @@
 //	Downloaded from: www.paulsprojects.net
 //	Created:	20th July 2002
 //////////////////////////////////////////////////////////////////////////////////////////	
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <windows.h>
+#include "jpeglib.h"
+#else
+#include <jpeglib.h>	// PENDIENTE: ¿por qué necesitas que sea <jpeglib.h> y no "jpeglib.h"?
 #endif
 
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "image.h"
-#include <jpeglib.h>
+
 #include <iostream>
 #include <string>
 
