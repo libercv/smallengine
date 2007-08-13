@@ -35,6 +35,7 @@ void StateMenu::Render(void)
 	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// PENDIENTE: no no no no no... los estados no se ven entre si y mucho menos se llaman.
 	StateGame::Instance().Render();
 
 	glMatrixMode(GL_PROJECTION);
@@ -67,8 +68,8 @@ void StateMenu::Render(void)
 	glColor3f(1.0f,0.0f,0.0f);
 	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
+	// Pintamos el logo
 	glBindTexture(GL_TEXTURE_2D, texture);
-
 	glPushMatrix();
 		glTranslatef((WinW-w)/2.0f, (WinH*0.95f)-h, 0.0f);
 		glBegin(GL_QUADS);
@@ -81,7 +82,7 @@ void StateMenu::Render(void)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// PENDIENTE: quitar el 5 a pi�n
+	// PENDIENTE: quitar el 5 a piñon
 	for( a=0; a<=5; a++ )
 	{
 		if( a == SelectedItemIndex )
@@ -93,31 +94,33 @@ void StateMenu::Render(void)
 		Drawing3D::Instance().BigFont->Print(Items[a].c_str());
 	}
 
-	/*
-	glColor3f(0.0f,0.0f,1.0f);
-	glRasterPos2f(5,90);
-	System::Instance().oFont->Print("Vendor:%s",glGetString(GL_VENDOR));
-	glRasterPos2f(5,60);
-	System::Instance().oFont->Print("Renderer:%s",glGetString(GL_RENDERER));
-	glRasterPos2f(5,30);
-	System::Instance().oFont->Print("Version:%s",glGetString(GL_VERSION));
-	*/
+	glColor3f(0.5f, 0.5f, 1.0f);
+	glRasterPos2f(5.0f, 90.0f);
+	Drawing3D::Instance().BigFont->Print("Vendor:%s",glGetString(GL_VENDOR));
+	glRasterPos2f(5.0f, 60.0f);
+	Drawing3D::Instance().BigFont->Print("Renderer:%s",glGetString(GL_RENDERER));
+	glRasterPos2f(5.0f, 30.0f);
+	Drawing3D::Instance().BigFont->Print("Version:%s",glGetString(GL_VERSION));
 
 	//glEnable(GL_LIGHTING);	
 	glEnable(GL_DEPTH_TEST);
 }
 
-void StateMenu::Update(unsigned long ElapsedTime)
+State::StateId StateMenu::Update(float ElapsedTime)
 {
+	State::StateId NextState = State::StateId::Menu;
+
 	if( Input::Instance().IsKeyPressed(KeyEscape) )
 	{
-		// PENDIENTE: cuidad� !!! State tiende a ser de Game y no de Engine.
-		Engine::Instance().CurrentState = State::StateId::Game;
+		// PENDIENTE: StateMenu no debe ver a Engine. Mejor que devuelva el siguiente estado.
+		//Engine::Instance().CurrentState = State::StateId::Game;
+		NextState = State::StateId::Game;
 	}
 	if( Input::Instance().IsKeyPressed(KeyReturn) )
 	{
 		if( SelectedItemIndex==5 )
-			Engine::Instance().CurrentState = State::StateId::Done;
+			NextState = State::StateId::Done;
+			//Engine::Instance().CurrentState = State::StateId::Done;
 	}
 	else if( Input::Instance().IsKeyPressed(KeyDown) )
 	{
@@ -131,6 +134,8 @@ void StateMenu::Update(unsigned long ElapsedTime)
 			SelectedItemIndex=5; // PENDIENTE: quitar el 5 a pi�n
 
 	}
+
+	return NextState;
 }
 
 } //namespace Small
