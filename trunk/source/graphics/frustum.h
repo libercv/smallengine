@@ -1,7 +1,7 @@
 #ifndef FRUSTUM_H
 #define FRUSTUM_H
 
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <windows.h>
 #endif
 

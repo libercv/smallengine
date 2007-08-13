@@ -53,8 +53,6 @@ CMD2Model::CMD2Model( void )
 	m_texid			= 0;
 	m_scale			= 1.0;
 
-	// HACK: en windows fallaba la funci� Animate cuando se le pasaba como par�etro
-	// un "0" (cero) porque no se inicializaba estos valores (no hay inicializaci� impl�ita)
 	memset(&m_anim,0,sizeof(animState_t));
 
 	SetAnim( 0 );

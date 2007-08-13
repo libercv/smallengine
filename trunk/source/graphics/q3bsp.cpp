@@ -12,7 +12,7 @@
 //																		 //
 //***********************************************************************//
 
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <windows.h>
 #endif
 #include "q3bsp.h"
@@ -25,7 +25,7 @@
 #include <iostream>
 #include "texture.h"
 
-#ifdef WINDOWS
+#ifdef _WIN32
 typedef void (APIENTRY * PFNGLMULTITEXCOORD2FARBPROC) (GLenum target, GLfloat s, GLfloat t);
 typedef void (APIENTRY * PFNGLACTIVETEXTUREARBPROC) (GLenum target);
 typedef void (APIENTRY * PFNGLCLIENTACTIVETEXTUREARBPROC) (GLenum target);
@@ -125,7 +125,7 @@ Q3BSP::Q3BSP()
 	m_traceType			= 0;
 	m_traceRadius		= 0;
 
-#ifdef WINDOWS
+#ifdef _WIN32
 	InitMultiTextures();
 #endif
 	bool m_bCollided	= false;

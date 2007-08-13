@@ -10,7 +10,7 @@
 #ifndef BITSET_H
 #define BITSET_H
 
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <windows.h>
 #endif
 

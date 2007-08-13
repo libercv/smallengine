@@ -53,7 +53,7 @@ void CTextureManager::Initialize( void )
 
 	// initialize only once!
 
-	// HACK: as�no me compilaba.
+	// HACK: asi no me compilaba.
 	//if( (*m_texlist.begin()) == (*m_texlist.end()) )
 	if( m_texlist.begin() == m_texlist.end() )
 	{

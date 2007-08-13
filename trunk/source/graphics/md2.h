@@ -1,7 +1,7 @@
 #ifndef MD2_H
 #define MD2_H
 
-#ifdef WINDOWS
+#ifdef _WIN32
 	#include <windows.h>
 #endif
 

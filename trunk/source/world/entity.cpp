@@ -1,5 +1,6 @@
-#include "entity.h"
 #include <iostream>
+
+#include "entity.h"
 
 namespace Small
 {
@@ -47,7 +48,7 @@ void Entity::FollowPath(void)
 	// Para Paths con componentes Y!=0 todo esto está más o menos MAL
 	distance = sqrt( ((*NextPoint).x - Position.x) * ((*NextPoint).x - Position.x) +
 					 ((*NextPoint).z - Position.z) * ((*NextPoint).z - Position.z) );
-	if( distance < 1.0f ) // PENDIENTE: sustituir 1.0f por un EPSILON configurable según la escala del mapa// PENDIENTE: sustituir 1.0f por un EPSILON configurable según la escala del mapa
+	if( distance < 1.0f ) // PENDIENTE: sustituir 1.0f por un EPSILON configurable según la escala del mapa
 	{
 		NextPoint++;
 
@@ -150,7 +151,7 @@ void Entity::BillboardXZ(Vector3d Target)
 	objToCamProj.Normalize();
  
 	// Determinamos si el angulo es positivo o negativo
-	// Para angulos positivos upAux apuntaren una direcci positiva
+	// Para angulos positivos upAux apuntara en una direccion positiva
 	// de lo contrario upAux apuntara hacia abajo, invirtiendo la rotacion
 	upAux = lookAt.CrossProduct(objToCamProj);
 
@@ -209,7 +210,7 @@ void Entity::BillboardXYZ(Vector3d Target)
 	View.Subtract(Position,objToCam);
 	objToCam.Normalize();
 
-	// Calculamos el angulo entre v and v2
+	// Calculamos el angulo entre v y v2
 	angleCosine =  objToCam.DotProduct(objToCamProj);
 	
 	// Por si hay problemas de precisión
@@ -218,8 +219,7 @@ void Entity::BillboardXYZ(Vector3d Target)
 	else if (angleCosine>1)
 		angleCosine=1;
 	
-	// Realizamos el giro para las coordenadas esféricas
-	// Vamos a girar según el eje X. Depende de la posición Y
+	// Realizamos el giro para las coordenadas esféricas vamos a girar según el eje X. Depende de la posición Y
 	if( objToCam.y < 0 )
 		glRotatef(acos(angleCosine)*180/3.14,+1,0,0);	
 	else
