@@ -61,8 +61,8 @@ namespace Small
 			return oStateGame;
 		}
 		
-		void Render(void);
 		StateId Update(float ElapsedTime);
+		void Render(void);
 
 #ifdef _WIN32
 		void RedirectIOToConsole(void);

@@ -19,6 +19,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			ATLMinimizesCRunTimeLibraryUsage="true"
 			CharacterSet="2"
 			>
 			<Tool
@@ -42,7 +43,7 @@
 				PreprocessorDefinitions="WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
@@ -208,10 +209,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\source\game.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\source\graphics\ifont.h"
 				>
 			</File>
@@ -256,10 +253,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\source\ui\menu.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\source\world\object.h"
 				>
 			</File>
@@ -273,6 +266,18 @@
 			</File>
 			<File
 				RelativePath="..\..\source\graphics\q3bsp.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\source\state.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\source\stateGame.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\source\statemenu.h"
 				>
 			</File>
 			<File
@@ -353,10 +358,6 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\game.cpp"
-			>
-		</File>
-		<File
 			RelativePath="..\..\source\graphics\image.cpp"
 			>
 		</File>
@@ -373,10 +374,6 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\ui\menu.cpp"
-			>
-		</File>
-		<File
 			RelativePath="..\..\source\world\object.cpp"
 			>
 		</File>
@@ -390,6 +387,14 @@
 		</File>
 		<File
 			RelativePath="..\..\source\graphics\q3bsp.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\stateGame.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\stateMenu.cpp"
 			>
 		</File>
 		<File
@@ -422,6 +427,10 @@
 		</File>
 		<File
 			RelativePath="..\..\source\win32main.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\system\win32timer.cpp"
 			>
 		</File>
 		<File
