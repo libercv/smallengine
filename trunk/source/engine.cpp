@@ -8,7 +8,7 @@ void Engine::Run(void)
 	// PENDIENTE: Implementar métodos init para todos los singleton.
 	// PENDIENTE: Llamar desde aquí a todos los Inits de forma lógica y ordenada.
 
-	Window::Instance().Open("Small Project", 0, 0, 320, 200, 32, false);
+	Window::Instance().Open("Small Project", 0, 0, 800, 600, 32, false);
 
 	while( CurrentState != State::StateId::Done )
 	{
@@ -20,13 +20,13 @@ void Engine::Run(void)
 		switch( CurrentState )
 		{
 			case State::StateId::Menu:
-				StateMenu::Instance().Update(Timer::Instance().GetElapsedTime());
+				CurrentState = StateMenu::Instance().Update(Timer::Instance().GetElapsedTime());
 				StateMenu::Instance().Render();
 				break;
 
 			case State::StateId::Game:
 			case State::StateId::Pause:
-				StateGame::Instance().Update(Timer::Instance().GetElapsedTime());
+				CurrentState = StateGame::Instance().Update(Timer::Instance().GetElapsedTime());
 				StateGame::Instance().Render();
 				break;
 		}

@@ -4,7 +4,7 @@
 #include "system/window.h"
 
 #include "stateGame.h"
-#include "ui/stateMenu.h"
+#include "stateMenu.h"
 
 namespace Small
 {

@@ -44,6 +44,8 @@ StateGame::StateGame(void)
 
 State::StateId StateGame::Update(float ElapsedTime)
 {
+	State::StateId NextState = State::StateId::Game;
+
 	int dx,dy;
 
 	Input::Instance().GetMouseMotion(&dx,&dy);
@@ -71,15 +73,22 @@ State::StateId StateGame::Update(float ElapsedTime)
 			(*CameraItor).Update();
 
 		if( Input::Instance().IsKeyPressed(KeyEscape) )
-			Engine::Instance().CurrentState = State::StateId::Menu;	// PENDIENTE: desde aquí no debemos cambiar el state de Game. Lo devolveremos como retorno.
+		{
+			NextState = State::StateId::Menu;
+			// Engine::Instance().CurrentState = State::StateId::Menu;	// PENDIENTE: desde aquí no debemos cambiar el state de Game. Lo devolveremos como retorno.
+		}
 		else if( Input::Instance().IsKeyPressed(KeyPause) )
-			Engine::Instance().CurrentState = State::StateId::Pause; // PENDIENTE: desde aquí no debemos cambiar el state de Game. Lo devolveremos como retorno.
+		{
+			NextState = State::StateId::Pause;
+			//Engine::Instance().CurrentState = State::StateId::Pause; // PENDIENTE: desde aquí no debemos cambiar el state de Game. Lo devolveremos como retorno.
+		}
 		else if( Input::Instance().IsKeyPressed(KeySpace) )
 			iCamera = (++iCamera) % Cameras.size();
 		else if( Input::Instance().IsKeyPressed(KeyReturn) )
 		{
 			// Lights[0].On = !Lights[0].On;
 		}
+
 
 		// *** PRUEBAS: movemos al bicho ***************************************
 		float BichoSpeed = 130.0f; // unidades/segundo // PENDIENTE: usar la velocidad de la entidad.
@@ -110,7 +119,7 @@ State::StateId StateGame::Update(float ElapsedTime)
 		else if( Input::Instance().GetKeyState(KeyRight) )
 			sSpeed = -1 * speed * ElapsedTime;
 
-		else if( Input::Instance().GetKeyState(KeyHome) )
+		if( Input::Instance().GetKeyState(KeyHome) )
 		{
 			Cameras[0].Position.y += speed * ElapsedTime;
 			Cameras[0].View.y += speed * ElapsedTime;
@@ -149,7 +158,7 @@ State::StateId StateGame::Update(float ElapsedTime)
 	Cameras[2].View = Objects[0].Position;
 	*/
 
-	return StateId::Game;
+	return NextState;
 }
 
 void StateGame::Render(void)
