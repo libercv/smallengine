@@ -1,15 +1,9 @@
 //***********************************************************************//
-//																		 //
-//		- "Talk to me like I'm a 3 year old!" Programming Lessons -		 //
+//	- "Talk to me like I'm a 3 year old!" Programming Lessons	 //
 //                                                                       //
-//		$Author:		DigiBen		DigiBen@GameTutorials.com			 //
-//																		 //
-//		$Program:		BSP Loader 6									 //
-//																		 //
-//		$Description:	This adds gravity, jumping and walking up steps	 //
-//																		 //
-//		$Date:			9/30/04											 //
-//																		 //
+//	$Author:	DigiBen		DigiBen@GameTutorials.com	 //
+//	$Program:	BSP Loader 6					 //
+//	$Date:		9/30/04 					 //
 //***********************************************************************//
 
 #ifdef _WIN32
@@ -63,25 +57,11 @@ namespace BSP
 {
 
 #define MAX_PATH 300
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-//
-// Surprisingly enough, there isn't that much code to add in this file to allow
-// us to walk up stairs/slopes.  We add one function, and then a few lines here
-// and there.  To make jumping more realistic, we only want to allow the user to
-// jump when they are on the ground.  We add a few lines of code to check for this.
-//
-//
-
-
-
 // This is our maximum height that the user can climb over
 const float kMaxStepHeight = 45.0f;
 
 // We use the camera in our TryToStep() function so we extern the global camera
 //extern CCamera g_Camera;
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 
 // This is our global frustum class, which is used to cull BSP leafs
 //extern Frustum g_Frustum;
@@ -131,14 +111,9 @@ Q3BSP::Q3BSP()
 	bool m_bCollided	= false;
 
 
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 	// Initialize our variables to start off
 	bool m_bGrounded	= false;
 	bool m_bTryStep		= false;
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 
 	// We need to initialize our Min and Max and Extent variables
 	m_vTraceMins = Vector3d(0, 0, 0);
@@ -591,8 +566,6 @@ float Dot(Vector3d vVector1, Vector3d vVector2)
 }
 
 
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 /////////////////////////////////// TRY TO STEP \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
 /////	This checks a bunch of different heights to see if we can step up
@@ -643,9 +616,6 @@ Vector3d Q3BSP::TryToStep(Vector3d vStart, Vector3d vEnd)
 	return vStart;
 }
 
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
-
 /////////////////////////////////// TRACE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
 /////	This takes a start and end position (general) to test against the BSP brushes
@@ -687,16 +657,11 @@ Vector3d Q3BSP::Trace(Vector3d vStart, Vector3d vEnd)
 		vNewPosition = Trace(vNewPosition, vEndPosition);
 
 		
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 		// 
 		if(m_vCollisionNormal.y > 0.2f || m_bGrounded)
 			m_bGrounded = true;
 		else
 			m_bGrounded = false;
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 
 		// Return the new position to be used by our camera (or player)
 		return vNewPosition;
@@ -735,14 +700,9 @@ Vector3d Q3BSP::TraceSphere(Vector3d vStart, Vector3d vEnd, float radius)
 	m_bCollided = false;
 
 
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 	// Here we initialize our variables for a new round of collision checks
 	m_bTryStep = false;
 	m_bGrounded = false;
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 
 	m_traceRadius = radius;
 
@@ -750,17 +710,12 @@ Vector3d Q3BSP::TraceSphere(Vector3d vStart, Vector3d vEnd, float radius)
 	Vector3d vNewPosition = Trace(vStart, vEnd);
 
 
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 	// Let's check to see if we collided with something and we should try to step up
 	if(m_bCollided && m_bTryStep)
 	{
 		// Try and step up what we collided with
 		vNewPosition = TryToStep(vNewPosition, vEnd);
 	}
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 
 	// Return the new position to be changed for the camera or player
 	return vNewPosition;
@@ -780,15 +735,9 @@ Vector3d Q3BSP::TraceBox(Vector3d vStart, Vector3d vEnd, Vector3d vMin, Vector3d
 	m_vTraceMins = vMin;			// Set the min value of our AABB
 	m_bCollided = false;			// Reset the collised flag
 
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 	// Here we initialize our variables for a new round of collision checks
 	m_bTryStep = false;
 	m_bGrounded = false;
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 
 	// Grab the extend of our box (the largest size for each x, y, z axis)
 	m_vExtents = Vector3d(-m_vTraceMins.x > m_vTraceMaxs.x ? -m_vTraceMins.x : m_vTraceMaxs.x,
@@ -800,17 +749,12 @@ Vector3d Q3BSP::TraceBox(Vector3d vStart, Vector3d vEnd, Vector3d vMin, Vector3d
 	Vector3d vNewPosition = Trace(vStart, vEnd);
 	
 
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 	// Let's check to see if we collided with something and we should try to step up
 	if(m_bCollided && m_bTryStep)
 	{
 		// Try and step up what we collided with
 		vNewPosition = TryToStep(vNewPosition, vEnd);
 	}
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 
 	// Return our new position
 	return vNewPosition;
@@ -1027,8 +971,6 @@ void Q3BSP::CheckBrush(tBSPBrush *pBrush, Vector3d vStart, Vector3d vEnd)
 				m_vCollisionNormal = pPlane->vNormal;
 
 
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-
 				// This checks first tests if we actually moved along the x or z-axis,
 				// meaning that we went in a direction somewhere.  The next check makes
 				// sure that we don't always check to step every time we collide.  If
@@ -1046,9 +988,6 @@ void Q3BSP::CheckBrush(tBSPBrush *pBrush, Vector3d vStart, Vector3d vEnd)
 				// have a high y value for the normal, it would most likely be 0.
 				if(m_vCollisionNormal.y >= 0.2f)
 					m_bGrounded = true;
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-		
 				
 			}
 		}
@@ -1334,20 +1273,7 @@ Q3BSP::~Q3BSP()
 
 }
 }
-/////////////////////////////////////////////////////////////////////////////////
-//
-// * QUICK NOTES * 
-//
-// This finishes up our collision detection series for BSP files.  This should
-// give you a good start on creating more advance collision detection and collision
-// response tailored to your own projects.
-//
-// In this file we added the TryToStep() function, which ... tries to step :)
-// We also did some checks so that we can determine if we are on the ground or not.
-// Pretty simple things, but each one important.
-// 
-// Good luck on your collision from here on out!
-//
+
 //
 // Ben Humphrey (DigiBen)
 // Game Programmer
