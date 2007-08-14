@@ -16,14 +16,26 @@ StateGame::StateGame(void)
 	Bsp.frustum = &Frustum;
 	Bsp.LoadBSP("resources/maps/Tutorial.bsp"); // PENDIENTE: controlar que se carga bien el BSP. 
 
+	/*
 	Object *NewObject = new Object();
 	NewObject->Model = new CMD2Model();
-	NewObject->Model->LoadModel( "resources/models/yoshi.md2" );
-	NewObject->Model->LoadSkin( "resources/models/yoshi.bmp" );
+	NewObject->Model->LoadModel("resources/models/yoshi.md2");
+	NewObject->Model->LoadSkin("resources/models/yoshi.bmp");
 	NewObject->Model->SetAnim( RUN );
 	// NewObject->Model->ScaleModel( 1.0f );
 	// NewObject->SetPath( &Path );
 	Objects.push_back(*NewObject);
+	*/
+
+	Player *NewPlayer = new Player();
+	NewPlayer->Model = new CMD2Model();
+	NewPlayer->Model->LoadModel("resources/models/yoshi.md2");
+	NewPlayer->Model->LoadSkin("resources/models/yoshi.bmp");
+	NewPlayer->Model->SetAnim( RUN );
+	NewPlayer->Position.Set(416.0f, 0.0f, 0.0f);
+	// NewPlayer->Model->ScaleModel( 1.0f );
+	// NewPlayer->SetPath( &Path );
+	Players.push_back(*NewPlayer);
 
 	Camera *NewCamera = new Camera();
 	NewCamera->Position.x = 300;
@@ -32,19 +44,15 @@ StateGame::StateGame(void)
 	//NewCamera->SetPath( &Path );
 	Cameras.push_back(*NewCamera);
 
-	/*
-	for(short a=0; a<1; a++)
-	{
-		Light *NewLight = new Light();
-		NewLight->SetPath( &Path );
-		Lights.push_back(*NewLight);
-	}
-	*/
+	Light *NewLight = new Light();
+	NewLight->Position.Set(320.0f, 64.0f, 0.0f);
+	//NewLight->SetPath( &Path );
+	Lights.push_back(*NewLight);
 }
 
-State::StateId StateGame::Update(float ElapsedTime)
+StateEnum StateGame::Update(float ElapsedTime)
 {
-	State::StateId NextState = State::StateId::Game;
+	StateEnum NextState = Game;
 
 	int dx,dy;
 
@@ -60,6 +68,10 @@ State::StateId StateGame::Update(float ElapsedTime)
 	}
 	else
 	{
+		// Propagamos el Update a todos los jugadores
+		for(vector<Player>::iterator PlayerItor=Players.begin(); PlayerItor!=Players.end(); PlayerItor++)
+			(*PlayerItor).Update(ElapsedTime);
+
 		// Propagamos el Update a todos los objetos
 		for(vector<Object>::iterator ObjectItor=Objects.begin(); ObjectItor!=Objects.end(); ObjectItor++)
 			(*ObjectItor).Update();
@@ -74,27 +86,29 @@ State::StateId StateGame::Update(float ElapsedTime)
 
 		if( Input::Instance().IsKeyPressed(KeyEscape) )
 		{
-			NextState = State::StateId::Menu;
+			NextState = Menu;
 			// Engine::Instance().CurrentState = State::StateId::Menu;	// PENDIENTE: desde aquí no debemos cambiar el state de Game. Lo devolveremos como retorno.
 		}
 		else if( Input::Instance().IsKeyPressed(KeyPause) )
 		{
-			NextState = State::StateId::Pause;
+			NextState = Pause;
 			//Engine::Instance().CurrentState = State::StateId::Pause; // PENDIENTE: desde aquí no debemos cambiar el state de Game. Lo devolveremos como retorno.
 		}
 		else if( Input::Instance().IsKeyPressed(KeySpace) )
 			iCamera = (++iCamera) % Cameras.size();
 		else if( Input::Instance().IsKeyPressed(KeyReturn) )
 		{
-			// Lights[0].On = !Lights[0].On;
+			Lights[0].On = !Lights[0].On;
 		}
 
 
 		// *** PRUEBAS: movemos al bicho ***************************************
+		/*
 		float BichoSpeed = 130.0f; // unidades/segundo // PENDIENTE: usar la velocidad de la entidad.
-		Objects[0].Position.x += -(BichoSpeed*ElapsedTime);
-		if( Objects[0].Position.x < 0.0f ) 
-			Objects[0].Position.x = 800.0f;
+		Players[0].Position.x += -(BichoSpeed*ElapsedTime);
+		if( Players[0].Position.x < 0.0f ) 
+			Players[0].Position.x = 800.0f;
+		*/
 		// ********************************************************************
 
 
@@ -114,10 +128,12 @@ State::StateId StateGame::Update(float ElapsedTime)
 		else if( Input::Instance().GetKeyState(KeyDown) )
 			fSpeed = -1 * speed * ElapsedTime;
 
+		/*
 		if( Input::Instance().GetKeyState(KeyLeft) )
 			sSpeed = speed * ElapsedTime;
 		else if( Input::Instance().GetKeyState(KeyRight) )
 			sSpeed = -1 * speed * ElapsedTime;
+		*/
 
 		if( Input::Instance().GetKeyState(KeyHome) )
 		{
@@ -143,14 +159,14 @@ State::StateId StateGame::Update(float ElapsedTime)
 
 			// PEDNDIENTE: no usar los accesors para miembros atómicos. Mejor pasar un vector3d
 			// o usar directamente los miembros
-			Cameras[0].SetPosition( finalDest );
+			Cameras[0].Position = finalDest;
 		}
 		// ********************************************************************
 
 	}
 
 	// Hacemos que la cámara mire al bicho
-	Cameras[0].View = Objects[0].Position;
+	Cameras[0].View = Players[0].Position;
 
 	/*
 	Vector3d origen(0,0,0);
@@ -190,7 +206,7 @@ void StateGame::Render(void)
 	glEnable(GL_COLOR_MATERIAL);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 
 	//Drawing3D::Instance().DrawSkyBox(0,-0.0001,0,400,200,400);
 	//Drawing3D::Instance().DrawFloor();
@@ -219,6 +235,10 @@ void StateGame::Render(void)
 	if (Frustum.BoxInFrustum(bBox[0], bBox[1], bBox[2], bBox[3]-bBox[0], bBox[4]-bBox[1], bBox[5]-bBox[2]))
 
 */
+	// Pintamos los jugadores
+	for(vector<Player>::iterator PlayerItor=Players.begin(); PlayerItor!=Players.end(); PlayerItor++)
+		(*PlayerItor).Render();
+
 	// Pintamos los Objetos
 	for(vector<Object>::iterator ObjectItor=Objects.begin(); ObjectItor!=Objects.end(); ObjectItor++)
 		(*ObjectItor).Render();

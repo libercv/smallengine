@@ -10,12 +10,15 @@
 
 #include "texture.h"
 #include "font.h"
+#include "../singleton.h"
 #include "../math/maths.h"
 
-namespace Small
+namespace Small 
 {
-	class Drawing3D
+	class Drawing3D : public Singleton<Drawing3D>
 	{
+		friend Singleton<Drawing3D>;
+
 	private:
 		GLUquadricObj *quadratic;
 		int FloorTexture;
@@ -30,17 +33,9 @@ namespace Small
 
 		Drawing3D(void);
 		~Drawing3D(void) {};
-		Drawing3D(Drawing3D const&) {};
-		Drawing3D &operator=(Drawing3D const&) {};
 
 	public:
 		Font *BigFont;
-
-		static Drawing3D &Instance()
-		{
-			static Drawing3D oDrawing3D;
-			return oDrawing3D;
-		}
 
 		void Init(void);
 

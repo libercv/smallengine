@@ -68,7 +68,8 @@ bool Image::Load(char * filename)
 	height=0;
 	format=0;
 	
-	int filenameLength=strlen(filename);
+	//int filenameLength = strlen(filename);
+	size_t filenameLength = strlen(filename);
 
 	if(	strncmp((filename+filenameLength-3), "BMP", 3)==0 ||
 		strncmp((filename+filenameLength-3), "bmp", 3)==0)
@@ -561,6 +562,8 @@ bool Image::LoadTGA(char * filename)
 	unsigned char	Uncompressed8BitTGAHeader[12]={0, 1, 1, 0, 0, 0, 1, 24, 0, 0, 0, 0};
 
 	unsigned char	TGAcompare[12];						//Used to compare TGA header
+
+	bool ret=false;
 	
 	FILE * file = fopen(filename, "rb");		//Open the TGA file
 	
@@ -576,23 +579,26 @@ bool Image::LoadTGA(char * filename)
 
 	if(memcmp(UncompressedTGAHeader, TGAcompare, sizeof(UncompressedTGAHeader))==0)
 	{
-		return LoadUncompressedTrueColorTGA(filename);
+		ret = LoadUncompressedTrueColorTGA(filename);
 	}
 	else if(memcmp(CompressedTGAHeader, TGAcompare, sizeof(CompressedTGAHeader))==0)
 	{
-		return LoadCompressedTrueColorTGA(filename);
+		ret = LoadCompressedTrueColorTGA(filename);
 	}
 	else if(memcmp(Uncompressed8BitTGAHeader, TGAcompare, sizeof(Uncompressed8BitTGAHeader))==0)
 	{
-		return LoadUncompressed8BitTGA(filename);
+		ret = LoadUncompressed8BitTGA(filename);
 	}
 	else
 	{
 		//errorLog.OutputError("%s is not a recognised type of TGA", filename);
-		return false;
+		ret = false;
 	}
+
+	if( ret )
+		FlipVertically();
 	
-	return false;
+	return ret;
 }
 
 //load an 8 bit uncompressed paletted TGA
@@ -1111,7 +1117,13 @@ bool Image::CreateTexture(unsigned int &texture, char *strFileName)
 		textureType = GL_RGBA;
 		
 	// Build Mipmaps (builds different versions of the picture for distances - looks better)
-	gluBuild2DMipmaps(GL_TEXTURE_2D, bpp/8, width, height, textureType, GL_UNSIGNED_BYTE, data);
+	//gluBuild2DMipmaps(GL_TEXTURE_2D, bpp/8, width, height, textureType, GL_UNSIGNED_BYTE, data);
+
+	if( textureType == GL_RGBA )
+		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	else
+		gluBuild2DMipmaps(GL_TEXTURE_2D, bpp/8, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
+
 
 	//Assign the mip map levels and texture info
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);

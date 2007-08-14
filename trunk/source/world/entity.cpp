@@ -119,6 +119,8 @@ Vector3d Entity::TryToMove(float forwardSpeed, float strafeSpeed)
 }
 
 
+/*
+// ELIMINADO: se puede usar Entity::Position.Set(x,y,z);
 void Entity::SetPosition(Vector3d NewPosition)
 {
 	View += NewPosition - Position;
@@ -136,6 +138,7 @@ void Entity::SetPosition(float NewX, float NewY, float NewZ)
 	View.z += NewZ - Position.z;
 	Position.z = NewZ;
 }
+*/
 
 void Entity::BillboardXZ(Vector3d Target)
 {
@@ -169,7 +172,7 @@ void Entity::BillboardXZ(Vector3d Target)
 		angleCosine = -1;
 	
 	// Realizamos el giro de las coordenadas cilíndricas
-	glRotatef(acos(angleCosine)*180/3.14, upAux.x, upAux.y, upAux.z);
+	glRotatef( acos(angleCosine) * 180.0f/3.14f, upAux.x, upAux.y, upAux.z);
 }
 
 void Entity::BillboardXYZ(Vector3d Target)
@@ -204,7 +207,7 @@ void Entity::BillboardXYZ(Vector3d Target)
 		angleCosine = -1;
 	
 	// Realizamos el giro de las coordenadas cilíndricas
-	glRotatef(acos(angleCosine)*180/3.14, upAux.x, upAux.y, upAux.z);
+	glRotatef(acos(angleCosine)*180.0f/3.14f, upAux.x, upAux.y, upAux.z);
 
 	// objToCam es el vector normalizado en coordenadas globales que va desde "el que mira" hasta "lo que ve" 
 	View.Subtract(Position,objToCam);
@@ -221,9 +224,9 @@ void Entity::BillboardXYZ(Vector3d Target)
 	
 	// Realizamos el giro para las coordenadas esféricas vamos a girar según el eje X. Depende de la posición Y
 	if( objToCam.y < 0 )
-		glRotatef(acos(angleCosine)*180/3.14,+1,0,0);	
+		glRotatef(acos(angleCosine)*180.0f/3.14f,+1,0,0);	
 	else
-		glRotatef(acos(angleCosine)*180/3.14,-1,0,0);	
+		glRotatef(acos(angleCosine)*180.0f/3.14f,-1,0,0);	
 }
 
 

@@ -22,7 +22,8 @@
 // PENDIENTE: quizá "menu" no debería de ver "texture"... no sé
 #include "graphics/texture.h"
 
-#include "state.h"
+#include "istate.h"
+#include "singleton.h"
 
 // PENDIENTE: stateMenu no debería ver a stateGame. Probablemente solo necesitemos una captura de un frame que nos la
 // puede servir engine. Pensar.
@@ -30,35 +31,25 @@
 
 namespace Small
 {
-
-	class StateMenu : State
+class StateMenu : public Singleton<StateMenu>, public IState
 {
+	friend Singleton<StateMenu>;
 private:
 	std::vector<std::string> Items;
+	short SelectedItemIndex;
 
 	StateMenu(void);
 	~StateMenu(void) {};
-	StateMenu(StateMenu const&) {};
-	StateMenu &operator=(StateMenu const&) {};
-
-	short SelectedItemIndex;
 
 public:
-	static StateMenu &Instance()
-	{
-		static StateMenu oStateMenu;
-		return oStateMenu;
-	}
-
 	// PENDIENTE: temporal. Solo para pruebas
-	int texture;
+	int texture; 
 
 	void Load(void) {};
 
-	StateId Update(float ElapsedTime);
+	StateEnum Update(float ElapsedTime);
 	void Render(void);
 };
-
 } // namespace Small
 
 #endif
