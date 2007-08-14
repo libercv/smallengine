@@ -11,16 +11,14 @@ Light::Light(void)
 	On = true;
 	LIGHT_NAME = Light::LIGHT_NAME_CNT++;
 
-	/*
+	GLfloat LightAmbient[]= { 0.5f, 0.7f, 0.3f, 0.0f };
+	glLightfv(LIGHT_NAME, GL_AMBIENT, LightAmbient);
+
 	GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 0.0f };
 	glLightfv(LIGHT_NAME, GL_DIFFUSE, LightDiffuse);
 
-	GLfloat LightAmbient[]= { 0.0f, 0.0f, 0.0f, 1.0f };
-	glLightfv(LIGHT_NAME, GL_AMBIENT, LightAmbient);
-
-	GLfloat LightSpecular[]= { 1.0f, 0.0f, 0.0f, 1.0f };
+	GLfloat LightSpecular[]= { 0.0f, 0.0f, 0.0f, 0.0f };
 	glLightfv(LIGHT_NAME, GL_SPECULAR, LightSpecular);
-	*/
 }
 
 void Light::Render(void)

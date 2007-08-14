@@ -12,7 +12,6 @@ Window::Window(void) : hWnd(NULL), hInstance(NULL)
 
 bool Window::Open(char *pTitle, int px, int py, int pWidth, int pHeight, int pColorDepth, bool pFullScreen)
 { 
-	RECT WindowRect;
 	UINT PixelFormat;	
 	DWORD dwStyle, dwExStyle;
 
@@ -54,6 +53,7 @@ bool Window::Open(char *pTitle, int px, int py, int pWidth, int pHeight, int pCo
 
 	// Ajuste fino del tamaño de la ventana (por los bordes, etc.)
 	/*
+	RECT WindowRect;
 	WindowRect.top = 0; WindowRect.left = 0;
 	WindowRect.right = Width; WindowRect.bottom = Height;
 	AdjustWindowRectEx(&WindowRect, dwStyle, false, dwExStyle);

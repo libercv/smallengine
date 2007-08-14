@@ -371,7 +371,7 @@ bool Q3BSP::LoadBSP(const char *strFileName)
 	fread(m_pTextures, m_numOfTextures, sizeof(tBSPTexture), fp);
 
 	// Go through all of the textures
-	Image *imagen;
+	//Image *imagen;
 	for(i = 0; i < m_numOfTextures; i++)
 	{
 		// Find the extension if any and append it to the file name

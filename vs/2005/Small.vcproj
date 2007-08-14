@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\source\istate.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\source\system\itimer.h"
 				>
 			</File>
@@ -265,11 +269,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\source\graphics\q3bsp.h"
+				RelativePath="..\..\source\world\player.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\source\state.h"
+				RelativePath="..\..\source\graphics\q3bsp.h"
 				>
 			</File>
 			<File
@@ -383,6 +387,10 @@
 		</File>
 		<File
 			RelativePath="..\..\source\math\plane.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\world\player.cpp"
 			>
 		</File>
 		<File

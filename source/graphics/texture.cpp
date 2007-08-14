@@ -109,10 +109,10 @@ void CTextureManager::Initialize( void )
 
 unsigned int CTextureManager::LoadTexture(  char *filename )
 {
-	unsigned int	id = 0;
-	unsigned char	*texels = 0;
-	int				width, height;
-	int				success;
+	unsigned int id = 0;
+	unsigned char *texels = 0;
+	bool success;
+	//int				width, height;
 
 	for( TListItor itor = m_texlist.begin(); itor != m_texlist.end(); ++itor )
 	{
@@ -126,7 +126,7 @@ unsigned int CTextureManager::LoadTexture(  char *filename )
 	
 	if( success == true  )
 	{
-		//imagen->FlipVertically();
+		// imagen->FlipVertically();
 		glGenTextures( 1, &id );
 		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 		glBindTexture( GL_TEXTURE_2D, id );

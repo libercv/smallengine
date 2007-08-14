@@ -6,7 +6,7 @@ namespace Small
 
 StateMenu::StateMenu(void)
 {
-	texture = CTextureManager::GetInstance()->LoadTexture("resources/textures/small.bmp");
+	texture = CTextureManager::GetInstance()->LoadTexture("resources/textures/small.tga");
 	
 	SelectedItemIndex = 0;
 
@@ -62,14 +62,16 @@ void StateMenu::Render(void)
 			glVertex2f((float)WinW,(float)WinH);
 		glEnd();
 	glDisable(GL_BLEND);
+	
 
 	///////////////////
 
-	glColor3f(1.0f,0.0f,0.0f);
+	// glColor3f(1.0f,0.0f,0.0f);
 	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
 	// Pintamos el logo
 	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glPushMatrix();
 		glTranslatef((WinW-w)/2.0f, (WinH*0.95f)-h, 0.0f);
 		glBegin(GL_QUADS);
@@ -79,6 +81,8 @@ void StateMenu::Render(void)
 			glTexCoord2f(0.0f,0.0f); glVertex3f(0.0f,h,0.0f);
 		glEnd();
 	glPopMatrix();
+
+	
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -106,20 +110,20 @@ void StateMenu::Render(void)
 	glEnable(GL_DEPTH_TEST);
 }
 
-State::StateId StateMenu::Update(float ElapsedTime)
+StateEnum StateMenu::Update(float ElapsedTime)
 {
-	State::StateId NextState = State::StateId::Menu;
+	StateEnum NextState = Menu;
 
 	if( Input::Instance().IsKeyPressed(KeyEscape) )
 	{
 		// PENDIENTE: StateMenu no debe ver a Engine. Mejor que devuelva el siguiente estado.
 		//Engine::Instance().CurrentState = State::StateId::Game;
-		NextState = State::StateId::Game;
+		NextState = Game;
 	}
 	if( Input::Instance().IsKeyPressed(KeyReturn) )
 	{
 		if( SelectedItemIndex==5 )
-			NextState = State::StateId::Done;
+			NextState = Done;
 			//Engine::Instance().CurrentState = State::StateId::Done;
 	}
 	else if( Input::Instance().IsKeyPressed(KeyDown) )

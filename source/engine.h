@@ -12,13 +12,13 @@ namespace Small
 class Engine
 {
 private:
-	Engine(void) { CurrentState = State::StateId::Game; };
+	Engine(void) { CurrentState = Game; };
 	~Engine(void) {};
 	Engine(Engine const&) {};
 	Engine &operator=(Engine const&) {};
 
 public:
-	State::StateId CurrentState;
+	StateEnum CurrentState;
 
 	static Engine &Instance()
 	{

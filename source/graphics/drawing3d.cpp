@@ -84,7 +84,7 @@ namespace Small
 		if( DrawLetters )
 		{
 			glColor3f(1.0f,0.0f,0.0f);
-			glRasterPos3f(2.2, 0.0f, 0.0f);
+			glRasterPos3f(2.2f, 0.0f, 0.0f);
 			//System::Instance().oFont->Print("X");
 
 			glColor3f(0.0f,1.0f,0.0f);
@@ -105,17 +105,17 @@ namespace Small
 		short mode;
 
 		mode = GL_POLYGON;
-		Width = .5 * scale;
-		Height = .5 * scale;
-		Depth = 1 * scale;
+		Width = 0.5f * scale;
+		Height = 0.5f * scale;
+		Depth = 1.0f * scale;
 
 		glColor3f(0.4f, 0.4f, 0.4f);
 
 		// Objetivo (cilindro)
 		glPushMatrix();
-			glTranslatef(0.0f, 0.0f, 0.7 * scale);
-			glRotatef(180,  0.0f, 1.0f, 0.0f);
-			gluCylinder(quadratic,0.15f * scale,0.15f * scale,0.5f * scale,10,32);
+			glTranslatef(0.0f, 0.0f, 0.7f * scale);
+			glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
+			gluCylinder(quadratic, 0.15f * scale, 0.15f * scale, 0.5f * scale, 10, 32);
 		glPopMatrix();
 
 		// Cubo
@@ -205,15 +205,15 @@ namespace Small
 			// Casquillo (cilindro)
 			glColor3f(0.7f, 0.7f, 0.7f);
 			glPushMatrix();
-				glTranslatef(0.0f, Radio*1.6, 0.0f);
+				glTranslatef(0.0f, Radio*1.6f, 0.0f);
 				glRotatef(90,  1.0f, 0.0f, 0.0f);
 				gluCylinder(quadratic,Radio/2,Radio/2,Radio,10,32);
 			glPopMatrix();
 
 			// Casquillo (tapa)
 			glPushMatrix();
-				glTranslatef(0.0f, Radio*1.5, 0.0f);
-				gluSphere(quadratic,Radio/2,10,32);
+				glTranslatef(0.0f, Radio*1.5f, 0.0f);
+				gluSphere(quadratic,Radio/2.0f,10,32);
 			glPopMatrix();
 		}
 		glPopAttrib();
