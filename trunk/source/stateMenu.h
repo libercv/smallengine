@@ -33,7 +33,8 @@ namespace Small
 {
 class StateMenu : public Singleton<StateMenu>, public IState
 {
-	friend Singleton<StateMenu>;
+	template<class StateMenu> friend class Singleton;
+
 private:
 	std::vector<std::string> Items;
 	short SelectedItemIndex;

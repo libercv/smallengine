@@ -13,7 +13,7 @@ namespace Small
 {
 class Input : public Singleton<Input>, public IInput
 {
-friend Singleton<Input>;
+	template<class Input> friend class Singleton;
 
 private:
 	// Mapa que relaciona una VKEY con una tecla de funcion de Small

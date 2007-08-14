@@ -37,7 +37,7 @@ namespace Small
 {
 	class StateGame : public Singleton<StateGame>, public IState
 	{
-		friend Singleton<StateGame>;
+		template<class StateGame> friend class Singleton;
 
 	protected:
 		StateGame(void);
