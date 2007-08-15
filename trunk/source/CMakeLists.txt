@@ -2,7 +2,7 @@ PROJECT (Small)
 INCLUDE(FindOpenGL)
 INCLUDE(FindJPEG)
 
-SET(WORLD_SRCS world/camera.cpp world/entity.cpp world/light.cpp world/object.cpp)
+SET(WORLD_SRCS world/camera.cpp world/entity.cpp world/light.cpp world/object.cpp world/player.cpp)
 SET(SYSTEM_SRCS system/linuxinput.cpp system/linuxtimer.cpp system/linuxwindow.cpp)
 SET(GRAPHICS_SRCS graphics/bitset.cpp graphics/drawing3d.cpp graphics/frustum.cpp graphics/image.cpp 
 	graphics/linuxfont.cpp graphics/md2.cpp graphics/pcx.cpp graphics/q3bsp.cpp graphics/texture.cpp)
