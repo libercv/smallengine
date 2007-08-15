@@ -6,19 +6,21 @@
 //	Downloaded from: www.paulsprojects.net
 //	Created:	20th July 2002
 //////////////////////////////////////////////////////////////////////////////////////////	
+#include <iostream>
+#include <string>
+
 #ifdef _WIN32
 #include <windows.h>
 #include "jpeglib.h"
 #else
-#include <jpeglib.h>	// PENDIENTE: ¿por qué necesitas que sea <jpeglib.h> y no "jpeglib.h"?
+#include <jpeglib.h>	// PENDIENTE: ï¿½por quï¿½ necesitas que sea <jpeglib.h> y no "jpeglib.h"?
 #endif
 
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "image.h"
 
-#include <iostream>
-#include <string>
+
 
 //extern LOG errorLog;
 namespace Small
