@@ -17,7 +17,7 @@ namespace Small
 {
 	class Drawing3D : public Singleton<Drawing3D>
 	{
-		template<class Drawing3D> friend class Singleton;
+		friend class Singleton<Drawing3D>;
 
 	private:
 		GLUquadricObj *quadratic;
