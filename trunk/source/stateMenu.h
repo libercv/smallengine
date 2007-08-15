@@ -39,6 +39,7 @@ private:
 	std::vector<std::string> Items;
 	short SelectedItemIndex;
 
+protected:
 	StateMenu(void);
 	~StateMenu(void) {};
 

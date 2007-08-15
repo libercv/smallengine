@@ -34,11 +34,13 @@ private:
 	// Desplazamiento del ratón desde el frame anterior.
 	signed long dx,dy;
 
-	Input(void);
-	~Input(void) {};
 
 	void OnKeyPressed(WPARAM key, bool pressed);
 	void ResetBuffers(void);
+
+protected:
+	Input(void);
+	~Input(void) {};
 
 public:
 	void Update(void);

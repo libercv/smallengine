@@ -31,6 +31,7 @@ namespace Small
 		static const int LEFT_ID = 4;
 		static const int RIGHT_ID = 5;
 
+	protected:
 		Drawing3D(void);
 		~Drawing3D(void) {};
 
