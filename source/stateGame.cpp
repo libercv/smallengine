@@ -50,9 +50,9 @@ StateGame::StateGame(void)
 	Lights.push_back(*NewLight);
 }
 
-StateEnum StateGame::Update(float ElapsedTime)
+EngineStateEnum StateGame::Update(float ElapsedTime)
 {
-	StateEnum NextState = Game;
+	EngineStateEnum NextState = Game;
 
 	int dx,dy;
 
@@ -206,7 +206,7 @@ void StateGame::Render(void)
 	glEnable(GL_COLOR_MATERIAL);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
+	// glEnable(GL_LIGHTING);
 
 	//Drawing3D::Instance().DrawSkyBox(0,-0.0001,0,400,200,400);
 	//Drawing3D::Instance().DrawFloor();

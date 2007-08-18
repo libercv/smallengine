@@ -235,6 +235,11 @@ void CMD2Model::Animate( float time )
 	// calculate current and next frames
 	if( m_anim.curr_time - m_anim.old_time > (1.0 / m_anim.fps) )
 	{
+		if( m_anim.next_frame != m_anim.curr_frame+1 )
+			m_AnimationState = Loop;
+		else
+			m_AnimationState = Frame;
+
 		m_anim.curr_frame = m_anim.next_frame;
 		m_anim.next_frame++;
 
@@ -243,6 +248,8 @@ void CMD2Model::Animate( float time )
 
 		m_anim.old_time = m_anim.curr_time;
 	}
+	else
+		m_AnimationState = NoFrame;
 
 	// prevent having a current/next frame greater
 	// than the total number of frames...
@@ -430,6 +437,7 @@ void CMD2Model::DrawFrame( int frame )
 anim_t CMD2Model::animlist[ 21 ] = 
 {
 	// first, last, fps
+	// PENDIENTE: no todos los modelos tienen las mismas animaciones. Creo que esto se saca del mismo fichero MD2. Investigar.
 
 	{   0,  39,  9 },	// STAND
 	{  40,  45, 10 },	// RUN
@@ -466,13 +474,14 @@ void CMD2Model::SetAnim( int type )
 	if( (type < 0) || (type > MAX_ANIMATIONS) )
 		type = 0;
 
-	// HACK: si volvemos a asignar la misma animaci� no reseteamos los estados (para evitar "congelamientos")
+	// HACK: si volvemos a asignar la misma animacion no reseteamos los estados (para evitar "congelamientos")
 	if( m_anim.type == type )
 		return;
-
+	
+	m_anim.type			= type;
 	m_anim.startframe	= animlist[ type ].first_frame;
 	m_anim.endframe		= animlist[ type ].last_frame;
 	m_anim.next_frame	= animlist[ type ].first_frame + 1;
 	m_anim.fps			= animlist[ type ].fps;
-	m_anim.type			= type;
+	m_AnimationState	= NoFrame;
 }

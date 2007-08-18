@@ -277,6 +277,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\source\singleton.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\source\stateGame.h"
 				>
 			</File>

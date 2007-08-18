@@ -8,6 +8,8 @@ namespace Small
 		ResetBuffers();
 
 		// PENDIENTE: sacar la configuración de teclas de un archivo.
+		// PENDIENTE: ademas de sacar la configuracion de las teclas a un archivo hay que sacar este codigo de aqui.
+		// Lo mas probable es que acabe estando en el engine, en el proceso de carga inicial.
 		memset(KeyMap,MAX_KEYS,256);
 
 		KeyMap['S'] = KeyDown;		KeyMap[VK_DOWN] = KeyDown;
