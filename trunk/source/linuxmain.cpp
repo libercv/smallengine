@@ -3,7 +3,7 @@
 	Ahora mismo se usa para hacer pruebas.
 */
 
-#include "engine.h"
+#include "game.h"
 //#include "../engine/engine.h"
 //#include "../engine/ui/menu.h"
 
@@ -12,7 +12,7 @@ using namespace Small;
 int main(void)
 {
 
-	Small::Engine::Instance().Run();
+	Small::Game::Instance().Run();
 /*
 	System::Instance().UpdateEvents();
 

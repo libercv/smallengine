@@ -136,6 +136,13 @@ typedef enum
 	MAX_ANIMATIONS
 } animType_t;
 
+typedef enum
+{
+//	Unknown,
+	NoFrame,
+	Frame,
+	Loop
+} AnimationStateEnum;
 
 // ==============================================
 // CMD2Model - MD2 model class object.
@@ -159,7 +166,8 @@ private:
 	int				*m_lightnormals;	// normal index array
 	box_t			*m_bboxes;			// bounding boxes
 
-	animState_t		m_anim;				// animation
+	animState_t		m_anim;				// animation (run, stand, ...)
+	AnimationStateEnum m_AnimationState;	// estado de la animacion (NoFrame, Frame, Loop...)
 	unsigned int	m_texid;			// texture id
 	float			m_scale;			// scale value
 
@@ -172,6 +180,11 @@ public:
 	// constructor/destructor
 	CMD2Model( void );
 	~CMD2Model( void );
+
+	AnimationStateEnum GetAnimationState(void)
+	{
+		return m_AnimationState;
+	}
 
 	// functions
 	bool	LoadModel( const char *filename );

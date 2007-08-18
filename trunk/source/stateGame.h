@@ -57,7 +57,7 @@ namespace Small
 		BSP::Q3BSP Bsp;
 		BSP::Frustum Frustum;
 		
-		StateEnum Update(float ElapsedTime);
+		EngineStateEnum Update(float ElapsedTime);
 		void Render(void);
 
 #ifdef _WIN32

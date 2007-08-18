@@ -13,13 +13,17 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
+/*
 #ifdef _WIN32
 	#include "system/win32input.h"
 #else
 	#include "system/linuxinput.h"
 #endif
+*/
 
-// PENDIENTE: quiz� "menu" no deber�a de ver "texture"... no s�
+#include "system/input.h"
+
+// PENDIENTE: quiza "menu" no deberia de ver "texture"...
 #include "graphics/texture.h"
 
 #include "istate.h"
@@ -45,12 +49,17 @@ protected:
 
 public:
 	// PENDIENTE: temporal. Solo para pruebas
-	int texture; 
+	int texture, mask; 
 
 	void Load(void) {};
 
-	StateEnum Update(float ElapsedTime);
+	EngineStateEnum Update(float ElapsedTime);
 	void Render(void);
+
+
+	// PENDIENTE: estas funciones irán en Drawing3D
+	void OrthoMode(int left, int top, int right, int bottom);
+	void PerspectiveMode(void);
 };
 } // namespace Small
 

@@ -18,7 +18,7 @@ private:
 	Engine &operator=(Engine const&) {};
 
 public:
-	StateEnum CurrentState;
+	EngineStateEnum CurrentState;
 
 	static Engine &Instance()
 	{

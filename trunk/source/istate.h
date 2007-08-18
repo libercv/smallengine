@@ -7,14 +7,13 @@ namespace Small
 {
 typedef enum
 {
-	//Intro = 0, Menu, Game, Pause, Scores, Credits, Done
-	Menu, Game, Pause, Done
-} StateEnum;
+	Menu=0, Game, Pause, Done
+} EngineStateEnum;
 
 class IState
 {
 public:
-	virtual StateEnum Update(float ElapsedTime) = 0;
+	virtual EngineStateEnum Update(float ElapsedTime) = 0;
 	virtual void Render(void) = 0;
 };
 } // namespace Small
