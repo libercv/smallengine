@@ -10,7 +10,7 @@ namespace Small
 		// PENDIENTE: sacar la configuración de teclas de un archivo.
 		// PENDIENTE: ademas de sacar la configuracion de las teclas a un archivo hay que sacar este codigo de aqui.
 		// Lo mas probable es que acabe estando en el engine, en el proceso de carga inicial.
-		memset(KeyMap,MAX_KEYS,256);
+		memset(KeyMap, MAX_KEYS, 256);
 
 		KeyMap['S'] = KeyDown;		KeyMap[VK_DOWN] = KeyDown;
 		KeyMap['W'] = KeyUp;		KeyMap[VK_UP] = KeyUp;
@@ -23,6 +23,8 @@ namespace Small
 		KeyMap[VK_ESCAPE] = KeyEscape;
 		KeyMap[VK_RETURN] = KeyReturn;
 		KeyMap[VK_SPACE] = KeySpace;
+
+		x = y = dx = dy = 0;
 	}
 
 	void Input::Update(void)
@@ -68,8 +70,15 @@ namespace Small
 		
 		GetCursorPos(&mousePos);						
 		
-		dx = (middleX - mousePos.x);
-		dy = (middleY - mousePos.y);
+		dx = (mousePos.x - middleX);
+		dy = (mousePos.y - middleY);
+
+		x += dx;
+		y += dy;
+
+		// PENDIENTE: el clipping del ratón depende del tamaño de la ventana
+		if( x>1024 ) x=1024; if( x<0 ) x=0;
+		if( y>768 ) y=768; if( y<0 ) y=0;
 
 		SetCursorPos(middleX, middleY);
 	}

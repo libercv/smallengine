@@ -35,8 +35,8 @@ void StateMenu::Render(void)
 	StateGame::Instance().Render();
 
 	float textW=256, textH=128;
-	float x1=(WinW/2)-(textW/2), y1=390-(textH/2);
-	float x2=(WinW/2)+(textW/2), y2=390+(textH/2);
+	float x1=(WinW/2)-(textW/2), y1=80-(textH/2);
+	float x2=(WinW/2)+(textW/2), y2=80+(textH/2);
 
 	//glDisable(GL_LIGHTING);
 
@@ -94,7 +94,7 @@ void StateMenu::Render(void)
 		else
 			glColor3f(1.0f,1.0f,0.0f);
 
-		glRasterPos2f((float)220, (float)(330-(a*30)));
+		glRasterPos2f((float)220, (float)(150+(a*30)));
 		Drawing3D::Instance().BigFont->Print(Items[a].c_str());
 	}
 

@@ -416,7 +416,7 @@ void Drawing3D::OrthoMode(int left, int top, int right, int bottom)
 {
 	glMatrixMode(GL_PROJECTION);						
 	glLoadIdentity();								
-	glOrtho(left, right, top, bottom, 0, 1);
+	glOrtho(left, right, bottom, top, 0, 1);
 	
 	glMatrixMode(GL_MODELVIEW);								
 	glLoadIdentity();

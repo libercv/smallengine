@@ -39,6 +39,9 @@ namespace Small
 	{
 		friend class Singleton<StateGame>;
 
+	private:
+		int mouse, mouseMask;
+
 	protected:
 		StateGame(void);
 		~StateGame() {};
