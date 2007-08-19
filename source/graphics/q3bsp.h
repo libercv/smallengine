@@ -9,6 +9,7 @@ namespace Small
 {
 namespace BSP
 {
+// #define MAX_PATH 300
 
 // This is the number that is associated with a face that is of type "polygon"
 #define FACE_POLYGON	1
@@ -385,21 +386,3 @@ private:
 }
 }
 #endif
-
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-// * QUICK NOTES * 
-//
-// In this version we added some constants for our gravity and jump acceleration,
-// as well as some simple variable to tell us if we are on the ground, or if we
-// should try to step over something.  We then create a "get" function for m_bGrounded.
-// The last function added was TryToStep(), which makes an attempt to step up stairs/slope.
-//
-//
-// Ben Humphrey (DigiBen)
-// Game Programmer
-// DigiBen@GameTutorials.com
-// Co-Web Host of www.GameTutorials.com
-//
-//
