@@ -123,10 +123,12 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 		float speed=300.0f; // Unidades/segundo. 
 		float fSpeed=0, sSpeed=0;
 
+		/*
 		if( Input::Instance().GetKeyState(KeyUp) )
 			fSpeed = speed * ElapsedTime;
 		else if( Input::Instance().GetKeyState(KeyDown) )
 			fSpeed = -1 * speed * ElapsedTime;
+		*/
 
 		/*
 		if( Input::Instance().GetKeyState(KeyLeft) )
@@ -179,29 +181,15 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 
 void StateGame::Render(void)
 {
+	// PENDIENTE: ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ DE AQUI VA CASI TODO FUERA !!!!!!!!!!!!!!!!!!!!!!!!!
 
-	// PENDIENTE:
-	// ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ DE AQUI VA CASI TODO FUERA !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-	// PENDIENTE: todo esto va en graphics. 
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	// PENDIENTE: todo lo que se llame gl* Drawing3D. 
+	glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	Drawing3D::Instance().PerspectiveMode(45.0f, Window::Instance().GetWidth(), Window::Instance().GetHeight(), 1.0f, 2000.0f);
 
-	// PENDIENTE: Esto solo se debe hacer cuando se redimensione la ventana, cuando pasemos entre
-	// Ortho y Perspective y cuando redimensionemos el área de render (modo edición) ¿si,no?
-	if( iCamera == 0 )
-		gluPerspective(45.0f,(GLfloat)Window::Instance().GetWidth()/ (GLfloat)Window::Instance().GetHeight(), .5f, 65535.0f);
-	else
-		gluPerspective(100.0f,(GLfloat)Window::Instance().GetWidth()/ (GLfloat)Window::Instance().GetHeight(), .5f, 65535.0f);
-	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	Cameras[iCamera].Look();
+	Cameras[iCamera].Apply();
 
 	glEnable(GL_COLOR_MATERIAL);
 	glShadeModel(GL_SMOOTH);
@@ -209,7 +197,7 @@ void StateGame::Render(void)
 	// glEnable(GL_LIGHTING);
 
 	//Drawing3D::Instance().DrawSkyBox(0,-0.0001,0,400,200,400);
-	//Drawing3D::Instance().DrawFloor();
+	//Drawing3D::Instance().DrawAxes(64.0f, true);
 
 	//std::cout << Timer::Instance().GetFps() << std::endl;
 	//System::Instance().oFont->Print(Timer::Instance().GetFps());
@@ -252,7 +240,11 @@ void StateGame::Render(void)
 	for(vector<Light>::iterator LightItor=Lights.begin(); LightItor!=Lights.end(); LightItor++)
 		(*LightItor).Render();
 
-
+	Drawing3D::Instance().OrthoMode(0,0, 800,600);
+	glColor3f(0.5f,0.5f,1.0f);
+	glRasterPos2f(0.0f, 0.0f);
+	Drawing3D::Instance().BigFont->Print("%f", Players[0].GetRotationY());
+	Drawing3D::Instance().PerspectiveMode(45.0f, Window::Instance().GetWidth(), Window::Instance().GetHeight(), 1.0f, 2000.0f);
 	
 	/*
 	if( iCamera != 0 )

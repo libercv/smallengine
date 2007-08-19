@@ -31,7 +31,11 @@ void Object::Render(void)
 
 		glPushMatrix();
 			glTranslatef(Position.x, Position.y - bbox[1], Position.z);
-			BillboardXZ(View);
+
+			// PENDIENTE: ¿ y este ajuste que hay que hacerle a la rotación ... ?
+			glRotatef(-GetRotationY() + 90.0f, 0.0f, 1.0f, 0.0f);
+
+			// BillboardXZ(View);
 
 			// PENDIENTE: deberíamos recibir el tiempo transcurrido como parámetro y no acceder a Timer
 			// PENDIENTE: Model no trabaja con el tiempo transcurrido entre frames sino con el tiempo

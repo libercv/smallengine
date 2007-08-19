@@ -1,6 +1,7 @@
 
 #include "drawing3d.h"
 #include "../math/maths.h"
+#include "../system/window.h"
 
 namespace Small
 {
@@ -410,4 +411,25 @@ namespace Small
 		glEnd();
 		*/
 	}
+
+void Drawing3D::OrthoMode(int left, int top, int right, int bottom)
+{
+	glMatrixMode(GL_PROJECTION);						
+	glLoadIdentity();								
+	glOrtho(left, right, top, bottom, 0, 1);
+	
+	glMatrixMode(GL_MODELVIEW);								
+	glLoadIdentity();
+}
+
+void Drawing3D::PerspectiveMode(float AngleOfVision, int WindowWidth, int WindowHeight, float NearPlane, float FarPlane)
+{
+	glMatrixMode( GL_PROJECTION );							
+	glLoadIdentity();
+	gluPerspective(AngleOfVision, (GLfloat)WindowWidth / (GLfloat)WindowHeight, NearPlane, FarPlane);
+
+	glMatrixMode( GL_MODELVIEW );							
+	glLoadIdentity();
+}
+
 } // namespace Small

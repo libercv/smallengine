@@ -19,14 +19,30 @@ namespace Small
 
 class Entity
 {
+private:
+	float RotationY;	// Rotación sobre el eje Y (perpendicular al suelo)
+
 public:
 	std::string Id;
-	std::list<Entity *>Children;
+
+	// PENDIENTE: no se por que meti esta lista de hijos en entidad. 
+	// std::list<Entity *>Children;
+
+	// PENDIENTE: podemos meter una referencia a otra entidad que esté siendo arrastrada/empujada por esta.
+	// A lo mejor tambien es interesante otra propiedad que nos indique qué entidad nos está arrastrando/empujando
+	// creando así una lista doblemente enlazada donde propagar un empuje y dependiendo de las masas
+	// acumuladas y la fricción poder o no empujar. ¿v2.0?
+
+	// PENDIENTE: hay mucha cosa publica aqui. Repasar.
 
 	WayPath *Path;
 	vector<WayPoint>::iterator NextPoint;
 
-	Vector3d Position, View;
+	Vector3d Position;	// Posicion de la entidad
+	Vector3d View;		// Hacia donde esta orientada la entidad (PENDIENTE: si ahora tenemos las rotaciones sobre los ejes esto sobra ¿ no ?)
+
+	void SetRotationY(float NewRotationY);
+	float GetRotationY(void);
 
 	Entity(void);
 
@@ -36,7 +52,9 @@ public:
 	void SetPath(WayPath *NewPath);
 	void FollowPath(void);
 
-	void BillboardXZ(Vector3d Target);
+	// PENDIENTE: renombrar estos métodos a algo más inteligible como Entity.Face(...) y Entity.FaceXZ(...)
+	// PENDIENTE: sobrecargar estos métodos para aceptar tanto un Vector3D como una entidad (y usar la posición de la entidad como vector destino)
+	void BillboardXZ(Vector3d Target);	
 	void BillboardXYZ(Vector3d Target);
 
 	void Move(float forwardSpeed, float strafeSpeed);

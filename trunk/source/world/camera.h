@@ -14,7 +14,7 @@ public:
 	void RotateView(int dx, int dy);
 	void RotateView(float angle, float x, float y, float z);
 
-	void Look(void);
+	void Apply(void);
 };
 
 } // namespace Small

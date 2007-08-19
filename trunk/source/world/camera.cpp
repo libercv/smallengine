@@ -12,9 +12,9 @@ namespace Small
 		glPopMatrix();
 	};
 
-	void Camera::Look(void)
+	void Camera::Apply(void)
 	{
-		// PENDIENTE: el upVector ¿ será siempre (0,1,0) ?
+		// PENDIENTE: el upVector ¿ será siempre (0,1,0) ? ¡¡ NO !!
 		gluLookAt(Position.x,Position.y,Position.z,  View.x,View.y,View.z,  0.0f,1.0f,0.0f);
 	}
 

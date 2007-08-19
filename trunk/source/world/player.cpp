@@ -3,6 +3,7 @@
 
 namespace Small
 {
+
 Player::Player() : Object()
 {
 	CurrentState = Standing;
@@ -15,6 +16,9 @@ void Player::Update(float ElapsedTime)
 	// bicho cuando ha saltado, sin necesidad de tocar los controles. Yo me entiendo. Incluso se puede hacer un sistema
 	// un pelín más completo con velocidad y aceleración.
 	float BichoSpeed = 130.0f; // unidades/segundo 
+	float RotationSpeed = 180.0f; // grados/segundo 
+
+	float RY = GetRotationY();
 
 	// Es importante que el Object::Update() lo hagamos antes que nada para obtener un Model->GetAnimationState actualizado.
 	Object::Update();
@@ -31,12 +35,26 @@ void Player::Update(float ElapsedTime)
 
 		if( Input::Instance().GetKeyState(KeyRight) )
 		{
-			this->Position.x+=BichoSpeed*ElapsedTime;
+			// this->Position.x+=BichoSpeed*ElapsedTime;
+			RY += RotationSpeed*ElapsedTime;
 			CurrentState = Running;
 		}
 		else if( Input::Instance().GetKeyState(KeyLeft) )
 		{
-			this->Position.x-=BichoSpeed*ElapsedTime;
+			// this->Position.x-=BichoSpeed*ElapsedTime;
+			RY -= RotationSpeed*ElapsedTime;
+			CurrentState = Running;
+		}
+		SetRotationY(RY);
+
+		if( Input::Instance().GetKeyState(KeyUp) )
+		{
+			this->Move(BichoSpeed*ElapsedTime, 0);
+			CurrentState = Running;
+		}
+		else if( Input::Instance().GetKeyState(KeyDown) )
+		{
+			this->Move(-BichoSpeed*ElapsedTime, 0);
 			CurrentState = Running;
 		}
 
@@ -63,6 +81,5 @@ void Player::Update(float ElapsedTime)
 		this->Model->SetAnim(STAND);
 	}
 }
-
 
 } // namespace Small
