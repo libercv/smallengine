@@ -54,9 +54,11 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 {
 	EngineStateEnum NextState = Game;
 
-	//int dx,dy;
-	//Input::Instance().GetMouseMotion(&dx,&dy);
-	// Cameras[iCamera].RotateView(dx,dy);
+	/*
+	int dx,dy;
+	Input::Instance().GetMouseMotion(&dx,&dy);
+	Cameras[iCamera].RotateView(dx,dy);
+	*/
 
 	// PENDIENTE: la pausa se debe implementar como otro estado más.
 	if( Engine::Instance().CurrentState == Pause )
@@ -168,12 +170,8 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 	// Hacemos que la cámara mire al bicho
 	Cameras[0].Position.x = Players[0].Position.x;
 	Cameras[0].View = Players[0].Position;
-
-	/*
-	Vector3d origen(0,0,0);
-	Cameras[1].BillboardXYZ(origen);
-	Cameras[2].View = Objects[0].Position;
-	*/
+	Lights[0].Position = Players[0].Position;
+	Lights[0].Position.y += 70;
 
 	return NextState;
 }
@@ -193,7 +191,7 @@ void StateGame::Render(void)
 	glEnable(GL_COLOR_MATERIAL);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
-	// glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 
 	//Drawing3D::Instance().DrawSkyBox(0,-0.0001,0,400,200,400);
 	//Drawing3D::Instance().DrawAxes(64.0f, true);
@@ -239,10 +237,16 @@ void StateGame::Render(void)
 	for(vector<Light>::iterator LightItor=Lights.begin(); LightItor!=Lights.end(); LightItor++)
 		(*LightItor).Render();
 
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+
+	//Cameras[1].Apply();
+	Drawing3D::Instance().DrawAxes(32, true);
+
 	Drawing3D::Instance().OrthoMode(0,0, 800,600);
 	glColor3f(0.5f,0.5f,1.0f);
 	glRasterPos2f(0.0f, 0.0f);
-	Drawing3D::Instance().BigFont->Print("%f", Players[0].GetRotationY());
+	Drawing3D::Instance().BigFont->Print("Players[0].GetRotationY() = %f", Players[0].GetRotationY());
 	Drawing3D::Instance().PerspectiveMode(45.0f, Window::Instance().GetWidth(), Window::Instance().GetHeight(), 1.0f, 2000.0f);
 	
 	/*
