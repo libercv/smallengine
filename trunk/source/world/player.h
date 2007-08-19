@@ -7,11 +7,18 @@
 namespace Small
 {
 
+typedef enum
+{
+	Standing=0, Running, Jumping
+} PlayerStateEnum;
+
 class Player : public Small::Object
 {
 private:
+	PlayerStateEnum CurrentState;
 
 public:
+	Player();
 	void Update(float ElapsedTime);
 };
 

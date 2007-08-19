@@ -26,10 +26,6 @@ namespace Small
 
 class Object : public Entity
 {
-private:
-	// PENDIENTE: eliminar
-	float kk;
-
 public:
 	CMD2Model *Model;
 	int HotSpot;

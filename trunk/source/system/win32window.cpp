@@ -237,8 +237,8 @@ LRESULT CALLBACK Window::MsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 			break;
 
 		case WM_QUIT:
-			// PENDIENTE: desde "window" no se debería de ver "game"
-			// Game::Instance().State = StateDone;
+			// PENDIENTE: desde "window" no se debería de ver "Engine"
+			// Engine::Instance().State = StateDone;
 
 		case WM_SIZE:
 			OnResize(LOWORD(lParam), HIWORD(lParam));			

@@ -118,28 +118,6 @@ Vector3d Entity::TryToMove(float forwardSpeed, float strafeSpeed)
 	return finalPosition;
 }
 
-
-/*
-// ELIMINADO: se puede usar Entity::Position.Set(x,y,z);
-void Entity::SetPosition(Vector3d NewPosition)
-{
-	View += NewPosition - Position;
-	Position = NewPosition;
-}
-
-void Entity::SetPosition(float NewX, float NewY, float NewZ)
-{
-	View.x += NewX - Position.x;
-	Position.x = NewX;
-
-	View.y += NewY - Position.y;
-	Position.y = NewY;
-
-	View.z += NewZ - Position.z;
-	Position.z = NewZ;
-}
-*/
-
 void Entity::BillboardXZ(Vector3d Target)
 {
 	Vector3d objToCamProj,objToCam,upAux;

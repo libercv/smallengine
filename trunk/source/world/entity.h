@@ -41,12 +41,6 @@ public:
 
 	void Move(float forwardSpeed, float strafeSpeed);
 	Vector3d TryToMove(float forwardSpeed, float strafeSpeed);
-
-	/*
-	// ELIMINADO: se puede usar Entity::Position.Set(x,y,z);
-	void SetPosition(float NewX, float NewY, float NewZ);
-	void SetPosition(Vector3d NewPosition);
-	*/
 };
 
 } // namespace Small

@@ -56,7 +56,7 @@ namespace Small
 namespace BSP
 {
 
-#define MAX_PATH 300
+
 // This is our maximum height that the user can climb over
 const float kMaxStepHeight = 45.0f;
 
