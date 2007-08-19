@@ -8,6 +8,7 @@ namespace Small
 Entity::Entity(void)
 {
 	Path = NULL;
+	RotationY = 0;
 }
 
 void Entity::Update(void)
@@ -16,9 +17,26 @@ void Entity::Update(void)
 		FollowPath();
 }
 
+void Entity::SetRotationY(float NewRotationY)
+{
+	while( NewRotationY > 360 )
+		NewRotationY -= 360;
+
+	while( NewRotationY < 0 )
+		NewRotationY += 360;
+
+	RotationY = NewRotationY;
+}
+
+float Entity::GetRotationY(void)
+{
+	return RotationY;
+}
+
 void Entity::SetPath(WayPath *NewPath)
 {
 	// Si el Path es null no lo aceptamos
+	// PENDIENTE: si no aceptamos un null ¿cómo desasignamos un path para dejar inmovil una entidad?
 	if( !NewPath )
 		return;
 
@@ -48,6 +66,7 @@ void Entity::FollowPath(void)
 	// Para Paths con componentes Y!=0 todo esto está más o menos MAL
 	distance = sqrt( ((*NextPoint).x - Position.x) * ((*NextPoint).x - Position.x) +
 					 ((*NextPoint).z - Position.z) * ((*NextPoint).z - Position.z) );
+
 	if( distance < 1.0f ) // PENDIENTE: sustituir 1.0f por un EPSILON configurable según la escala del mapa
 	{
 		NextPoint++;
@@ -65,7 +84,7 @@ void Entity::FollowPath(void)
 		View.y = (*NextPoint).y;
 		View.z = (*NextPoint).z;
 
-		// PENDIENTE: usar vector velocidad de la entidad en vez de 1.0f
+		// PENDIENTE: usar velocidad de la entidad en vez de 1.0f
 		Move(1.0f,0.0f);
 	}
 }
@@ -73,10 +92,13 @@ void Entity::FollowPath(void)
 void Entity::Move(float forwardSpeed, float strafeSpeed)
 {
 	Vector3d fVector,sVector;
-	float upVector[3] = {0,1,0}; // ERROR: el upVector no siempre es 0,1,0
+	float upVector[3] = {0,1,0}; // PENDIENTE: el upVector no siempre es 0,1,0
 
-	View.Subtract(Position, fVector);
-	fVector.Normalize();
+	// View.Subtract(Position, fVector);
+
+	fVector.x = cos(RotationY * 3.14f/180.0f);
+	fVector.y = 0;
+	fVector.z = sin(RotationY * 3.14f/180.0f);
 
 	sVector = fVector.CrossProduct(upVector);
 	sVector.Normalize();
@@ -101,7 +123,7 @@ void Entity::Move(float forwardSpeed, float strafeSpeed)
 Vector3d Entity::TryToMove(float forwardSpeed, float strafeSpeed)
 {
 	Vector3d fVector,sVector;
-	float upVector[3] = {0,1,0}; // ERROR: el upVector no siempre es 0,1,0
+	float upVector[3] = {0,1,0}; // PENDIENTE: el upVector no siempre es 0,1,0
 	Vector3d finalPosition;
 
 	View.Subtract(Position, fVector);

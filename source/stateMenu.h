@@ -55,11 +55,6 @@ public:
 
 	EngineStateEnum Update(float ElapsedTime);
 	void Render(void);
-
-
-	// PENDIENTE: estas funciones irán en Drawing3D
-	void OrthoMode(int left, int top, int right, int bottom);
-	void PerspectiveMode(void);
 };
 } // namespace Small
 

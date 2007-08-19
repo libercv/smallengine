@@ -48,6 +48,10 @@ namespace Small
 		void DrawPoint(void);
 		void DrawBox(float x1, float y1, float z1, float x2, float y2, float z2);
 		void DrawUnalignedBox(Vector4d Points[8]);
+
+		void OrthoMode(int left, int top, int right, int bottom);
+		void PerspectiveMode(float AngleOfVision, int WindowWidth, int WindowHeight, float NearPlane, float FarPlane);
+
 	}; // class Drawing3D
 } // namespace Small
 
