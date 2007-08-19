@@ -54,11 +54,9 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 {
 	EngineStateEnum NextState = Game;
 
-	int dx,dy;
-
-	Input::Instance().GetMouseMotion(&dx,&dy);
-
-	Cameras[iCamera].RotateView(dx,dy);
+	//int dx,dy;
+	//Input::Instance().GetMouseMotion(&dx,&dy);
+	// Cameras[iCamera].RotateView(dx,dy);
 
 	// PENDIENTE: la pausa se debe implementar como otro estado más.
 	if( Engine::Instance().CurrentState == Pause )
@@ -168,6 +166,7 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 	}
 
 	// Hacemos que la cámara mire al bicho
+	Cameras[0].Position.x = Players[0].Position.x;
 	Cameras[0].View = Players[0].Position;
 
 	/*
