@@ -597,8 +597,10 @@ bool Image::LoadTGA(char * filename)
 		ret = false;
 	}
 
+	/*
 	if( ret )
 		FlipVertically();
+	*/
 	
 	return ret;
 }

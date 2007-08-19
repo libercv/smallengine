@@ -60,6 +60,9 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 	Cameras[iCamera].RotateView(dx,dy);
 	*/
 
+	mouse = CTextureManager::GetInstance()->LoadTexture("resources/textures/mouse.tga");
+	mouseMask = CTextureManager::GetInstance()->LoadTexture("resources/textures/mouseMask.tga");
+
 	// PENDIENTE: la pausa se debe implementar como otro estado más.
 	if( Engine::Instance().CurrentState == Pause )
 	{
@@ -244,9 +247,51 @@ void StateGame::Render(void)
 	Drawing3D::Instance().DrawAxes(32, true);
 
 	Drawing3D::Instance().OrthoMode(0,0, 800,600);
-	glColor3f(0.5f,0.5f,1.0f);
-	glRasterPos2f(0.0f, 0.0f);
-	Drawing3D::Instance().BigFont->Print("Players[0].GetRotationY() = %f", Players[0].GetRotationY());
+
+	int x,y;
+	Input::Instance().GetMousePosition(&x, &y);
+
+	float mouseX1,mouseY1, mouseX2,mouseY2;
+
+	mouseX1 = (float)x;
+	mouseY1 = (float)y;
+	mouseX2 = (float)x+32;
+	mouseY2 = (float)y+32;
+
+	glEnable(GL_BLEND);
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	glBindTexture(GL_TEXTURE_2D, mouseMask);
+	glBlendFunc(GL_ONE,GL_ONE);
+
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 1.0f);	glVertex2f(mouseX1, mouseY1);
+		glTexCoord2f(0.0f, 0.0f);	glVertex2f(mouseX1, mouseY2);
+		glTexCoord2f(1.0f, 0.0f);	glVertex2f(mouseX2, mouseY2);
+		glTexCoord2f(1.0f, 1.0f);	glVertex2f(mouseX2, mouseY1);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, mouse);
+	glBlendFunc(GL_DST_COLOR,GL_ZERO);
+
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 1.0f);	glVertex2f(mouseX1, mouseY1);
+		glTexCoord2f(0.0f, 0.0f);	glVertex2f(mouseX1, mouseY2);
+		glTexCoord2f(1.0f, 0.0f);	glVertex2f(mouseX2, mouseY2);
+		glTexCoord2f(1.0f, 1.0f);	glVertex2f(mouseX2, mouseY1);
+	glEnd();
+
+
+	glDisable(GL_BLEND);
+
+	glColor3f(0.5f, 1.0f, 1.0f);
+
+	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-60);
+	Drawing3D::Instance().BigFont->Print("RotationY = %f", Players[0].GetRotationY());
+
+	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-30);
+	Drawing3D::Instance().BigFont->Print("X=%f  Y=%f", mouseX1,mouseY1);
+
 	Drawing3D::Instance().PerspectiveMode(45.0f, Window::Instance().GetWidth(), Window::Instance().GetHeight(), 1.0f, 2000.0f);
 	
 	/*

@@ -69,8 +69,6 @@ public:
 
 	void GetMousePosition(int *outX, int *outY)
 	{
-		// PENDIENTE: ahora mismo (x,y) no se actualiza. Se tienen que ir actualizando a partir de
-		// (dx,dy) en Update (restringir las coordenadas de raton a las dimensiones de la ventana)
 		*outX = x;
 		*outY = y;
 	};
