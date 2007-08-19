@@ -34,7 +34,7 @@ void StateMenu::Render(void)
 	// PENDIENTE: no no no no no... los estados no se ven entre si y mucho menos se llaman.
 	StateGame::Instance().Render();
 
-	float textW=157, textH=76;
+	float textW=256, textH=128;
 	float x1=(WinW/2)-(textW/2), y1=390-(textH/2);
 	float x2=(WinW/2)+(textW/2), y2=390+(textH/2);
 

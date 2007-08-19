@@ -266,13 +266,5 @@ void Window::OnResize(int NewWidth, int NewHeight)
 
 	glViewport(0,0,Width,Height);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
-	gluPerspective(90.0f,(GLfloat)Width/(GLfloat)Height,0.1f,100.0f);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 }
-
 }
