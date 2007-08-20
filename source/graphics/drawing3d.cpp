@@ -85,16 +85,16 @@ namespace Small
 		if( DrawLetters )
 		{
 			glColor3f(1.0f,0.0f,0.0f);
-			glRasterPos3f(2.2f, 0.0f, 0.0f);
-			//System::Instance().oFont->Print("X");
+			glRasterPos3f(Length, 0.0f, 0.0f);
+			Drawing3D::Instance().BigFont->Print("X");
 
 			glColor3f(0.0f,1.0f,0.0f);
-			glRasterPos3f(0.0f, 2.2f, 0.0f);
-			//System::Instance().oFont->Print("Y");
+			glRasterPos3f(0.0f, Length, 0.0f);
+			Drawing3D::Instance().BigFont->Print("Y");
 
 			glColor3f(0.0f,0.0f,1.0f);
-			glRasterPos3f(0.0f, 0.0f, 2.2f);
-			//System::Instance().oFont->Print("Z");
+			glRasterPos3f(0.0f, 0.0f, Length);
+			Drawing3D::Instance().BigFont->Print("Z");
 		}
 
 		glLineWidth(1.0f);

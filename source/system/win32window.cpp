@@ -265,6 +265,5 @@ void Window::OnResize(int NewWidth, int NewHeight)
 	Height = NewHeight;
 
 	glViewport(0,0,Width,Height);
-
 }
 }
