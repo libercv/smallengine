@@ -14,9 +14,14 @@ void Player::Update(float ElapsedTime)
 	// PENDIENTE: usar la velocidad de la entidad.
 	// PENDIENTE: hay DOS velocidades diferentes: una la que se le aplica al bicho cuando anda y otra la que lleva el
 	// bicho cuando ha saltado, sin necesidad de tocar los controles. Yo me entiendo. Incluso se puede hacer un sistema
-	// un pelín más completo con velocidad y aceleración.
+	// un pelï¿½n mï¿½s completo con velocidad y aceleraciï¿½n.
+#ifdef WIN32
 	float BichoSpeed = 130.0f; // unidades/segundo 
 	float RotationSpeed = 270.0f; // grados/segundo 
+#else
+	float BichoSpeed = 1.30f; // unidades/segundo 
+	float RotationSpeed = 0.5f; // grados/segundo 
+#endif
 
 	float RY = GetRotationY();
 
