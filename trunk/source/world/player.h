@@ -3,6 +3,7 @@
 
 #include "object.h"
 #include "../system/input.h"
+#include "../graphics/q3bsp.h"
 
 namespace Small
 {
@@ -19,7 +20,7 @@ private:
 
 public:
 	Player();
-	void Update(float ElapsedTime);
+	void Update(float ElapsedTime, BSP::Q3BSP *Bsp);
 };
 
 } // namespace Small

@@ -40,7 +40,7 @@ StateGame::StateGame(void)
 	Camera *NewCamera = new Camera();
 	NewCamera->Position.x = 300;
 	NewCamera->Position.y = 100;
-	NewCamera->Position.z = 300;
+	NewCamera->Position.z = 400;
 	//NewCamera->SetPath( &Path );
 	Cameras.push_back(*NewCamera);
 
@@ -73,7 +73,7 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 	{
 		// Propagamos el Update a todos los jugadores
 		for(vector<Player>::iterator PlayerItor=Players.begin(); PlayerItor!=Players.end(); PlayerItor++)
-			(*PlayerItor).Update(ElapsedTime);
+			(*PlayerItor).Update(ElapsedTime, &Bsp);
 
 		// Propagamos el Update a todos los objetos
 		for(vector<Object>::iterator ObjectItor=Objects.begin(); ObjectItor!=Objects.end(); ObjectItor++)
@@ -103,6 +103,8 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 		{
 			Lights[0].On = !Lights[0].On;
 		}
+
+
 
 
 		// *** PRUEBAS: movemos al bicho ***************************************
@@ -173,8 +175,8 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 	// Hacemos que la cámara mire al bicho
 	Cameras[0].Position.x = Players[0].Position.x;
 	Cameras[0].View = Players[0].Position;
-	Lights[0].Position = Players[0].Position;
-	Lights[0].Position.y += 70;
+
+	Lights[0].Position.Set(300, 64, 64);
 
 	return NextState;
 }
@@ -281,16 +283,25 @@ void StateGame::Render(void)
 		glTexCoord2f(1.0f, 1.0f);	glVertex2f(mouseX2, mouseY1);
 	glEnd();
 
-
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisable(GL_BLEND);
 
 	glColor3f(0.5f, 1.0f, 1.0f);
 
-	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-60);
-	Drawing3D::Instance().BigFont->Print("RotationY = %f", Players[0].GetRotationY());
+	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-100);
+	Drawing3D::Instance().BigFont->Print("X=%f  Y=%f Z=%f", Players[0].Position.x, Players[0].Position.y, Players[0].Position.z);
 
-	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-30);
+	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-75);
+	Drawing3D::Instance().BigFont->Print("Time = %f", Timer::Instance().GetElapsedTime());
+
+	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-50);
+	Drawing3D::Instance().BigFont->Print("Height = %d", Window::Instance().GetHeight());
+
+	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-25);
 	Drawing3D::Instance().BigFont->Print("X=%f  Y=%f", mouseX1,mouseY1);
+
+	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight());
+	Drawing3D::Instance().BigFont->Print("RotationY = %f", Players[0].GetRotationY());
 
 	Drawing3D::Instance().PerspectiveMode(45.0f, Window::Instance().GetWidth(), Window::Instance().GetHeight(), 1.0f, 2000.0f);
 	

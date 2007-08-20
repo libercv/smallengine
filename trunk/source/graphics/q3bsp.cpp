@@ -57,8 +57,9 @@ namespace BSP
 {
 
 #define MAX_PATH 300
+
 // This is our maximum height that the user can climb over
-const float kMaxStepHeight = 45.0f;
+const float kMaxStepHeight = 5.0f;
 
 // We use the camera in our TryToStep() function so we extern the global camera
 //extern CCamera g_Camera;
@@ -579,6 +580,11 @@ Vector3d Q3BSP::TryToStep(Vector3d vStart, Vector3d vEnd)
 	// We check 10 times, each time increasing the step size to check for
 	// a collision.  If we don't collide, then we climb over the step.
 
+	Vector3d vStepStart = vStart;
+	// PENDIENTE: creo que esto estaba mal. Comprobar
+	//Vector3d vStepEnd = Vector3d(vEnd.x, vStart.y + height, vEnd.z);
+	Vector3d vStepEnd = vEnd;
+
 	// Go through and check different heights to step up
 	for(float height = 1.0f; height <= kMaxStepHeight; height++)
 	{
@@ -586,11 +592,9 @@ Vector3d Q3BSP::TryToStep(Vector3d vStart, Vector3d vEnd)
 		m_bCollided = false;
 		m_bTryStep = false;
 
-		// Here we add the current height to our y position of a new start and end.
-		// If these 2 new start and end positions are okay, we can step up.
-		Vector3d vStepStart = Vector3d(vStart.x, vStart.y + height, vStart.z);
-		Vector3d vStepEnd   = Vector3d(vEnd.x, vStart.y + height, vEnd.z);
-				
+		vStepStart.y = vStart.y+height;
+		vStepEnd.y = vEnd.y+height;
+
 		// Test to see if the new position we are trying to step collides or not
 		Vector3d vStepPosition = Trace(vStepStart, vStepEnd);
 
@@ -604,7 +608,6 @@ Vector3d Q3BSP::TryToStep(Vector3d vStart, Vector3d vEnd)
 			//			
 			//			Vector3d vNewView = g_Camera.View();					
 			//g_Camera.SetView(Vector3d(vNewView.x, vNewView.y + height, vNewView.z));
-
 
 			// Return the current position since we stepped up somewhere
 			vStepPosition.SetY(vStepPosition.GetY() + height);

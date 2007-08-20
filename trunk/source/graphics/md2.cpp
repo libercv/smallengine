@@ -161,6 +161,7 @@ bool CMD2Model::LoadModel( const char *filename )
 			ptrverts[i][1] = (frame->verts[i].v[1] * frame->scale[1]) + frame->translate[1];
 			ptrverts[i][2] = (frame->verts[i].v[2] * frame->scale[2]) + frame->translate[2];
 
+
 			if( ptrverts[i][0] < m_bboxes[j][0] )
 				m_bboxes[j][0] = ptrverts[i][0];
 
@@ -178,6 +179,10 @@ bool CMD2Model::LoadModel( const char *filename )
 
 			if( ptrverts[i][2] > m_bboxes[j][5] )
 				m_bboxes[j][5] = ptrverts[i][2];
+
+			float tmp = ptrverts[i][1];
+			ptrverts[i][1] = ptrverts[i][2];
+			ptrverts[i][2] = -tmp;
 
 			ptrnormals[i] = frame->verts[i].lightnormalindex;
 		}
@@ -215,8 +220,9 @@ void CMD2Model::DrawModel( float time )
 
 	glPushMatrix();
 		// rotate the model
-		glRotatef( -90.0, 1.0, 0.0, 0.0 );
-		glRotatef( -90.0, 0.0, 0.0, 1.0 );
+		//glRotatef( -90.0, 1.0, 0.0, 0.0 );
+		//glRotatef( -90.0, 0.0, 1.0, 0.0 );
+		//glRotatef( -90.0, 0.0, 0.0, 1.0 );
 
 		// render it on the screen
 		RenderFrame();

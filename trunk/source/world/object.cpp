@@ -33,7 +33,8 @@ void Object::Render(void)
 			glTranslatef(Position.x, Position.y - bbox[1], Position.z);
 
 			// PENDIENTE: ¿ y este ajuste que hay que hacerle a la rotación ... ?
-			glRotatef(-GetRotationY() + 90.0f, 0.0f, 1.0f, 0.0f);
+			// glRotatef(-GetRotationY() + 90.0f, 0.0f, 1.0f, 0.0f);
+			glRotatef(GetRotationY(), 0.0f, 1.0f, 0.0f);
 
 			// BillboardXZ(View);
 

@@ -98,8 +98,8 @@ void Entity::Move(float forwardSpeed, float strafeSpeed)
 
 	fVector.x = cos(RotationY * 3.14f/180.0f);
 	fVector.y = 0;
-	fVector.z = sin(RotationY * 3.14f/180.0f);
-
+	fVector.z = -sin(RotationY * 3.14f/180.0f);
+	
 	sVector = fVector.CrossProduct(upVector);
 	sVector.Normalize();
 
@@ -126,8 +126,12 @@ Vector3d Entity::TryToMove(float forwardSpeed, float strafeSpeed)
 	float upVector[3] = {0,1,0}; // PENDIENTE: el upVector no siempre es 0,1,0
 	Vector3d finalPosition;
 
-	View.Subtract(Position, fVector);
-	fVector.Normalize();
+	//View.Subtract(Position, fVector);
+	//fVector.Normalize();
+
+	fVector.x = cos(RotationY * 3.14f/180.0f);
+	fVector.y = 0;
+	fVector.z = -sin(RotationY * 3.14f/180.0f);
 
 	sVector = fVector.CrossProduct(upVector);
 	sVector.Normalize();
