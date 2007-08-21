@@ -1,5 +1,5 @@
 
-#include "stateGame.h"
+#include "stategame.h"
 
 namespace Small
 {

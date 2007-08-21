@@ -3,8 +3,8 @@
 
 #include "system/window.h"
 
-#include "stateGame.h"
-#include "stateMenu.h"
+#include "stategame.h"
+#include "statemenu.h"
 
 namespace Small
 {

@@ -3,7 +3,7 @@
 	Ahora mismo se usa para hacer pruebas.
 */
 
-#include "stateGame.h"
+#include "stategame.h"
 //#include "../engine/engine.h"
 //#include "../engine/ui/menu.h"
 
