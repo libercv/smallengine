@@ -1,23 +1,19 @@
-//***********************************************************************//
-//	- "Talk to me like I'm a 3 year old!" Programming Lessons	 //
-//                                                                       //
-//	$Author:	DigiBen		DigiBen@GameTutorials.com	 //
-//	$Program:	BSP Loader 6					 //
-//	$Date:		9/30/04 					 //
-//***********************************************************************//
 
 #ifdef _WIN32
 #include <windows.h>
 #endif
-#include "q3bsp.h"
-#include "frustum.h"
-#include "../math/maths.h"
-#include "image.h"
+
+// #include <iostream>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glext.h>
-#include <iostream>
+
 #include "texture.h"
+#include "image.h"
+#include "q3bsp.h"
+#include "frustum.h"
+#include "../math/maths.h"
+#include "../log.h"
 
 #ifdef _WIN32
 typedef void (APIENTRY * PFNGLMULTITEXCOORD2FARBPROC) (GLenum target, GLfloat s, GLfloat t);
@@ -227,7 +223,7 @@ void Q3BSP::FindTextureExtension(char *strFileName)
 	char strTGAPath[MAX_PATH]    = {0}; 
 	FILE *fp = NULL;
 
-	// PENDIENTE: Hay que ver qué pasa con el path. En principi lo lleva en nombre del archivo incorporado
+	// PENDIENTE: Hay que ver qué pasa con el path. En principio lo lleva en nombre del archivo incorporado
 	// 08.08.2007 PENDIENTE: debemos quedarnos solo con el nombre de la textura, despreciar el path y añadirle el path adecuado
 	// PENDIENTE: Crear una clase estática de donde sacar los paths (Aux::ResourcesFolder o algo así)
 
@@ -274,11 +270,9 @@ bool Q3BSP::LoadBSP(const char *strFileName)
 	FILE *fp = NULL;
 	int i = 0;
 	
-	// Check if the .bsp file could be opened
 	if((fp = fopen(strFileName, "rb")) == NULL)
 	{
-		// Display an error message and quit if the file can't be found.
-		std::cout << "Could not find BSP file!" << std::endl;
+		Log::Instance().Write("Could not find BSP file!");
 		return false;
 	}
 
@@ -350,11 +344,30 @@ bool Q3BSP::LoadBSP(const char *strFileName)
 	//Image *imagen;
 	for(i = 0; i < m_numOfTextures; i++)
 	{
+		int f,g;
+		char filename[255];
+
+		// PENDIENTE: esto es temporal. Quita el path del nombre de la textura.
+		for(f=0, g=0; f<strlen(m_pTextures[i].strName); f++)
+		{
+			if( m_pTextures[i].strName[f] == '/' )
+				g = 0;
+			else
+				m_pTextures[i].strName[g++] = m_pTextures[i].strName[f];
+		}
+		m_pTextures[i].strName[g++] = '\0';
+
+		sprintf(filename,"%s%s", "resources/textures/", m_pTextures[i].strName);
+
 		// Find the extension if any and append it to the file name
-		FindTextureExtension(m_pTextures[i].strName);
+		//FindTextureExtension(m_pTextures[i].strName);
+		FindTextureExtension(filename);
+
+		Log::Instance().Write("Textura: %s", filename);
 
 		// Create a texture from the image
-		m_textures[i] = CTextureManager::GetInstance()->LoadTexture(m_pTextures[i].strName);
+		//m_textures[i] = CTextureManager::GetInstance()->LoadTexture(m_pTextures[i].strName);
+		m_textures[i] = CTextureManager::GetInstance()->LoadTexture(filename);
 	}
 
 	// Seek to the position in the file that stores the lightmap information
@@ -979,11 +992,15 @@ void Q3BSP::CheckBrush(tBSPBrush *pBrush, Vector3d vStart, Vector3d vEnd)
 				// sure that we don't always check to step every time we collide.  If
 				// the normal of the plane has a Y value of 1, that means it's just the
 				// flat ground and we don't need to check if we can step over it, it's flat!
+
+				/*
+				// PENDIENTE: deshabilito la escalada de momento
 				if((vStart.x != vEnd.x || vStart.z != vEnd.z) && pPlane->vNormal.y != 1)
 				{
 					// We can try and step over the wall we collided with
 					m_bTryStep = true;
 				}
+				*/
 
 				// Here we make sure that we don't slide slowly down walls when we
 				// jump and collide into them.  We only want to say that we are on
@@ -1039,7 +1056,7 @@ void Q3BSP::CheckBrush(tBSPBrush *pBrush, Vector3d vStart, Vector3d vEnd)
 
 void Q3BSP::RenderFace(int faceIndex)
 {
-// Here we grab the face from the index passed in
+	// Here we grab the face from the index passed in
 	tBSPFace *pFace = &m_pFaces[faceIndex];
 
 	// Assign our array of face vertices for our vertex arrays and enable vertex arrays
@@ -1090,10 +1107,6 @@ void Q3BSP::RenderFace(int faceIndex)
 
 	// Render our current face to the screen with vertex arrays
 	glDrawElements(GL_TRIANGLES, pFace->numOfIndices, GL_UNSIGNED_INT, &(m_pIndices[pFace->startIndex]) );
-
-	
-
-	
 }
 
 
@@ -1144,7 +1157,8 @@ void Q3BSP::RenderLevel(const Vector3d &vPos)
 			int faceIndex = m_pLeafFaces[pLeaf->leafface + faceCount];
 
 			// Before drawing this face, make sure it's a normal polygon
-			if(m_pFaces[faceIndex].type != FACE_POLYGON) continue;
+			if(m_pFaces[faceIndex].type != FACE_POLYGON) 
+				continue;
 
 			// Since many faces are duplicated in other leafs, we need to
 			// make sure this face already hasn't been drawn.
