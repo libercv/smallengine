@@ -14,7 +14,7 @@ StateGame::StateGame(void)
 	iCamera = 0;
 
 	Bsp.frustum = &Frustum;
-	Bsp.LoadBSP("resources/maps/Tutorial.bsp"); // PENDIENTE: controlar que se carga bien el BSP. 
+	Bsp.LoadBSP("resources/maps/tutorial.bsp"); // PENDIENTE: controlar que se carga bien el BSP. 
 
 	/*
 	Object *NewObject = new Object();

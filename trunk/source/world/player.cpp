@@ -1,4 +1,4 @@
-
+	
 #include "player.h"
 
 namespace Small
@@ -7,6 +7,9 @@ namespace Small
 Player::Player() : Object()
 {
 	CurrentState = Standing;
+	vSpeedJump=15000.0f;
+	vSpeedGravity=-100.0f;
+	vSpeed=0;
 }
 
 // PENDIENTE: ¿mola o no mola pasarle por parámetro el puntero al BSP? Conceptualmente no es correcto
@@ -17,25 +20,15 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 	// PENDIENTE: hay DOS velocidades diferentes: una la que se le aplica al bicho cuando anda y otra la que lleva el
 	// bicho cuando ha saltado, sin necesidad de tocar los controles. Yo me entiendo. Incluso se puede hacer un sistema
 	// un pelin mas completo con velocidad y aceleracion.
-#ifdef _WIN32
 	float BichoSpeed = 130.0f; // unidades/segundo 
 	float RotationSpeed = 270.0f; // grados/segundo 
-#else
-	float BichoSpeed = 1.30f; // unidades/segundo 
-	float RotationSpeed = 0.5f; // grados/segundo 
-#endif
 
 	float RY = GetRotationY();
 
 	// Es importante que el Object::Update() lo hagamos antes que nada para obtener un Model->GetAnimationState actualizado.
 	Object::Update();
 
-	if( CurrentState == Jumping )
-	{
-		if( Model->GetAnimationState() == Loop )
-			CurrentState = Standing;
-	}
-
+	
 	if( CurrentState != Jumping )
 	{
 		CurrentState = Standing;
@@ -80,9 +73,45 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 			if( CurrentState != Jumping )
 			{
 				CurrentState = Jumping;
+				vSpeed=vSpeedJump*ElapsedTime;
 			}
 		}
 	}
+
+	Vector3d dest = this->TryToMove(0, 0);
+	
+	// PENDIENTE: hay que calcular el AABB en cada ciclo teniendo en cuenta la rotacion del personaje.
+	Vector3d vMin(-25, 1, -25);
+	Vector3d vMax(25, 2, 25);
+		
+	
+	Vector3d finalDest = Bsp->TraceBox(this->Position, dest, vMin, vMax);
+	this->Position = finalDest;
+
+
+	if( CurrentState == Jumping )
+	{
+		if ( finalDest.GetY()!=dest.GetY() && vSpeed<0)
+		{
+			vSpeed=vSpeedGravity*ElapsedTime;
+			//if( Model->GetAnimationState() == Loop )
+				CurrentState = Standing;
+		}
+		else
+			vSpeed+=vSpeedGravity*ElapsedTime;
+		
+		// this->Move(BichoSpeed*ElapsedTime, 0);
+		
+		
+	}
+	else
+	{	
+		if ( finalDest.GetY()==dest.GetY())
+			vSpeed+=vSpeedGravity*ElapsedTime;
+		else
+			vSpeed=vSpeedGravity*ElapsedTime;
+	}
+	
 
 	// PENDIENTE: Orientar al personaje
 

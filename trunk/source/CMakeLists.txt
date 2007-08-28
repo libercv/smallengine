@@ -16,7 +16,7 @@ SET(XF86VM_SEARCH_PATH
 
 FIND_LIBRARY(XF86VM_LIB Xxf86vm ${XF86VM_SEARCH_PATH})
 
-ADD_EXECUTABLE (Small engine.cpp stategame.cpp statemenu.cpp linuxmain.cpp waymap.cpp 
+ADD_EXECUTABLE (Small engine.cpp stategame.cpp statemenu.cpp linuxmain.cpp waymap.cpp log.cpp
 	${WORLD_SRCS}  ${SYSTEM_SRCS} ${GRAPHICS_SRCS} ${SOUND_SRCS}
 	${MATH_SRCS})
 
