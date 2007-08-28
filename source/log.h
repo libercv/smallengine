@@ -8,6 +8,7 @@
 #include <time.h>
 #include <iostream>
 #include <fstream>
+#include <stdarg.h>
 
 #include "singleton.h"
 

@@ -130,15 +130,16 @@ Vector3d Entity::TryToMove(float forwardSpeed, float strafeSpeed)
 	//fVector.Normalize();
 
 	fVector.x = cos(RotationY * 3.14f/180.0f);
-	fVector.y = 0;
+	fVector.y = vSpeed;
 	fVector.z = -sin(RotationY * 3.14f/180.0f);
+	fVector.Normalize();
 
 	sVector = fVector.CrossProduct(upVector);
 	sVector.Normalize();
 
-    // Adelante y atrás
-    finalPosition.x = Position.x + (fVector.x * forwardSpeed) - (sVector.x * strafeSpeed);
-    finalPosition.y = Position.y + (fVector.y * forwardSpeed) - (sVector.y * strafeSpeed);
+    	// Adelante y atrás
+    	finalPosition.x = Position.x + (fVector.x * forwardSpeed) - (sVector.x * strafeSpeed);
+    	finalPosition.y = Position.y + fVector.y; //(fVector.y * forwardSpeed) - (sVector.y * strafeSpeed);
 	finalPosition.z = Position.z + (fVector.z * forwardSpeed) - (sVector.z * strafeSpeed);
 
 	return finalPosition;

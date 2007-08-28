@@ -20,7 +20,7 @@ namespace Small
 class Entity
 {
 private:
-	float RotationY;	// Rotación sobre el eje Y (perpendicular al suelo)
+	float RotationY;	// Rotaciï¿½n sobre el eje Y (perpendicular al suelo)
 
 public:
 	std::string Id;
@@ -28,10 +28,10 @@ public:
 	// PENDIENTE: no se por que meti esta lista de hijos en entidad. 
 	// std::list<Entity *>Children;
 
-	// PENDIENTE: podemos meter una referencia a otra entidad que esté siendo arrastrada/empujada por esta.
-	// A lo mejor tambien es interesante otra propiedad que nos indique qué entidad nos está arrastrando/empujando
-	// creando así una lista doblemente enlazada donde propagar un empuje y dependiendo de las masas
-	// acumuladas y la fricción poder o no empujar. ¿v2.0?
+	// PENDIENTE: podemos meter una referencia a otra entidad que estï¿½ siendo arrastrada/empujada por esta.
+	// A lo mejor tambien es interesante otra propiedad que nos indique quï¿½ entidad nos estï¿½ arrastrando/empujando
+	// creando asï¿½ una lista doblemente enlazada donde propagar un empuje y dependiendo de las masas
+	// acumuladas y la fricciï¿½n poder o no empujar. ï¿½v2.0?
 
 	// PENDIENTE: hay mucha cosa publica aqui. Repasar.
 
@@ -39,7 +39,7 @@ public:
 	vector<WayPoint>::iterator NextPoint;
 
 	Vector3d Position;	// Posicion de la entidad
-	Vector3d View;		// Hacia donde esta orientada la entidad (PENDIENTE: si ahora tenemos las rotaciones sobre los ejes esto sobra ¿ no ?)
+	Vector3d View;		// Hacia donde esta orientada la entidad (PENDIENTE: si ahora tenemos las rotaciones sobre los ejes esto sobra ï¿½ no ?)
 
 	void SetRotationY(float NewRotationY);
 	float GetRotationY(void);
@@ -52,10 +52,14 @@ public:
 	void SetPath(WayPath *NewPath);
 	void FollowPath(void);
 
-	// PENDIENTE: renombrar estos métodos a algo más inteligible como Entity.Face(...) y Entity.FaceXZ(...)
-	// PENDIENTE: sobrecargar estos métodos para aceptar tanto un Vector3D como una entidad (y usar la posición de la entidad como vector destino)
+	// PENDIENTE: renombrar estos mï¿½todos a algo mï¿½s inteligible como Entity.Face(...) y Entity.FaceXZ(...)
+	// PENDIENTE: sobrecargar estos mï¿½todos para aceptar tanto un Vector3D como una entidad (y usar la posiciï¿½n de la entidad como vector destino)
 	void BillboardXZ(Vector3d Target);	
 	void BillboardXYZ(Vector3d Target);
+
+	float vSpeed;
+	float vSpeedJump;
+	float vSpeedGravity;
 
 	void Move(float forwardSpeed, float strafeSpeed);
 	Vector3d TryToMove(float forwardSpeed, float strafeSpeed);
