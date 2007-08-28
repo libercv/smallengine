@@ -2,9 +2,11 @@
 #define ENGINE_H
 
 #include "system/window.h"
+#include "sound/sound.h"
 
 #include "stategame.h"
 #include "statemenu.h"
+#include "log.h"
 
 namespace Small
 {

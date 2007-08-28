@@ -2,24 +2,24 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include	<list>
-#include	<string>
-
-
 #ifdef _WIN32
 #include <Windows.h>
 #endif
 
+#include	<list>
+#include	<string>
+
 #include <GL/gl.h>
 #include <GL/glu.h>
+
+#include "../log.h"
+#include "image.h"
 
 //#include	"bmp.h"
 //#include	"tga.h"
 //#include	"pcx.h"
 
 #define GL_CLAMP_TO_EDGE	0x812F						// This is for our skybox textures
-
-#include "image.h"
 
 // ==============================================
 // CTexture - texture class object.

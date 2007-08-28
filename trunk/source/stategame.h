@@ -7,16 +7,16 @@
 #include <io.h>
 #endif
 
-#include <iostream>
+// #include <iostream>
 #include <math.h>
 #include <vector>
 
-#include <GL/gl.h>
+#include <GL/gl.h>	// PENDIENTE: no debe haber código OpenGL fuera de Drawing3D salvo que esté muy muy muy justificado
 #include <GL/glu.h>
 
 #include "istate.h"
 #include "singleton.h"
-#include "engine.h" // Quitar. stateGame no debe ver a Engine, solo debe devolverle un estado de salida desde stateGame::update.
+#include "engine.h" // PENDIENTE: Quitar. stateGame no debe ver a Engine, solo debe devolverle un estado de salida desde stateGame::update.
 #include "system/input.h"
 #include "graphics/drawing3d.h"
 #include "graphics/md2.h"
@@ -26,8 +26,6 @@
 #include "world/light.h"
 #include "math/maths.h"
 #include "waymap.h"
-
-// BSP
 #include "graphics/q3bsp.h"
 #include "graphics/frustum.h"
 
@@ -40,7 +38,7 @@ namespace Small
 		friend class Singleton<StateGame>;
 
 	private:
-		int mouse, mouseMask;
+		int mouse, mouseMask;	// PENDIENTE: esto está aquí de forma temporal
 
 	protected:
 		StateGame(void);
@@ -51,6 +49,8 @@ namespace Small
 		vector<Camera>Cameras;
 		vector<Light>Lights;
 		vector<Player>Players;
+
+		void LoadLevel(void);	// PENDIENTE: pasar un nombre de fichero o un id del nivel.
 
 		// PENDIENTE: propiedades para pruebas
 		float dt;

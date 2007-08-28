@@ -5,7 +5,7 @@
 // Enumeración de las teclas que puede usar el motor
 // Seguramente esto vaya en otro archivo de cabecera
 // Algo asi como inputenums.h
-enum Keys {KeyDown=0, KeyUp, KeyRight, KeyLeft, KeyEscape, KeySpace, KeyReturn, KeyPause, KeyEnd, KeyHome, MAX_KEYS};
+enum Keys {KeyDown=0, KeyUp, KeyRight, KeyLeft, KeyEscape, KeySpace, KeyReturn, KeyPause, KeyEnd, KeyHome, KeyPgUp, KeyPgDown, MAX_KEYS};
 enum MouseButtons {MouseButtonLeft, MouseButtonRight, MouseButtonMiddle};
 
 class IInput

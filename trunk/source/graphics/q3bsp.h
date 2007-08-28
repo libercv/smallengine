@@ -1,9 +1,10 @@
 #ifndef Q3BSP_H
 #define Q3BSP_H
 
-#include "../math/maths.h"
 #include "frustum.h"
-#include <iostream>	// Define NULL
+#include "../log.h"
+#include "../math/maths.h"
+// #include <iostream>	// Define NULL
 
 namespace Small
 {

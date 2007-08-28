@@ -363,7 +363,7 @@ bool Q3BSP::LoadBSP(const char *strFileName)
 		//FindTextureExtension(m_pTextures[i].strName);
 		FindTextureExtension(filename);
 
-		Log::Instance().Write("Textura: %s", filename);
+		//Log::Instance().Write("Textura: %s", filename);
 
 		// Create a texture from the image
 		//m_textures[i] = CTextureManager::GetInstance()->LoadTexture(m_pTextures[i].strName);

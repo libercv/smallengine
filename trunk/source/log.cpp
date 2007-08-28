@@ -27,4 +27,13 @@ void Log::Write(const char *fmt, ...)
 
 	LogFile << text << std::endl;
 }
+
+void Log::LuaWrite(const char *Text)
+{
+	char FinalText[255];
+
+	sprintf(FinalText, "LUA: %s", Text);
+
+	LogFile << FinalText << std::endl;
+}
 } // namespace Small

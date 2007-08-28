@@ -1,8 +1,6 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "singleton.h"
-
 namespace Small
 {
 typedef enum

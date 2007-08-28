@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <GL/gl.h>
+#include "../log.h"
 
 namespace Small
 {

@@ -1,6 +1,10 @@
 #include <iostream>
 
 #include "entity.h"
+#include "object.h" // PENDIENTE: desde aquí no se debe de ver object
+#include "../log.h"
+#include "../system/timer.h" // PENDIENTE: desde aquí no se debe de ver Timer
+#include "../script/script.h" // PENDIENTE: desde aquí no se debe de ver script
 
 namespace Small
 {
@@ -67,8 +71,13 @@ void Entity::FollowPath(void)
 	distance = sqrt( ((*NextPoint).x - Position.x) * ((*NextPoint).x - Position.x) +
 					 ((*NextPoint).z - Position.z) * ((*NextPoint).z - Position.z) );
 
+	// Log::Instance().Write("%f %f %f", (*NextPoint).x, (*NextPoint).y, (*NextPoint).z);
+
 	if( distance < 1.0f ) // PENDIENTE: sustituir 1.0f por un EPSILON configurable según la escala del mapa
 	{
+		// PENDIENTE: no es el sitio ni la forma adecuada para levantar un evento ¿ o si ?
+		Script::Instance().RaiseEvent("Enemy_OnWayPoint");
+
 		NextPoint++;
 
 		if( NextPoint == Path->Points.end() )
@@ -80,12 +89,20 @@ void Entity::FollowPath(void)
 	}
 	else
 	{
+		// PENDIENTE: chapucilla mientras se acaba de definir la funcionalidad Entity::Billboard 
+		Object kk;
+		kk.Position.Set( (*NextPoint).x, (*NextPoint).y, (*NextPoint).z );
+		this->BillboardXZ(&kk);
+
+		/*
 		View.x = (*NextPoint).x;
 		View.y = (*NextPoint).y;
 		View.z = (*NextPoint).z;
+		*/
 
 		// PENDIENTE: usar velocidad de la entidad en vez de 1.0f
-		Move(1.0f,0.0f);
+		float BichoSpeed = 50.0;	// unidades/segundo
+		Move(BichoSpeed * Timer::Instance().GetElapsedTime(), 0.0f);
 	}
 }
 
@@ -144,6 +161,40 @@ Vector3d Entity::TryToMove(float forwardSpeed, float strafeSpeed)
 
 	return finalPosition;
 }
+
+void Entity::BillboardXZ(Entity *Target)
+{
+	Vector3d Projection;		// Vector dirección proyectado en el plano XZ.
+	Vector3d AxisX(1,0,0);		// Eje de las X. Nos interesa averiguar el ángulo que forma Projection con este eje.
+	Vector3d Normal;			// Indica si el ángulo es negativo o positivo.
+	float AngleCosine;			// Coseno del ángulo.
+
+	// Obtenemos el vector dirección, lo proyectamos sobre XZ y lo normalizamos.
+	Target->Position.Subtract(Position, Projection);
+	Projection.y = 0;
+	Projection.Normalize();
+
+	// Calculamos el angulo que forman el vector direccion y el eje de las X.
+	AngleCosine = AxisX.DotProduct(Projection);
+
+	// Evitamos posibles problemas de precisión
+	if (AngleCosine > 1)
+		AngleCosine = 1;
+	else if (AngleCosine < -1)
+		AngleCosine = -1;
+ 
+	// Determinamos si el angulo es positivo o negativo.
+	Normal = AxisX.CrossProduct(Projection);
+	if( Normal.x==0 && Normal.y==0 && Normal.z==0 )
+		Normal.y=1;
+	
+	// Realizamos el giro de las coordenadas cilíndricas
+	if( Normal.y>0 )
+		SetRotationY(acos(AngleCosine) * 180.0f/3.14f);
+	else
+		SetRotationY(-acos(AngleCosine) * 180.0f/3.14f);
+}
+
 
 void Entity::BillboardXZ(Vector3d Target)
 {
@@ -233,6 +284,5 @@ void Entity::BillboardXYZ(Vector3d Target)
 	else
 		glRotatef(acos(angleCosine)*180.0f/3.14f,-1,0,0);	
 }
-
 
 } //namespace Small

@@ -4,9 +4,7 @@
 //	David Henry - tfc_duke@hotmail.com
 //
 
-
-#include	"texture.h"
-#include <iostream>
+#include "texture.h"
 
 // initialize the singleton
 CTextureManager	*CTextureManager::m_singleton = 0;
@@ -41,15 +39,13 @@ void CTextureManager::FreeInstance( void )
 
 
 // ----------------------------------------------
-// Initialize() - create a checker for the default
-// texture.
+// Initialize() - create a checker for the default texture.
 // ----------------------------------------------
 
 void CTextureManager::Initialize( void )
 {
 	// this is the first texture loaded. If a texture
 	// can't be loaded, we use this instead
-
 
 	// initialize only once!
 
@@ -138,8 +134,15 @@ unsigned int CTextureManager::LoadTexture(  char *filename )
 
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+		// PENDIENTE: Si hacemos esto las texturas del BSP se ven mal.
 		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		// PENDIENTE: pero si hacemos esto se ve mal el bitmap del mouse
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+
+
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 		// create a new CTexture object and push it at the end of the linked list
@@ -149,8 +152,9 @@ unsigned int CTextureManager::LoadTexture(  char *filename )
 	}
 	else
 	{
-		// can't load the texture, use default texture
-		std::cout << "No encontrada " << filename << std::endl;
+		Small::Log::Instance().Write("Textura %s no encontrada", filename);
+
+		// No podemos cargar la textura. Usamos la textura por defecto.
 		id = (*m_texlist.begin())->GetTexId();
 	}
 

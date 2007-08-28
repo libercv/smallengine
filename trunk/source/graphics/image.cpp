@@ -70,7 +70,6 @@ bool Image::Load(char * filename)
 	height=0;
 	format=0;
 	
-	//int filenameLength = strlen(filename);
 	size_t filenameLength = strlen(filename);
 
 	if(	strncmp((filename+filenameLength-3), "BMP", 3)==0 ||
@@ -89,8 +88,8 @@ bool Image::Load(char * filename)
 		strncmp((filename+filenameLength-3), "jpg", 3)==0)
 		return LoadJPG(filename);
 
-	//errorLog.OutputError("%s does not end in \".tga\", \".bmp\" or \"pcx\"", filename);
-	std::cout << "Error:" << filename << " no es una extension reconocida" << std::endl;
+	Log::Instance().Write("%s no tiene extension \".tga\", \".bmp\" o \"pcx\"", filename);
+
 	return false;
 }
 
@@ -115,8 +114,7 @@ bool Image::LoadJPG(char * filename)
 	
 	if(file == NULL)								//Does the file exist?
 	{
-		std::cout << "Error:" << filename << " no encontrado." << std::endl;
-		//errorLog.OutputError("%s does not exist.", filename);
+		Log::Instance().Write("No se encontró %s", filename);
 		return false;
 	}
 
@@ -207,6 +205,7 @@ bool Image::LoadBMP(char * filename)
 	if(file==NULL)
 	{
 		//errorLog.OutputError("Unable to open %s", filename);
+		Log::Instance().Write("No se pudo abrir el fichero %s", filename);
 		return false;
 	}
 
@@ -255,7 +254,7 @@ bool Image::Load24BitBMP(char * filename)
 	file=fopen(filename, "rb");
 	if(file==NULL)
 	{
-		//errorLog.OutputError("Unable to open %s", filename);
+		Log::Instance().Write("No se pudo abrir el fichero %s", filename);
 		return false;
 	}
 
@@ -294,7 +293,7 @@ bool Image::Load24BitBMP(char * filename)
 	if(!data)
 	{
 		fclose(file);
-		//errorLog.OutputError("Unable to allocate memory for %s", filename);
+		Log::Instance().Write("No se pudo abrir el fichero %s", filename);
 		return false;
 	}
 
@@ -338,7 +337,7 @@ bool Image::Load8BitBMP(char * filename)
 	file=fopen(filename, "rb");
 	if(file==NULL)
 	{
-		//errorLog.OutputError("Unable to open %s", filename);
+		Log::Instance().Write("No se pudo abrir el fichero %s", filename);
 		return false;
 	}
 
@@ -438,7 +437,7 @@ bool Image::LoadPCX(char * filename)
 	file=fopen(filename, "rb");
 	if(!file)
 	{
-		//errorLog.OutputError("Unable to open %s", filename);
+		Log::Instance().Write("No se pudo abrir el fichero %s", filename);
 		return false;
 	}
 
@@ -1087,8 +1086,7 @@ bool Image::LoadAlphaTGA(char * filename)
 	return true;
 }
 
-// FIXME
-// Esto no es parte de la imagen
+// PENDIENTE: Esto no es parte de 'image'
 bool Image::CreateTexture(unsigned int &texture, char *strFileName)
 {
 	if(!strFileName) 
@@ -1097,10 +1095,9 @@ bool Image::CreateTexture(unsigned int &texture, char *strFileName)
 	if (!Load(strFileName))
 		return false;
 
-	// Make sure valid image data was given to pImage, otherwise return false
 	if(data == NULL)								
 	{
-		std::cout << "No hay datos" << std::endl;
+		Log::Instance().Write("No hay datos");
 		return false;
 	}
 
@@ -1133,8 +1130,7 @@ bool Image::CreateTexture(unsigned int &texture, char *strFileName)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-//FIXME
-	// Now we need to free the image data that we loaded since openGL stored it as a texture
+// PENDIENTE: Now we need to free the image data that we loaded since openGL stored it as a texture
 /*
 	if (pImage)										// If we loaded the image
 	{

@@ -21,6 +21,7 @@ namespace Small
 	class WayPoint : public Vector3d
 	{
 	public:
+		// PENDIENTE: cambiar por un Vector3d
 		WayPoint(float NewX, float NewY, float NewZ)
 		{
 			x = NewX;
@@ -28,6 +29,7 @@ namespace Small
 			z = NewZ;
 		}
 
+		// PENDIENTE: llevar a Drawing3D (Drawing3D::Instance().DrawPoint(this);)
 		void Render(void)
 		{
 			glPushMatrix();
@@ -46,21 +48,14 @@ namespace Small
 
 		WayPath(void)
 		{
-			Points.push_back( WayPoint(  0.0f,   0.0f, -240.0f) );
-			Points.push_back( WayPoint(900.0f,   0.0f, -240.0f) );
-			Points.push_back( WayPoint(900.0f,   0.0f,  670.0f) );
-			Points.push_back( WayPoint(900.0f,   0.0f,  670.0f) );
-			Points.push_back( WayPoint(  0.0f, 304.0f,  670.0f) );
-			Points.push_back( WayPoint(  0.0f, 304.0f, -240.0f) );
-			Points.push_back( WayPoint(900.0f, 304.0f, -240.0f) );
-			Points.push_back( WayPoint(900.0f, 304.0f,  400.0f) );
-			Points.push_back( WayPoint(  0.0f, 304.0f,  400.0f) );
-			Points.push_back( WayPoint(  0.0f, 304.0f,  670.0f) );
-			Points.push_back( WayPoint(900.0f,   0.0f,  670.0f) );
-			Points.push_back( WayPoint(900.0f,   0.0f,  380.0f) );
-			Points.push_back( WayPoint(  0.0f,   0.0f,  380.0f) );
+			Points.push_back( WayPoint(730.0f, 0.0f, -32.0f) );
+			Points.push_back( WayPoint(860.0f, 0.0f, -32.0f) );
+			Points.push_back( WayPoint(860.0f, 0.0f, 32.0f) );
+			Points.push_back( WayPoint(930.0f, 0.0f, 32.0f) );
+			Points.push_back( WayPoint(730.0f, 0.0f, 32.0f) );
 		}
 
+		// PENDIENTE: llevar a Drawing3D (Drawing3D::Instance().DrawPath(this);)
 		void Render(void)
 		{
 			bool First=true;
@@ -69,7 +64,7 @@ namespace Small
 			vector<WayPoint>::iterator WayPointItor;
 
 			glColor3f(1.0f, 0.0f, 0.0f);
-			glLineWidth( 10.0f );
+			glLineWidth( 2.0f );
 			for(WayPointItor=Points.begin(); WayPointItor!=Points.end(); WayPointItor++)
 			{
 				if( First )
@@ -79,8 +74,8 @@ namespace Small
 				else
 				{
 					glBegin( GL_LINES );
-						glVertex3f( lx, ly+30.0f, lz );
-						glVertex3f( (*WayPointItor).x, (*WayPointItor).y+30.0f, (*WayPointItor).z );
+						glVertex3f( lx, ly+1.0f, lz );
+						glVertex3f( (*WayPointItor).x, (*WayPointItor).y+1.0f, (*WayPointItor).z );
 					glEnd();
 				}
 
@@ -101,6 +96,10 @@ namespace Small
 	};
 
 
+	/*
+		PENDIENTE: WayMap tiene que ser un grafo con nodos interconectados a través del cual poder calcular
+		un path mediante A* para llegar de un punto a otro del mapa esquivando obstáculos.
+	*/
 	class WayMap
 	{
 	private:
@@ -132,6 +131,10 @@ namespace Small
 
 		void Update(void) {};
 	};
+
+	// PENDIENTE: falta implementar una clase WayExplorer capaz de seguir un WayPath. Las clases
+	// que necesiten seguir un path pueden heredar de WayExplorer.
+
 } // namespace Small
 #endif // WAYMAP_H
 

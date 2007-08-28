@@ -1,0 +1,6 @@
+class Log
+{
+public:
+    static Log &Instance();
+	void LuaWrite(const char *Text);
+};

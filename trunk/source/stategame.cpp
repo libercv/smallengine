@@ -1,4 +1,6 @@
 
+#include "xmlParser.h"	// PENDIENTE: ¿en el .h o en el .cpp? Revisar todos.
+
 #include "stategame.h"
 
 namespace Small
@@ -6,41 +8,38 @@ namespace Small
 
 StateGame::StateGame(void)
 {
-#ifdef _WIN32
-	// RedirectIOToConsole();
-#endif
 	// PENDIENTE: cuanto antes saquemos la carga del escenario a un fichero mejor.
 
 	iCamera = 0;
 
 	Bsp.frustum = &Frustum;
-	Bsp.LoadBSP("resources/maps/tutorial.bsp"); // PENDIENTE: controlar que se carga bien el BSP. 
+
+	//Bsp.LoadBSP("resources/maps/Tutorial.bsp"); // PENDIENTE: controlar que se carga bien el BSP. 
 
 	/*
-	Object *NewObject = new Object();
-	NewObject->Model = new CMD2Model();
-	NewObject->Model->LoadModel("resources/models/yoshi.md2");
-	NewObject->Model->LoadSkin("resources/models/yoshi.bmp");
-	NewObject->Model->SetAnim( RUN );
-	// NewObject->Model->ScaleModel( 1.0f );
-	// NewObject->SetPath( &Path );
-	Objects.push_back(*NewObject);
-	*/
-
 	Player *NewPlayer = new Player();
 	NewPlayer->Model = new CMD2Model();
 	NewPlayer->Model->LoadModel("resources/models/yoshi.md2");
-	NewPlayer->Model->LoadSkin("resources/models/yoshi.bmp");
+	NewPlayer->Model->LoadSkin("resources/models/redyoshi.bmp");
 	NewPlayer->Model->SetAnim( RUN );
 	NewPlayer->Position.Set(416.0f, 0.0f, 0.0f);
 	// NewPlayer->Model->ScaleModel( 1.0f );
 	// NewPlayer->SetPath( &Path );
 	Players.push_back(*NewPlayer);
 
+	Object *NewObject = new Object();
+	NewObject->Model = new CMD2Model();
+	NewObject->Model->LoadModel("resources/models/yoshi.md2");
+	NewObject->Model->LoadSkin("resources/models/greenyoshi.bmp");
+	NewObject->Model->SetAnim( CROUCH_WALK );
+	NewObject->SetPath( &Path );
+	Objects.push_back(*NewObject);
+	*/
+
 	Camera *NewCamera = new Camera();
 	NewCamera->Position.x = 300;
 	NewCamera->Position.y = 100;
-	NewCamera->Position.z = 400;
+	NewCamera->Position.z = 350;
 	//NewCamera->SetPath( &Path );
 	Cameras.push_back(*NewCamera);
 
@@ -97,8 +96,8 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 			NextState = Pause;
 			//Engine::Instance().CurrentState = State::StateId::Pause; // PENDIENTE: desde aquí no debemos cambiar el state de Game. Lo devolveremos como retorno.
 		}
-		else if( Input::Instance().IsKeyPressed(KeySpace) )
-			iCamera = (++iCamera) % Cameras.size();
+		else if( Input::Instance().IsKeyPressed(KeyHome) )
+			Players[0].Position.Set(0.0f, 0.0f, 0.0f);
 		else if( Input::Instance().IsKeyPressed(KeyReturn) )
 		{
 			Lights[0].On = !Lights[0].On;
@@ -142,12 +141,12 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 			sSpeed = -1 * speed * ElapsedTime;
 		*/
 
-		if( Input::Instance().GetKeyState(KeyHome) )
+		if( Input::Instance().GetKeyState(KeyPgUp) )
 		{
 			Cameras[0].Position.y += speed * ElapsedTime;
 			Cameras[0].View.y += speed * ElapsedTime;
 		}
-		else if( Input::Instance().GetKeyState(KeyEnd) )
+		else if( Input::Instance().GetKeyState(KeyPgDown) )
 		{
 			Cameras[0].Position.y -= speed * ElapsedTime;
 			Cameras[0].View.y -= speed * ElapsedTime;
@@ -186,10 +185,10 @@ void StateGame::Render(void)
 	// PENDIENTE: ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ DE AQUI VA CASI TODO FUERA !!!!!!!!!!!!!!!!!!!!!!!!!
 
 	// PENDIENTE: todo lo que se llame gl* Drawing3D. 
-	glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	Drawing3D::Instance().PerspectiveMode(45.0f, Window::Instance().GetWidth(), Window::Instance().GetHeight(), 1.0f, 2000.0f);
+	Drawing3D::Instance().Clear();
+
+	Drawing3D::Instance().PerspectiveMode(Window::Instance().GetWidth(), Window::Instance().GetHeight());
 
 	Cameras[iCamera].Apply();
 
@@ -198,27 +197,28 @@ void StateGame::Render(void)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 
-	//Drawing3D::Instance().DrawSkyBox(0,-0.0001,0,400,200,400);
-	//Drawing3D::Instance().DrawAxes(64.0f, true);
-
-	//std::cout << Timer::Instance().GetFps() << std::endl;
-	//System::Instance().oFont->Print(Timer::Instance().GetFps());
-	
 	if( !iCamera )
 		glColor3f(1.0f, 1.0f, 1.0f);
 	else
 		glColor3f(0.0f, 1.0f, 0.0f);
 
+
 	glPushAttrib( GL_POLYGON_BIT );
 	{
-		glFrontFace( GL_CW );
+		// PENDIENTE: esto no mola. Si hace falta convertir los polígonos del BSP
+		// se convierten en la carga y si no adoptamos el mismo sistema de referencia
+		// que usa el BSP (que creo que es el mismo que el de los MD2)
+
+		// PENDIENTE: de todas formas, he comentado glFrontFace( GL_CW ); y sigue viéndose todo.
+		// glFrontFace( GL_CW );
 		Frustum.CalculateFrustum();
 		Bsp.RenderLevel(Cameras[iCamera].Position);
 	}
 	glPopAttrib();
+
 	
 /*
-	// FIXME: Retirado hasta que este bien probado
+	// PENDIENTE: Retirado hasta que este bien probado
 	// Pintamos el bicho sólo si cae dentro del frustum
 	box_t bBox;
 	Objects[0].Model->GetInterpolatedBoundingBox(bBox);
@@ -245,11 +245,11 @@ void StateGame::Render(void)
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 
-	//Cameras[1].Apply();
-	Drawing3D::Instance().DrawAxes(32, true);
+//	Path.Render();
 
 	Drawing3D::Instance().OrthoMode(0,0, 800,600);
 
+	/*
 	int x,y;
 	Input::Instance().GetMousePosition(&x, &y);
 
@@ -257,8 +257,8 @@ void StateGame::Render(void)
 
 	mouseX1 = (float)x;
 	mouseY1 = (float)y;
-	mouseX2 = (float)x+32;
-	mouseY2 = (float)y+32;
+	mouseX2 = (float)x+31;
+	mouseY2 = (float)y+31;
 
 	glEnable(GL_BLEND);
 	glColor3f(1.0f, 1.0f, 1.0f);
@@ -285,12 +285,15 @@ void StateGame::Render(void)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisable(GL_BLEND);
+	*/
 
+	// PENDIENTE: pasar al Print la posicion y el color de la fuente por parámetros.
 	glColor3f(0.5f, 1.0f, 1.0f);
-
 	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-100);
-	Drawing3D::Instance().BigFont->Print("X=%f  Y=%f Z=%f", Players[0].Position.x, Players[0].Position.y, Players[0].Position.z);
 
+	Drawing3D::Instance().BigFont->Print("%d", Players[0].Model->GetAnimationState());
+
+	/*
 	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-75);
 	Drawing3D::Instance().BigFont->Print("Time = %f", Timer::Instance().GetElapsedTime());
 
@@ -302,8 +305,9 @@ void StateGame::Render(void)
 
 	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight());
 	Drawing3D::Instance().BigFont->Print("RotationY = %f", Players[0].GetRotationY());
+	*/
 
-	Drawing3D::Instance().PerspectiveMode(45.0f, Window::Instance().GetWidth(), Window::Instance().GetHeight(), 1.0f, 2000.0f);
+	Drawing3D::Instance().PerspectiveMode(Window::Instance().GetWidth(), Window::Instance().GetHeight());
 	
 	/*
 	if( iCamera != 0 )
@@ -339,10 +343,7 @@ void StateGame::Render(void)
 		}
 		glPopAttrib();
 	}
-	*/
 
-
-	/*
 	glPushAttrib( GL_LIGHTING_BIT | GL_DEPTH_BITS);
 	{
 		//glDisable( GL_DEPTH_TEST );
@@ -358,11 +359,10 @@ void StateGame::Render(void)
 		Input::Instance().GetMousePosition(&x,&y);
 		glColor3f(0.0f,0.0f,1.0f);
 		glRasterPos2f(0,0);
-		System::Instance().oFont->Print("x:%d y:%d",x,y);
+		// System::Instance().oFont->Print("x:%d y:%d",x,y);
 	}
 	glPopAttrib();
 	*/
-
 
 	// Pintamos los bounding boxes que al ser translucidos deben ser pintados al final
 	// para que dejen ver todo lo que hay detrás
@@ -380,47 +380,49 @@ void StateGame::Render(void)
 	*/
 }
 
-#ifdef _WIN32
-#define MAX_CONSOLE_LINES 500
-
-void StateGame::RedirectIOToConsole(void)
+void StateGame::LoadLevel(void)
 {
-	int hConHandle;
-	long lStdHandle;
+    XMLNode xMainNode=XMLNode::openFileHelper("resources/levels/level001.xml");
 
-	CONSOLE_SCREEN_BUFFER_INFO coninfo;
-	FILE *fp;
+	// PENDIENTE: ¡¡¡ comprobaciones por un tubo !!! (una por cada dato crítico)
 
-	// allocate a console for this app
-	AllocConsole();
+	XMLNode NodeLevel=xMainNode.getChildNode("level");
 
-	// set the screen buffer to be big enough to let us scroll text
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),	&coninfo);
-	coninfo.dwSize.Y = MAX_CONSOLE_LINES;
-	SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), coninfo.dwSize);
+	// PENDIENTE: controlar que se carga bien el BSP. 
+	Bsp.LoadBSP(NodeLevel.getChildNode("bsp").getAttribute("file")); 
 
-	// redirect unbuffered STDOUT to the console
-	lStdHandle = (long)GetStdHandle(STD_OUTPUT_HANDLE);
-	hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
-	fp = _fdopen( hConHandle, "w" );
-	*stdout = *fp;
-	setvbuf( stdout, NULL, _IONBF, 0 );
+	// Cargamos al héroe
+	XMLNode NodePlayer=NodeLevel.getChildNode("player");
 
-	// redirect unbuffered STDIN to the console
-	lStdHandle = (long)GetStdHandle(STD_INPUT_HANDLE);
-	hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
-	fp = _fdopen( hConHandle, "r" );
-	*stdin = *fp;
-	setvbuf( stdin, NULL, _IONBF, 0 );
+	Player *NewPlayer = new Player();
+	NewPlayer->Model = new CMD2Model();
+	NewPlayer->Model->LoadModel(NodePlayer.getChildNode("model").getAttribute("file"));
+	NewPlayer->Model->LoadSkin((char *)NodePlayer.getChildNode("skin").getAttribute("file"));
+	NewPlayer->Model->SetAnim( RUN );	// PENDIENTE:
+	NewPlayer->Position.Set((float)atof(NodePlayer.getChildNode("position").getAttribute("x")), (float)atof(NodePlayer.getChildNode("position").getAttribute("y")), (float)atof(NodePlayer.getChildNode("position").getAttribute("z")));
+	Players.push_back(*NewPlayer);
 
-	// redirect unbuffered STDERR to the console
-	lStdHandle = (long)GetStdHandle(STD_ERROR_HANDLE);
-	hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
-	fp = _fdopen( hConHandle, "w" );
-	*stderr = *fp;
-	setvbuf( stderr, NULL, _IONBF, 0 );
+	// Cargamos a los malos
+	XMLNode NodeEnemies=NodeLevel.getChildNode("enemies");
+    int NumberOfEnemies=NodeEnemies.nChildNode("enemy");
+
+	Log::Instance().Write("enemigos: %d", NumberOfEnemies);
+
+    int i,myIterator=0;
+    for(i=0; i<NumberOfEnemies; i++)
+	{
+		XMLNode NodeEnemy = NodeEnemies.getChildNode("enemy");
+		// printf("coeff %i=%s\n",i+1,xNode.getChildNode("NumericPredictor",&myIterator).getAttribute("coefficient"));
+		Object *NewObject = new Object();
+		NewObject->Model = new CMD2Model();
+		NewObject->Model->LoadModel(NodeEnemy.getChildNode("model").getAttribute("file"));
+		NewObject->Model->LoadSkin((char *)NodeEnemy.getChildNode("skin").getAttribute("file"));
+		NewObject->Model->SetAnim( CROUCH_WALK );	// PENDIENTE
+		NewObject->SetPath( &Path ); // PENDIENTE
+		// PENDIENTE: asignar velocidad, controlador, etc...
+		Objects.push_back(*NewObject);
+	}
+
+	xMainNode=XMLNode::emptyNode();
 }
-#endif
-
-
 } //namespace Small
