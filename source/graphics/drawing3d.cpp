@@ -1,7 +1,5 @@
 
 #include "drawing3d.h"
-#include "../math/maths.h"
-#include "../system/window.h"
 
 namespace Small
 {
@@ -40,6 +38,12 @@ namespace Small
 		glFrontFace( GL_CCW );
 
 		glEnable(GL_TEXTURE_2D);
+	}
+
+	void Drawing3D::Clear(void)
+	{
+		glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void Drawing3D::DrawFloor(void)
@@ -420,6 +424,11 @@ void Drawing3D::OrthoMode(int left, int top, int right, int bottom)
 	
 	glMatrixMode(GL_MODELVIEW);								
 	glLoadIdentity();
+}
+
+void Drawing3D::PerspectiveMode(int WindowWidth, int WindowHeight)
+{
+	PerspectiveMode(45.0f, WindowWidth, WindowHeight, 1.0f, 2000.0f);
 }
 
 void Drawing3D::PerspectiveMode(float AngleOfVision, int WindowWidth, int WindowHeight, float NearPlane, float FarPlane)

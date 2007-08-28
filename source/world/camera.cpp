@@ -5,8 +5,10 @@ namespace Small
 {
 	void Camera::Render(void)
 	{
+		// PENDIENTE: aquí haremos Drawing3D::Instance().DrawCamera(this, 50); para quitarnos todo el código OpenGL de enmedio
 		glPushMatrix();
 			glTranslatef(Position.x,Position.y,Position.z);
+			// PENDIENTE: BillboardXYZ solo tiene que actualizar las rotaciones. Aquí habrá que hacer 3 GlRotates(), uno por eje.
 			BillboardXYZ(View);
 			Drawing3D::Instance().DrawCamera(50);
 		glPopMatrix();

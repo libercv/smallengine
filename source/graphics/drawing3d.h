@@ -12,6 +12,8 @@
 #include "font.h"
 #include "../singleton.h"
 #include "../math/maths.h"
+#include "../system/window.h"
+
 
 namespace Small 
 {
@@ -40,6 +42,8 @@ namespace Small
 
 		void Init(void);
 
+		void Clear(void);
+
 		void DrawAxes(float Length, bool DrawLetters);
 		void DrawCamera(float Scale);
 		void DrawFloor(void);
@@ -50,6 +54,7 @@ namespace Small
 		void DrawUnalignedBox(Vector4d Points[8]);
 
 		void OrthoMode(int left, int top, int right, int bottom);
+		void PerspectiveMode(int WindowWidth, int WindowHeight);
 		void PerspectiveMode(float AngleOfVision, int WindowWidth, int WindowHeight, float NearPlane, float FarPlane);
 
 	}; // class Drawing3D

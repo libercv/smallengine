@@ -8,7 +8,6 @@
 #include <time.h>
 #include <iostream>
 #include <fstream>
-#include <stdarg.h>
 
 #include "singleton.h"
 
@@ -27,6 +26,7 @@ protected:
 
 public:
 	void Write(const char *fmt, ...);
+	void LuaWrite(const char *Text);
 
 }; // class Log : public Singleton
 } // namespace Small

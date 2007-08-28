@@ -1,11 +1,3 @@
-//
-//	md2.cpp - source file
-//
-//	David Henry - tfc_duke@hotmail.com
-//
-
-//#include	<GL/glut.h>
-
 
 #include "md2.h"
 #include <iostream>
@@ -241,16 +233,16 @@ void CMD2Model::Animate( float time )
 	// calculate current and next frames
 	if( m_anim.curr_time - m_anim.old_time > (1.0 / m_anim.fps) )
 	{
-		if( m_anim.next_frame != m_anim.curr_frame+1 )
-			m_AnimationState = Loop;
-		else
-			m_AnimationState = Frame;
-
 		m_anim.curr_frame = m_anim.next_frame;
 		m_anim.next_frame++;
 
 		if( m_anim.next_frame > m_anim.endframe )
+		{
 			m_anim.next_frame = m_anim.startframe;
+			m_AnimationState = Loop;
+		}
+		else
+			m_AnimationState = Frame;
 
 		m_anim.old_time = m_anim.curr_time;
 	}
@@ -446,12 +438,12 @@ anim_t CMD2Model::animlist[ 21 ] =
 	// PENDIENTE: no todos los modelos tienen las mismas animaciones. Creo que esto se saca del mismo fichero MD2. Investigar.
 
 	{   0,  39,  9 },	// STAND
-	{  40,  45, 10 },	// RUN
+	{  40,  45,  9 },	// RUN
 	{  46,  53, 10 },	// ATTACK
 	{  54,  57,  7 },	// PAIN_A
 	{  58,  61,  7 },	// PAIN_B
 	{  62,  65,  7 },	// PAIN_C
-	{  66,  71,  7 },	// JUMP
+	{  65,  70,  9 },	// JUMP
 	{  72,  83,  7 },	// FLIP
 	{  84,  94,  7 },	// SALUTE
 	{  95, 111, 10 },	// FALLBACK

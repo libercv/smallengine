@@ -11,12 +11,12 @@ StateMenu::StateMenu(void)
 	
 	SelectedItemIndex = 0;
 
-	Items.push_back("Start New Game");
-	Items.push_back("Continue Game");
-	Items.push_back("Video Options");
-	Items.push_back("Audio Options");
-	Items.push_back("Game Settings");
-	Items.push_back("Quit Game");
+	Items.push_back("Nueva partida");
+	Items.push_back("Continuar partida");
+	Items.push_back("Opciones de video");
+	Items.push_back("Opciones de audio");
+	Items.push_back("Opciones de juego");
+	Items.push_back("Salir del juego");
 }
 
 void StateMenu::Render(void)
@@ -94,7 +94,7 @@ void StateMenu::Render(void)
 		else
 			glColor3f(1.0f,1.0f,0.0f);
 
-		glRasterPos2f((float)220, (float)(150+(a*30)));
+		glRasterPos2f((float)(WinW/2)-100, (float)(150+(a*30)));
 		Drawing3D::Instance().BigFont->Print(Items[a].c_str());
 	}
 
@@ -112,7 +112,7 @@ void StateMenu::Render(void)
 	//glEnable(GL_LIGHTING);	
 	glEnable(GL_DEPTH_TEST);
 
-	Drawing3D::Instance().PerspectiveMode(45.0f, Window::Instance().GetWidth(), Window::Instance().GetHeight(), 1.0f, 2000.0f);
+	Drawing3D::Instance().PerspectiveMode(Window::Instance().GetWidth(), Window::Instance().GetHeight());
 }
 
 EngineStateEnum StateMenu::Update(float ElapsedTime)

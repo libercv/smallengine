@@ -196,6 +196,9 @@ public:
 	void	SetAnim( int type );
 	void	ScaleModel( float s ) { m_scale = s; }
 
+	int		GetCurrentFrame(void) { return m_anim.curr_frame; }
+
+
 	void GetInterpolatedBoundingBox( box_t bbox );
 };
 

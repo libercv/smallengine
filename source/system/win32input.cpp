@@ -23,6 +23,8 @@ namespace Small
 		KeyMap[VK_ESCAPE] = KeyEscape;
 		KeyMap[VK_RETURN] = KeyReturn;
 		KeyMap[VK_SPACE] = KeySpace;
+		KeyMap[VK_PRIOR] = KeyPgUp;
+		KeyMap[VK_NEXT] = KeyPgDown;
 
 		x = y = dx = dy = 0;
 	}
@@ -61,7 +63,7 @@ namespace Small
 		}
 
 		// ************************************************
-		// *** Actualizamos el los estados del ratón
+		// *** Actualizamos los estados del ratón
 		// ************************************************
 		POINT mousePos;
 
@@ -76,9 +78,11 @@ namespace Small
 		x += dx;
 		y += dy;
 
-		// PENDIENTE: el clipping del ratón depende del tamaño de la ventana
-		if( x>1024 ) x=1024; if( x<0 ) x=0;
-		if( y>768 ) y=768; if( y<0 ) y=0;
+		if( x>Window::Instance().GetWidth() ) x=Window::Instance().GetWidth();
+		if( x<0 ) x=0;
+
+		if( y>Window::Instance().GetHeight() ) y=Window::Instance().GetHeight();
+		if( y<0 ) y=0;
 
 		SetCursorPos(middleX, middleY);
 	}
