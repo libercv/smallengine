@@ -21,6 +21,7 @@
 			ConfigurationType="1"
 			ATLMinimizesCRunTimeLibraryUsage="true"
 			CharacterSet="2"
+			DeleteExtensionsOnClean="*.obj;*.ilk;*.tlb;*.tli;*.tlh;*.tmp;*.pgc;*.pgd;$(TargetPath)"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS, _CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -59,8 +60,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib glaux.lib libjpeg.lib"
+				AdditionalDependencies="opengl32.lib glu32.lib glaux.lib libjpeg.lib fmodvc.lib xmlParser.lib lua5.1.lib tolualib.lib"
+				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames="libcmt"
+				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -95,6 +98,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
+			DeleteExtensionsOnClean="*.obj;*.ilk;*.tlb;*.tli;*.tlh;*.tmp;*.pgc;*.pgd;$(TargetPath)"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -114,7 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS, _CONSOLE"
 				RuntimeLibrary="2"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -131,8 +135,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib glaux.lib libjpeg.lib"
+				AdditionalDependencies="opengl32.lib glu32.lib glaux.lib libjpeg.lib fmodvc.lib xmlParser.lib lua5.1.lib tolualib.lib"
+				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames="libcmt"
+				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -247,6 +253,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\source\log.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\source\math\maths.h"
 				>
 			</File>
@@ -279,11 +289,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\source\script\script.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\source\singleton.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\source\stateGame.h"
+				RelativePath="..\..\source\sound\sound.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\source\stategame.h"
 				>
 			</File>
 			<File
@@ -340,6 +358,10 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath="..\..\source\script\bindings.cpp"
+			>
+		</File>
+		<File
 			RelativePath="..\..\source\graphics\bitset.cpp"
 			>
 		</File>
@@ -376,6 +398,10 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\source\log.cpp"
+			>
+		</File>
+		<File
 			RelativePath="..\..\source\math\matrix4x4.cpp"
 			>
 		</File>
@@ -404,11 +430,19 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\stateGame.cpp"
+			RelativePath="..\..\source\script\script.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\stateMenu.cpp"
+			RelativePath="..\..\source\sound\sound.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\stategame.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\statemenu.cpp"
 			>
 		</File>
 		<File
