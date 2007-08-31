@@ -18,6 +18,8 @@ class Player : public Small::Object
 private:
 	PlayerStateEnum CurrentState;
 
+	float Velocity;
+
 public:
 	Player();
 	void Update(float ElapsedTime, BSP::Q3BSP *Bsp);

@@ -162,6 +162,33 @@ Vector3d Entity::TryToMove(float forwardSpeed, float strafeSpeed)
 	return finalPosition;
 }
 
+
+Vector3d Entity::TryToMove(float forwardSpeed, float strafeSpeed, float verticalSpeed)
+{
+	Vector3d fVector,sVector;
+	float upVector[3] = {0,1,0}; // PENDIENTE: el upVector no siempre es 0,1,0
+	Vector3d finalPosition;
+
+	//View.Subtract(Position, fVector);
+	//fVector.Normalize();
+
+	fVector.x = cos(RotationY * 3.14f/180.0f);
+	fVector.y = verticalSpeed;
+	fVector.z = -sin(RotationY * 3.14f/180.0f);
+	fVector.Normalize();
+
+	sVector = fVector.CrossProduct(upVector);
+	sVector.Normalize();
+
+	// Adelante y atrás
+	finalPosition.x = Position.x + (fVector.x * forwardSpeed) - (sVector.x * strafeSpeed);
+	finalPosition.y = Position.y + fVector.y; //(fVector.y * forwardSpeed) - (sVector.y * strafeSpeed);
+	finalPosition.z = Position.z + (fVector.z * forwardSpeed) - (sVector.z * strafeSpeed);
+
+	return finalPosition;
+}
+
+
 void Entity::BillboardXZ(Entity *Target)
 {
 	Vector3d Projection;		// Vector dirección proyectado en el plano XZ.

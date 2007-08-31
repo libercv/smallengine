@@ -9,7 +9,7 @@ void Engine::Run(void)
 	// PENDIENTE: Llamar desde aquí a todos los Inits de forma lógica y ordenada.
 
 	// PENDIENTE: si en fullscreen indicamos una resolución que no se puede activar -> excepcion
-	Window::Instance().Open("Small Project", 0, 0, 640, 480, 32, false);
+	Window::Instance().Open("Small Project", 0, 0, 800, 600, 32, false);
 
 	StateGame::Instance().LoadLevel();
 

@@ -25,6 +25,8 @@ namespace Small
 		KeyMap[VK_SPACE] = KeySpace;
 		KeyMap[VK_PRIOR] = KeyPgUp;
 		KeyMap[VK_NEXT] = KeyPgDown;
+		KeyMap[VK_INSERT] = KeyInsert;
+		KeyMap[VK_DELETE] = KeySupr;
 
 		x = y = dx = dy = 0;
 	}

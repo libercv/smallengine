@@ -65,12 +65,13 @@ public:
 	void BillboardXZ(Vector3d Target);
 	void BillboardXYZ(Vector3d Target);
 
-	float vSpeed;
 	float vSpeedJump;
+	float vSpeed;	// PENDIENTE: quitar
 	float vSpeedGravity;
 
 	void Move(float forwardSpeed, float strafeSpeed);
 	Vector3d TryToMove(float forwardSpeed, float strafeSpeed);
+	Vector3d TryToMove(float forwardSpeed, float strafeSpeed, float verticalSpeed);
 };
 
 } // namespace Small
