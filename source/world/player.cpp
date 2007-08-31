@@ -11,9 +11,12 @@ namespace Small
 Player::Player() : Object()
 {
 	CurrentState = Standing;
+
 	vSpeedJump=5000.0f;
-	vSpeedGravity=-50.0f;
+	vSpeedGravity=-30.0f;
 	vSpeed=0;
+
+	Velocity = 0.0f;
 }
 
 // PENDIENTE: ¿mola o no mola pasarle por parámetro el puntero al BSP? Conceptualmente no es correcto
@@ -24,7 +27,7 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 	// PENDIENTE: hay DOS velocidades diferentes: una la que se le aplica al bicho cuando anda y otra la que lleva el
 	// bicho cuando ha saltado, sin necesidad de tocar los controles. Yo me entiendo. Incluso se puede hacer un sistema
 	// un pelin mas completo con velocidad y aceleracion.
-	float BichoSpeed = 130.0f; // unidades/segundo 
+	float BichoSpeed = 250.0f; // unidades/segundo 
 	float RotationSpeed = 270.0f; // grados/segundo 
 
 	float RY = GetRotationY();
@@ -70,52 +73,81 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 
 		if( Input::Instance().GetKeyState(KeyUp) || Input::Instance().GetKeyState(KeyDown) )
 		{
-			float Velocity = 0.0f;
-
 			if( Input::Instance().GetKeyState(KeyUp) )
 				Velocity = BichoSpeed * ElapsedTime;
 			else
 				Velocity = -BichoSpeed * ElapsedTime;
 
-			Vector3d dest = this->TryToMove(Velocity, 0);
-
-			// PENDIENTE: hay que calcular el AABB en cada ciclo teniendo en cuenta la rotacion del personaje.
-			Vector3d vMin(-25, 1, -25); 
-			Vector3d vMax(25, 2, 25);
-			
-			Vector3d finalDest = Bsp->TraceBox(this->Position, dest, vMin, vMax);
-			this->Position = finalDest;
-
 			CurrentState = Running;
 		}
+		else
+		{
+			Velocity = 0.0f;
+		}
 
+		/*
+		Vector3d dest = this->TryToMove(Velocity, 0, vSpeed);
+
+		// PENDIENTE: hay que calcular el AABB en cada ciclo teniendo en cuenta la rotacion del personaje.
+		Vector3d vMin(-25, 1, -25); 
+		Vector3d vMax(25, 2, 25);
+		
+		Vector3d finalDest = Bsp->TraceBox(this->Position, dest, vMin, vMax);
+		this->Position = finalDest;
+		*/
+		
 		if( Input::Instance().IsKeyPressed(KeySpace) )
 		{
-			Script::Instance().RaiseEvent("Heroe_OnJump");
-
 			if( CurrentState != Jumping )
 			{
-				SoundManager::Instance().PlayBoing();
 				CurrentState = Jumping;
+
+				Script::Instance().RaiseEvent("Heroe_OnJump");
+				SoundManager::Instance().PlayBoing();
+				
 				vSpeed=vSpeedJump*ElapsedTime;
 			}
 		}
 	}
 
-	Vector3d dest = this->TryToMove(0, 0);
+	// El movimiento en el plano XZ se atenua debido al rozamiento
+	/*
+	float Friction = 1.0f; // unidades/segundo
+	if( Velocity > 0.0f )
+	{
+		Velocity -= Friction * ElapsedTime;
+		if( Velocity < 0.0f )
+			Velocity = 0.0f;
+	}
+	else if( Velocity < 0.0f )
+	{
+		Velocity += Friction * ElapsedTime;
+		if( Velocity > 0.0f )
+			Velocity = 0.0f;
+	}
+	*/
+
+	// Si estamos MUY MUY MUY próximos a pararnos nos paramos del todo. (Epsilon = 1/32)
+	if( (Velocity > -(1.0f / 32.0f)) && (Velocity < (1.0f / 32.0f)) )
+	{
+		Velocity = 0.0f;
+		CurrentState = Standing;
+	}
+	
+
+	// Vector3d dest = this->TryToMove(0, 0);
+	Vector3d dest = this->TryToMove(Velocity, 0, vSpeed);
 	
 	// PENDIENTE: hay que calcular el AABB en cada ciclo teniendo en cuenta la rotacion del personaje.
-	Vector3d vMin(-25, 1, -25);
-	Vector3d vMax(25, 2, 25);
-		
+	Vector3d vMin(-1, 1, -1);
+	Vector3d vMax(1, 2, 1);
 	
 	Vector3d finalDest = Bsp->TraceBox(this->Position, dest, vMin, vMax);
-	this->Position = finalDest;
-
+	Position = finalDest;
 
 	if( CurrentState == Jumping )
 	{
-		if ( finalDest.GetY()!=dest.GetY() && vSpeed<0)
+		if( finalDest.GetY()!=dest.GetY() && vSpeed<0 )
 		{
 			vSpeed=vSpeedGravity*ElapsedTime;
 			//if( Model->GetAnimationState() == Loop )
@@ -135,7 +167,7 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 		else
 			vSpeed=vSpeedGravity*ElapsedTime;
 	}
-	
+
 
 
 	switch( CurrentState )

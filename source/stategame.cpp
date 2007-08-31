@@ -1,7 +1,9 @@
 
-#include "xmlParser.h"	// PENDIENTE: ¿en el .h o en el .cpp? Revisar todos.
-
 #include "stategame.h"
+
+#include "xmlParser.h"	// PENDIENTE: ¿en el .h o en el .cpp? Revisar todos.
+#include "script/script.h"	// PENDIENTE: 
+
 
 namespace Small
 {
@@ -37,11 +39,16 @@ StateGame::StateGame(void)
 	*/
 
 	Camera *NewCamera = new Camera();
-	NewCamera->Position.x = 300;
-	NewCamera->Position.y = 100;
-	NewCamera->Position.z = 350;
+	NewCamera->Position.x = 400;
+	NewCamera->Position.y = 75;
+	NewCamera->Position.z = 250;
 	//NewCamera->SetPath( &Path );
 	Cameras.push_back(*NewCamera);
+
+	/*
+	NewCamera = new Camera();
+	Cameras.push_back(*NewCamera);
+	*/
 
 	Light *NewLight = new Light();
 	NewLight->Position.Set(320.0f, 64.0f, 0.0f);
@@ -76,7 +83,19 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 
 		// Propagamos el Update a todos los objetos
 		for(vector<Object>::iterator ObjectItor=Objects.begin(); ObjectItor!=Objects.end(); ObjectItor++)
+		{
 			(*ObjectItor).Update();
+
+			// Chequeo de colisiones
+			// PENDIENTE: cada instancia puede tener su propio radio
+			float Radio = 20.0f;
+			Vector3d Distancia;
+
+			(*ObjectItor).Position.Subtract(Players[0].Position, Distancia);
+
+			if( abs(Distancia.GetLength()) < Radio*2 )
+				Script::Instance().RaiseEvent("Heroe_OnCollision");
+		}
 
 		// Propagamos el Update a todas las luces
 		for(vector<Light>::iterator LightItor=Lights.begin(); LightItor!=Lights.end(); LightItor++)
@@ -85,6 +104,7 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 		// Propagamos el Update a todas las camaras
 		for(vector<Camera>::iterator CameraItor=Cameras.begin(); CameraItor!=Cameras.end(); CameraItor++)
 			(*CameraItor).Update();
+
 
 		if( Input::Instance().IsKeyPressed(KeyEscape) )
 		{
@@ -152,6 +172,19 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 			Cameras[0].View.y -= speed * ElapsedTime;
 		}
 
+
+		if( Input::Instance().GetKeyState(KeySupr) )
+		{
+			Cameras[0].Position.z += speed * ElapsedTime;
+			Cameras[0].View.z += speed * ElapsedTime;
+		}
+		else if( Input::Instance().GetKeyState(KeyInsert) )
+		{
+			Cameras[0].Position.z -= speed * ElapsedTime;
+			Cameras[0].View.z -= speed * ElapsedTime;
+		}
+
+
 		if( fSpeed || sSpeed )
 		{
 			Vector3d dest = Cameras[0].TryToMove(fSpeed, sSpeed);
@@ -172,6 +205,23 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 	}
 
 	// Hacemos que la cámara mire al bicho
+	/*
+	Vector3d fVector, fView;
+
+	fVector.x = cos(Players[0].GetRotationY() * 3.14f/180.0f);
+	fVector.y = 0;
+	fVector.z = -sin(Players[0].GetRotationY() * 3.14f/180.0f);
+
+	fVector.Add(Players[0].Position, fView);
+
+	Cameras[1].Position = Players[0].Position;
+	Cameras[1].View = fView;
+
+	Cameras[1].Position.y += 30;
+	Cameras[1].View.y += 30;
+	*/
+
+
 	Cameras[0].Position.x = Players[0].Position.x;
 	Cameras[0].View = Players[0].Position;
 
@@ -187,10 +237,7 @@ void StateGame::Render(void)
 	// PENDIENTE: todo lo que se llame gl* Drawing3D. 
 
 	Drawing3D::Instance().Clear();
-
 	Drawing3D::Instance().PerspectiveMode(Window::Instance().GetWidth(), Window::Instance().GetHeight());
-
-	Cameras[iCamera].Apply();
 
 	glEnable(GL_COLOR_MATERIAL);
 	glShadeModel(GL_SMOOTH);
@@ -202,15 +249,17 @@ void StateGame::Render(void)
 	else
 		glColor3f(0.0f, 1.0f, 0.0f);
 
+	Cameras[0].Apply();
 
 	glPushAttrib( GL_POLYGON_BIT );
 	{
 		// PENDIENTE: esto no mola. Si hace falta convertir los polígonos del BSP
 		// se convierten en la carga y si no adoptamos el mismo sistema de referencia
 		// que usa el BSP (que creo que es el mismo que el de los MD2)
-
 		// PENDIENTE: de todas formas, he comentado glFrontFace( GL_CW ); y sigue viéndose todo.
 		// glFrontFace( GL_CW );
+
+		//Cameras[1].Apply();
 		Frustum.CalculateFrustum();
 		Bsp.RenderLevel(Cameras[iCamera].Position);
 	}
@@ -289,25 +338,25 @@ void StateGame::Render(void)
 
 	// PENDIENTE: pasar al Print la posicion y el color de la fuente por parámetros.
 	glColor3f(0.5f, 1.0f, 1.0f);
+
 	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-100);
-
-	Drawing3D::Instance().BigFont->Print("%d", Players[0].Model->GetAnimationState());
-
+	Drawing3D::Instance().BigFont->Print("%f %f %f", Players[0].Position.x, Players[0].Position.y, Players[0].Position.z );
 	/*
+
 	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-75);
-	Drawing3D::Instance().BigFont->Print("Time = %f", Timer::Instance().GetElapsedTime());
+	Drawing3D::Instance().BigFont->Print("dT = %f", Timer::Instance().GetElapsedTime());
 
 	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-50);
 	Drawing3D::Instance().BigFont->Print("Height = %d", Window::Instance().GetHeight());
 
-	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-25);
-	Drawing3D::Instance().BigFont->Print("X=%f  Y=%f", mouseX1,mouseY1);
+	//glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-25);
+	//Drawing3D::Instance().BigFont->Print("X=%f  Y=%f", mouseX1,mouseY1);
 
 	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight());
 	Drawing3D::Instance().BigFont->Print("RotationY = %f", Players[0].GetRotationY());
-	*/
 
 	Drawing3D::Instance().PerspectiveMode(Window::Instance().GetWidth(), Window::Instance().GetHeight());
+	*/
 	
 	/*
 	if( iCamera != 0 )
