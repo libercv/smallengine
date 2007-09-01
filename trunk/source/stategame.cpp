@@ -4,6 +4,7 @@
 #include "xmlParser.h"	// PENDIENTE: ¿en el .h o en el .cpp? Revisar todos.
 #include "script/script.h"	// PENDIENTE: 
 #include "sound/sound.h"	// PENDIENTE: 
+#include <cmath>
 
 
 namespace Small

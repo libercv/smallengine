@@ -20,4 +20,4 @@ public:
 }; // class Camera
 } // namespace Small
 
-#endif CAMERA_H
+#endif //CAMERA_H
