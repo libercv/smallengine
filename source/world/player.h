@@ -23,6 +23,7 @@ private:
 public:
 	Player();
 	void Update(float ElapsedTime, BSP::Q3BSP *Bsp);
+	void Render(void);
 };
 
 } // namespace Small

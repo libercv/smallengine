@@ -7,7 +7,8 @@ SoundManager::SoundManager()
 {
 	const char FileAmbiente[] = "resources/sound/wavs/al_an_bugscave2.wav\0";
 	const char FilePaso[] = "resources/sound/wavs/paso.wav\0";
-	const char FileBoing[] = "resources/sound/wavs/boing.wav\0";
+	const char FileBoing[] = "resources/sound/wavs/boing.ogg\0";
+	const char FilePD[] = "resources/sound/wavs/playerdead.ogg\0";
 
 	if( !FSOUND_Init(44000, 8, 0) )
     {
@@ -26,6 +27,10 @@ SoundManager::SoundManager()
     if( !Boing )
 		Log::Instance().Write("Error %d cargando fichero de sonido %s", FSOUND_GetError(), FileBoing);
 
+    PlayerDead = FSOUND_Sample_Load(FSOUND_UNMANAGED, FilePD, FSOUND_LOOP_OFF | FSOUND_NORMAL | FSOUND_HW2D, 0, 0);
+    if( !PlayerDead )
+		Log::Instance().Write("Error %d cargando fichero de sonido %s", FSOUND_GetError(), FilePD);
+
 	FSOUND_PlaySound(FSOUND_FREE, Ambiente);
 }
 
@@ -37,6 +42,11 @@ void SoundManager::PlayPaso(void)
 void SoundManager::PlayBoing(void)
 {
 	FSOUND_PlaySound(FSOUND_FREE, Boing);
+}
+
+void SoundManager::PlayPlayerDead(void)
+{
+	FSOUND_PlaySound(FSOUND_FREE, PlayerDead);
 }
 
 } // namespace Small

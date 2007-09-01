@@ -63,6 +63,8 @@ namespace Small
 		EngineStateEnum Update(float ElapsedTime);
 		void Render(void);
 
+		void KillPlayer(void);
+
 #ifdef _WIN32
 		void RedirectIOToConsole(void);
 #endif

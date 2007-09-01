@@ -3,6 +3,7 @@
 
 #include "xmlParser.h"	// PENDIENTE: ¿en el .h o en el .cpp? Revisar todos.
 #include "script/script.h"	// PENDIENTE: 
+#include "sound/sound.h"	// PENDIENTE: 
 
 
 namespace Small
@@ -41,14 +42,12 @@ StateGame::StateGame(void)
 	Camera *NewCamera = new Camera();
 	NewCamera->Position.x = 400;
 	NewCamera->Position.y = 75;
-	NewCamera->Position.z = 250;
+	NewCamera->Position.z = 350;
 	//NewCamera->SetPath( &Path );
 	Cameras.push_back(*NewCamera);
 
-	/*
 	NewCamera = new Camera();
 	Cameras.push_back(*NewCamera);
-	*/
 
 	Light *NewLight = new Light();
 	NewLight->Position.Set(320.0f, 64.0f, 0.0f);
@@ -60,11 +59,9 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 {
 	EngineStateEnum NextState = Game;
 
-	/*
 	int dx,dy;
 	Input::Instance().GetMouseMotion(&dx,&dy);
 	Cameras[iCamera].RotateView(dx,dy);
-	*/
 
 	mouse = CTextureManager::GetInstance()->LoadTexture("resources/textures/mouse.tga");
 	mouseMask = CTextureManager::GetInstance()->LoadTexture("resources/textures/mouseMask.tga");
@@ -117,13 +114,11 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 			//Engine::Instance().CurrentState = State::StateId::Pause; // PENDIENTE: desde aquí no debemos cambiar el state de Game. Lo devolveremos como retorno.
 		}
 		else if( Input::Instance().IsKeyPressed(KeyHome) )
-			Players[0].Position.Set(0.0f, 0.0f, 0.0f);
+			Players[0].Position.Set(0.0f, 10.0f, 0.0f);
 		else if( Input::Instance().IsKeyPressed(KeyReturn) )
 		{
 			Lights[0].On = !Lights[0].On;
 		}
-
-
 
 
 		// *** PRUEBAS: movemos al bicho ***************************************
@@ -220,8 +215,7 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 	Cameras[1].Position.y += 30;
 	Cameras[1].View.y += 30;
 	*/
-
-
+	
 	Cameras[0].Position.x = Players[0].Position.x;
 	Cameras[0].View = Players[0].Position;
 
@@ -261,6 +255,7 @@ void StateGame::Render(void)
 
 		//Cameras[1].Apply();
 		Frustum.CalculateFrustum();
+		//Cameras[0].Apply();
 		Bsp.RenderLevel(Cameras[iCamera].Position);
 	}
 	glPopAttrib();
@@ -339,12 +334,14 @@ void StateGame::Render(void)
 	// PENDIENTE: pasar al Print la posicion y el color de la fuente por parámetros.
 	glColor3f(0.5f, 1.0f, 1.0f);
 
-	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-100);
+	glRasterPos2f(10.0f, 30.0f);
 	Drawing3D::Instance().BigFont->Print("%f %f %f", Players[0].Position.x, Players[0].Position.y, Players[0].Position.z );
+
+	glRasterPos2f(10.0f, 60.0f);
+	Drawing3D::Instance().BigFont->Print("fps = %d", Timer::Instance().GetFps());
+
 	/*
 
-	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-75);
-	Drawing3D::Instance().BigFont->Print("dT = %f", Timer::Instance().GetElapsedTime());
 
 	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-50);
 	Drawing3D::Instance().BigFont->Print("Height = %d", Window::Instance().GetHeight());
@@ -427,6 +424,13 @@ void StateGame::Render(void)
 	}
 	glPopAttrib();
 	*/
+}
+
+void StateGame::KillPlayer(void)
+{
+	SoundManager::Instance().PlayPlayerDead();
+	Players[0].Position.Set(0.0f, 10.0f, 0.0f);
+	Players[0].SetRotationY(0.0f);
 }
 
 void StateGame::LoadLevel(void)

@@ -17,7 +17,7 @@ class SoundManager : public Singleton<SoundManager>
 	friend class Singleton<SoundManager>;
 
 private:
-	FSOUND_SAMPLE *Ambiente, *Paso, *Boing;
+	FSOUND_SAMPLE *Ambiente, *Paso, *Boing, *PlayerDead;
 
 protected:
 	SoundManager(void);
@@ -25,6 +25,7 @@ protected:
 public:
 	void PlayPaso(void);
 	void PlayBoing(void);
+	void PlayPlayerDead(void);
 	void Update(void) {};
 
 };

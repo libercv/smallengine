@@ -1,6 +1,8 @@
 
 #include "engine.h"
 
+#include "script/script.h"
+
 namespace Small
 {
 void Engine::Run(void)
@@ -9,9 +11,11 @@ void Engine::Run(void)
 	// PENDIENTE: Llamar desde aquí a todos los Inits de forma lógica y ordenada.
 
 	// PENDIENTE: si en fullscreen indicamos una resolución que no se puede activar -> excepcion
-	Window::Instance().Open("Small Project", 0, 0, 800, 600, 32, false);
+	Window::Instance().Open("Small Project", 0, 0, 800, 600, 32, true);
 
 	StateGame::Instance().LoadLevel();
+
+	Script::Instance();	// PENDIENTE: ñapa para forzar la inicialización. 
 
 	while( CurrentState != Done )
 	{
@@ -20,8 +24,9 @@ void Engine::Run(void)
 		Window::Instance().Update();
 		SoundManager::Instance().Update();
 
-		//System::Instance().UpdateEvents(); // ¿Esto para qué era?
-
+		// PENDIENTE: UpdateEvents se supone que era el que generaba los eventos en LUA 
+		// para que el código no estuviese por ahí disperso. Revisar la idea.
+		//System::Instance().UpdateEvents();
 		switch( CurrentState )
 		{
 			case Menu:

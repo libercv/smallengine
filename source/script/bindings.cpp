@@ -1,6 +1,6 @@
 /*
 ** Lua binding: bindings
-** Generated automatically by tolua 5.1b on 08/28/07 11:32:33.
+** Generated automatically by tolua 5.1b on 09/01/07 11:22:25.
 */
 
 #ifndef __cplusplus
@@ -8,14 +8,12 @@
 #endif
 #include "string.h"
 
-#include "lua/tolua.h"
-#include "../log.h"
-
-using namespace Small;
+#include "tolua.h"
 
 /* Exported function */
 TOLUA_API int tolua_bindings_open (lua_State* tolua_S);
 LUALIB_API int luaopen_bindings (lua_State* tolua_S);
+
 
 /* function to release collected object */
 #ifdef __cplusplus
@@ -32,6 +30,7 @@ static int tolua_collect (lua_State* tolua_S)
 /* function to register type */
 static void tolua_reg_types (lua_State* tolua_S)
 {
+ tolua_usertype(tolua_S,"StateGame");
  tolua_usertype(tolua_S,"Log");
 }
 
@@ -92,6 +91,61 @@ static int tolua_bindings_Log_LuaWrite00(lua_State* tolua_S)
 #endif
 }
 
+/* method: Instance of class  StateGame */
+static int tolua_bindings_StateGame_Instance00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"StateGame",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  StateGame& tolua_ret = (StateGame&)  StateGame::Instance();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"StateGame");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'Instance'.",&tolua_err);
+ return 0;
+#endif
+}
+
+/* method: KillPlayer of class  StateGame */
+static int tolua_bindings_StateGame_KillPlayer00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"StateGame",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  StateGame* self = (StateGame*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'KillPlayer'",NULL);
+#endif
+ {
+  self->KillPlayer();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'KillPlayer'.",&tolua_err);
+ return 0;
+#endif
+}
+
 /* Open lib function */
 LUALIB_API int luaopen_bindings (lua_State* tolua_S)
 {
@@ -107,6 +161,15 @@ LUALIB_API int luaopen_bindings (lua_State* tolua_S)
  tolua_beginmodule(tolua_S,"Log");
  tolua_function(tolua_S,"Instance",tolua_bindings_Log_Instance00);
  tolua_function(tolua_S,"LuaWrite",tolua_bindings_Log_LuaWrite00);
+ tolua_endmodule(tolua_S);
+#ifdef __cplusplus
+ tolua_cclass(tolua_S,"StateGame","StateGame","",0);
+#else
+ tolua_cclass(tolua_S,"StateGame","StateGame","",tolua_collect);
+#endif
+ tolua_beginmodule(tolua_S,"StateGame");
+ tolua_function(tolua_S,"Instance",tolua_bindings_StateGame_Instance00);
+ tolua_function(tolua_S,"KillPlayer",tolua_bindings_StateGame_KillPlayer00);
  tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);
  return 1;

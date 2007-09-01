@@ -12,11 +12,28 @@ Player::Player() : Object()
 {
 	CurrentState = Standing;
 
-	vSpeedJump=5000.0f;
-	vSpeedGravity=-30.0f;
+	vSpeedJump=30000.0f;
+	vSpeedGravity=-300.0f;
 	vSpeed=0;
 
 	Velocity = 0.0f;
+}
+
+void Player::Render(void)
+{
+	Object::Render();
+
+	Vector3d Min=this->Position, Max=this->Position;
+
+	Min.x -= 25;	Min.y +=  0;	Min.z -= 25;
+	Max.x += 25;	Max.y += 50;	Max.z += 25;
+
+	glEnable( GL_BLEND );
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+
+	Drawing3D::Instance().DrawBox(Min.x,Min.y,Min.z, Max.x,Max.y,Max.z);
+
+	glDisable( GL_BLEND );
 }
 
 // PENDIENTE: ¿mola o no mola pasarle por parámetro el puntero al BSP? Conceptualmente no es correcto
@@ -139,8 +156,10 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 	Vector3d dest = this->TryToMove(Velocity, 0, vSpeed);
 	
 	// PENDIENTE: hay que calcular el AABB en cada ciclo teniendo en cuenta la rotacion del personaje.
-	Vector3d vMin(-1, 1, -1);
-	Vector3d vMax(1, 2, 1);
+
+
+	Vector3d vMin(-25, 0, -25);
+	Vector3d vMax(25, 50, 25);
 	
 	Vector3d finalDest = Bsp->TraceBox(this->Position, dest, vMin, vMax);
 	Position = finalDest;
@@ -163,9 +182,9 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 	else
 	{	
 		if ( finalDest.GetY()==dest.GetY())
-			vSpeed+=vSpeedGravity*ElapsedTime;
+			vSpeed += vSpeedGravity*ElapsedTime;
 		else
-			vSpeed=vSpeedGravity*ElapsedTime;
+			vSpeed = vSpeedGravity*ElapsedTime;
 	}
 
 

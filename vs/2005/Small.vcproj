@@ -25,6 +25,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description=""
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -103,6 +105,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description=""
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -182,6 +186,10 @@
 			</File>
 			<File
 				RelativePath="..\..\source\graphics\anormtab.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\source\script\bindings.h"
 				>
 			</File>
 			<File
