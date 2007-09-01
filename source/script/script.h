@@ -31,4 +31,4 @@ public:
 
 } // namespace Small
 
-#endif SCRIPT_H
+#endif //SCRIPT_H
