@@ -4,3 +4,10 @@ public:
     static Log &Instance();
 	void LuaWrite(const char *Text);
 };
+
+class StateGame
+{
+public:
+    static StateGame &Instance();
+	void KillPlayer(void);
+};

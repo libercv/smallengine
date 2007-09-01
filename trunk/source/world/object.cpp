@@ -42,7 +42,10 @@ void Object::Render(void)
 			// PENDIENTE: Model no trabaja con el tiempo transcurrido entre frames sino con el tiempo
 			// transcurrido desde el inicio del programa.
 			Model->DrawModel(Timer::Instance().GetTime()/1000.0f);
+
+			// Drawing3D::Instance().DrawBox(bbox[0],bbox[1],bbox[2], bbox[3],bbox[4],bbox[5]);
 		glPopMatrix();
+
 
 		/*
 		BoxPoints[0].Set(bbox[0], bbox[1], bbox[2], 0);
@@ -55,12 +58,13 @@ void Object::Render(void)
 		BoxPoints[6].Set(bbox[0], bbox[1], bbox[5], 0);
 		BoxPoints[7].Set(bbox[0], bbox[4], bbox[5], 0);
 
-		//RotationMatrix.SetRotationEuler(90,0,0);
-		//for( short a=0; a<7; a++)
-		//{
-		//	BoxPoints[a] = RotationMatrix.GetRotatedVector3D(BoxPoints[a]);
-		//}
+		RotationMatrix.SetRotationEuler(90,0,0);
+		for( short a=0; a<7; a++)
+		{
+			BoxPoints[a] = RotationMatrix.GetRotatedVector3D(BoxPoints[a]);
+		}
 		
+
 		Drawing3D::Instance().DrawUnalignedBox(BoxPoints);
 		*/
 		// Drawing3D::Instance().DrawBox(bbox[0],bbox[1],bbox[2], bbox[3],bbox[4],bbox[5]);

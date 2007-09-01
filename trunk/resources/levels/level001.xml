@@ -13,7 +13,7 @@
 		</paths>
 		
 		<player id="Yoshi">
-			<position x="416.0" y="0.0" z="0.0" orientation="" />
+			<position x="416.0" y="10.0" z="0.0" orientation="" />
 			<model file="resources/models/yoshi.md2"/>
 			<skin file="resources/models/redyoshi.bmp"/>
 			<animation id="Stand"/>

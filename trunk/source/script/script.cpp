@@ -2,6 +2,7 @@
 #include "script.h"
 
 #include "../log.h"
+// #include "../stategame.h"
 
 namespace Small
 {
@@ -11,7 +12,7 @@ Script::Script()
 
 	l = lua_open();
 
-	luaL_openlibs(l);
+	// luaL_openlibs(l);
 	tolua_bindings_open(l);
 
 	error = luaL_dofile(l, "resources/scripts/global.lua");

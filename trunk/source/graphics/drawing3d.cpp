@@ -299,8 +299,6 @@ namespace Small
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		*/
 
-		glColor4f( 0.3f, 0.3f, 1.0f, 0.3f);
-
 		// cara trasera
 		glBegin( GL_QUADS );
 			glVertex3f( x1, y2, z1);

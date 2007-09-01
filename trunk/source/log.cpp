@@ -5,7 +5,7 @@ namespace Small
 {
 Log::Log()
 {
-	LogFile.open("smalllog.txt");
+	LogFile.open("log.txt");
 }
 
 Log::~Log()

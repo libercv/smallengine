@@ -9,8 +9,8 @@ public:
 	virtual void Update() = 0;
 	virtual float GetTime() const = 0;
 	virtual float GetElapsedTime() const = 0;
+	virtual int GetFps(void) const = 0;
 	/*
-	GetFps
 	Pause
 	Resume
 	*/

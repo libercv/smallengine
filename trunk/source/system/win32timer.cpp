@@ -13,6 +13,11 @@ Timer::Timer()
 	mm_timer_elapsed = 0;
 	performance_timer_elapsed = 0;
 	performance_timer = 0;
+
+	FPSElapsedTime = 0;
+	FPSCounter = 0;
+	FPS = 0;
+
 	Initialize();
 }
 
@@ -52,8 +57,21 @@ void Timer::Update()
 
 	ElapsedTime = (CurrentTime-PreviousTime) * 0.001f; 
 	PreviousTime = CurrentTime;
-}
 
+	// Cálculo de FPS
+	FPSElapsedTime += ElapsedTime;
+	if( FPSElapsedTime >= 1 )
+	{
+		FPS = FPSCounter;
+
+		FPSElapsedTime = 0;
+		FPSCounter = 0;
+	}
+	else
+	{
+		FPSCounter++;
+	}
+}
 
 float Timer::GetTime() const					// Get Time In Milliseconds
 {
