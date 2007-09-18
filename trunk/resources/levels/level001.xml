@@ -1,39 +1,47 @@
 <xml version="1.0">
 	<level id="001" title="Entrada a Abu Simbel" titleBitmap="resources/textures/entering.bmp">
-		<bsp file="resources/maps/tutorial.bsp" />
+		<bsp file="resources/maps/level1.bsp" />
 
 		<paths>
-			<path id="001">
+			<path id="path001">
         <waypoint id="" raisesEvent="true" x="730.0" y="0.0" z="-32.0"/>
         <waypoint id="" x="860.0" y="0.0" z="-32.0"/>
         <waypoint id="" x="860.0" y="0.0" z="32.0"/>
         <waypoint id="" x="930.0" y="0.0" z="32.0"/>
         <waypoint id="" x="730.0" y="0.0" z="32.0"/>
       </path>
-		</paths>
-		
-		<player id="Yoshi">
-			<position x="416.0" y="10.0" z="0.0" orientation="" />
-			<model file="resources/models/yoshi.md2"/>
-			<skin file="resources/models/redyoshi.bmp"/>
-			<animation id="Stand"/>
-		</player>
+    </paths>
+    
+    <players>
+      <player id="player1">
+        <position x="-300.0" y="10.0" z="-35.0" orientation="" />
+        <model file="resources/models/yoshi.md2"/>
+        <skin file="resources/models/redyoshi.jpg"/>
+        <animation id="Stand"/>
+      </player>
+    </players>
 
 		<enemies>
-			<enemy id="YoshiVerde">
-				<model file="resources/models/yoshi.md2"/>
-				<skin file="resources/models/greenyoshi.bmp"/>
-				<animation id="CrouchWalk"/>
-				<path id="001"/>
-			</enemy>
-		</enemies>
+      <enemy id="YoshiRojo" path="path001">
+        <model file="resources/models/yoshi.md2"/>
+        <skin file="resources/models/redyoshi.jpg"/>
+        <animation id="CrouchWalk"/>
+      </enemy>
+    </enemies>
 
 		<cameras>
-			<camera >
-				<position x="300.0" y="100.0" z="150.0" />
-				<target id="Yoshi" />
-			</camera>
-		</cameras>
+      <!-- cámara estática (0)-->
+      <camera id="camera1">
+        <position x="-544.0" y="400.0" z="-150.0" />
+        <target id="Yoshi" />
+      </camera>
+
+      <!-- cámara móvil (1) -->
+      <camera id="camera2">
+        <position x="0.0" y="75.0" z="300.0" />
+        <target id="Yoshi" />
+      </camera>
+    </cameras>
 
 		<lights>
 			<light>
