@@ -1,6 +1,6 @@
 /*
 ** Lua binding: bindings
-** Generated automatically by tolua 5.1b on 09/01/07 11:22:25.
+** Generated automatically by tolua 5.1b on 09/15/07 23:22:17.
 */
 
 #ifndef __cplusplus
@@ -124,24 +124,90 @@ static int tolua_bindings_StateGame_KillPlayer00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"StateGame",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
+ !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   StateGame* self = (StateGame*)  tolua_tousertype(tolua_S,1,0);
+  char* PlayerId = ((char*)  tolua_tostring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'KillPlayer'",NULL);
 #endif
  {
-  self->KillPlayer();
+  self->KillPlayer(PlayerId);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'KillPlayer'.",&tolua_err);
+ return 0;
+#endif
+}
+
+/* method: KillObject of class  StateGame */
+static int tolua_bindings_StateGame_KillObject00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"StateGame",0,&tolua_err) ||
+ !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isstring(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  StateGame* self = (StateGame*)  tolua_tousertype(tolua_S,1,0);
+  char* PlayerId = ((char*)  tolua_tostring(tolua_S,2,0));
+  char* ObjectId = ((char*)  tolua_tostring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'KillObject'",NULL);
+#endif
+ {
+  self->KillObject(PlayerId,ObjectId);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'KillObject'.",&tolua_err);
+ return 0;
+#endif
+}
+
+/* method: SetActiveCamera of class  StateGame */
+static int tolua_bindings_StateGame_SetActiveCamera00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"StateGame",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  StateGame* self = (StateGame*)  tolua_tousertype(tolua_S,1,0);
+  int NewActiveCamera = ((int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetActiveCamera'",NULL);
+#endif
+ {
+  self->SetActiveCamera(NewActiveCamera);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetActiveCamera'.",&tolua_err);
  return 0;
 #endif
 }
@@ -170,6 +236,8 @@ LUALIB_API int luaopen_bindings (lua_State* tolua_S)
  tolua_beginmodule(tolua_S,"StateGame");
  tolua_function(tolua_S,"Instance",tolua_bindings_StateGame_Instance00);
  tolua_function(tolua_S,"KillPlayer",tolua_bindings_StateGame_KillPlayer00);
+ tolua_function(tolua_S,"KillObject",tolua_bindings_StateGame_KillObject00);
+ tolua_function(tolua_S,"SetActiveCamera",tolua_bindings_StateGame_SetActiveCamera00);
  tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);
  return 1;

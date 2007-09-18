@@ -49,21 +49,25 @@ namespace Small
 		vector<Camera>Cameras;
 		vector<Light>Lights;
 		vector<Player>Players;
+		vector<WayPath>Paths;
 
-		void LoadLevel(void);	// PENDIENTE: pasar un nombre de fichero o un id del nivel.
+		void LoadLevel(char *);	// PENDIENTE: pasar un nombre de fichero o un id del nivel.
+		void ClearLevel(void);
 
 		// PENDIENTE: propiedades para pruebas
 		float dt;
-		size_t iCamera;
-		WayMap Map;
-		WayPath Path;
+		size_t ActiveCamera;
+		// WayMap Map;
 		BSP::Q3BSP Bsp;
 		BSP::Frustum Frustum;
 		
 		EngineStateEnum Update(float ElapsedTime);
 		void Render(void);
 
-		void KillPlayer(void);
+		void KillPlayer(char *PlayerId);
+		void SetActiveCamera(int NewActiveCamera);
+		void KillObject(char *PlayerId, char *ObjectId);
+		void CrearBolitas(void); // PENDIENTE: quitar
 
 #ifdef _WIN32
 		void RedirectIOToConsole(void);

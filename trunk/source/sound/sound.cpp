@@ -5,10 +5,11 @@ namespace Small
 {
 SoundManager::SoundManager()
 {
-	const char FileAmbiente[] = "resources/sound/wavs/al_an_bugscave2.wav\0";
+	const char FileAmbiente[] = "resources/sound/wavs/pacman.ogg\0";
 	const char FilePaso[] = "resources/sound/wavs/paso.wav\0";
 	const char FileBoing[] = "resources/sound/wavs/boing.ogg\0";
 	const char FilePD[] = "resources/sound/wavs/playerdead.ogg\0";
+	const char FileBola[] = "resources/sound/wavs/bola.ogg\0";
 
 	if( !FSOUND_Init(44000, 8, 0) )
     {
@@ -31,7 +32,11 @@ SoundManager::SoundManager()
     if( !PlayerDead )
 		Log::Instance().Write("Error %d cargando fichero de sonido %s", FSOUND_GetError(), FilePD);
 
-	FSOUND_PlaySound(FSOUND_FREE, Ambiente);
+    Bola = FSOUND_Sample_Load(FSOUND_UNMANAGED, FileBola, FSOUND_LOOP_OFF | FSOUND_NORMAL | FSOUND_HW2D, 0, 0);
+    if( !Bola )
+		Log::Instance().Write("Error %d cargando fichero de sonido %s", FSOUND_GetError(), FileBola);
+
+	// FSOUND_PlaySound(FSOUND_FREE, Ambiente);
 }
 
 void SoundManager::PlayPaso(void)
@@ -48,6 +53,12 @@ void SoundManager::PlayPlayerDead(void)
 {
 	FSOUND_PlaySound(FSOUND_FREE, PlayerDead);
 }
+
+void SoundManager::PlayBola(void)
+{
+	FSOUND_PlaySound(FSOUND_FREE, Bola);
+}
+
 
 } // namespace Small
 

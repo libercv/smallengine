@@ -17,13 +17,14 @@ class SoundManager : public Singleton<SoundManager>
 	friend class Singleton<SoundManager>;
 
 private:
-	FSOUND_SAMPLE *Ambiente, *Paso, *Boing, *PlayerDead;
+	FSOUND_SAMPLE *Ambiente, *Paso, *Boing, *PlayerDead, *Bola;
 
 protected:
 	SoundManager(void);
 
 public:
 	void PlayPaso(void);
+	void PlayBola(void);
 	void PlayBoing(void);
 	void PlayPlayerDead(void);
 	void Update(void) {};

@@ -21,6 +21,8 @@ private:
 	float Velocity;
 
 public:
+	int Lives, Score;
+
 	Player();
 	void Update(float ElapsedTime, BSP::Q3BSP *Bsp);
 	void Render(void);

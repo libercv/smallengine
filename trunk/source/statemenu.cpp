@@ -11,7 +11,7 @@ StateMenu::StateMenu(void)
 	
 	SelectedItemIndex = 0;
 
-	Items.push_back("Nueva partida");
+	Items.push_back("Cambiar nivel");
 	Items.push_back("Continuar partida");
 	Items.push_back("Opciones de video");
 	Items.push_back("Opciones de audio");
@@ -127,15 +127,21 @@ EngineStateEnum StateMenu::Update(float ElapsedTime)
 	}
 	if( Input::Instance().IsKeyPressed(KeyReturn) )
 	{
-		if( SelectedItemIndex==5 )
+		switch( SelectedItemIndex )
+		{
+		case 0:
+			NextState = NextLevel;
+			break;
+		case 5:
 			NextState = Done;
-			//Engine::Instance().CurrentState = State::StateId::Done;
+			break;
+		}
 	}
-	else if( Input::Instance().IsKeyPressed(KeyDown) )
+	else if( Input::Instance().IsKeyPressed(P2KeyDown) )
 	{
 		++SelectedItemIndex %= 6; // PENDIENTE: quitar el 6 a pi�n
 	}
-	else if( Input::Instance().IsKeyPressed(KeyUp) )
+	else if( Input::Instance().IsKeyPressed(P2KeyUp) )
 	{
 		if( SelectedItemIndex>0 )
 			SelectedItemIndex--;

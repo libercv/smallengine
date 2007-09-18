@@ -9,5 +9,7 @@ class StateGame
 {
 public:
     static StateGame &Instance();
-	void KillPlayer(void);
+	void KillPlayer(char *PlayerId);
+	void KillObject(char *PlayerId, char *ObjectId);
+	void SetActiveCamera(int NewActiveCamera);
 };

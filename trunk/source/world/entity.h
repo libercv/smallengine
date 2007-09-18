@@ -25,6 +25,8 @@ private:
 public:
 	std::string Id;
 
+	bool Deleted;	// PENDIENTE: hacer privada
+
 	// PENDIENTE: no se por que meti esta lista de hijos en entidad. 
 	// std::list<Entity *>Children;
 

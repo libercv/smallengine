@@ -10,10 +10,13 @@ namespace Small
 
 Player::Player() : Object()
 {
+	Lives = 3;
+	Score = 0;
+
 	CurrentState = Standing;
 
-	vSpeedJump=30000.0f;
-	vSpeedGravity=-300.0f;
+	vSpeedJump=10000.0f;
+	vSpeedGravity=-100.0f;
 	vSpeed=0;
 
 	Velocity = 0.0f;
@@ -28,12 +31,18 @@ void Player::Render(void)
 	Min.x -= 25;	Min.y +=  0;	Min.z -= 25;
 	Max.x += 25;	Max.y += 50;	Max.z += 25;
 
+	/*
+	Drawing3D::Instance().DisableDepthBuffer();
+		
 	glEnable( GL_BLEND );
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 
 	Drawing3D::Instance().DrawBox(Min.x,Min.y,Min.z, Max.x,Max.y,Max.z);
 
 	glDisable( GL_BLEND );
+
+	Drawing3D::Instance().EnableDepthBuffer();
+	*/
 }
 
 // PENDIENTE: ¿mola o no mola pasarle por parámetro el puntero al BSP? Conceptualmente no es correcto
@@ -44,8 +53,28 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 	// PENDIENTE: hay DOS velocidades diferentes: una la que se le aplica al bicho cuando anda y otra la que lleva el
 	// bicho cuando ha saltado, sin necesidad de tocar los controles. Yo me entiendo. Incluso se puede hacer un sistema
 	// un pelin mas completo con velocidad y aceleracion.
-	float BichoSpeed = 250.0f; // unidades/segundo 
-	float RotationSpeed = 270.0f; // grados/segundo 
+	float BichoSpeed = 200.0f; // unidades/segundo 
+	float RotationSpeed = 275.0f; // grados/segundo 
+
+	Keys up,down,left,right,jump;
+
+	// PENDIENTE: no mola preguntar aquí por el Id del player. Buscar forma alternativa.
+	if( !strcmp(this->Id.c_str(), "player2") )
+	{
+		up = P2KeyUp;
+		down = P2KeyDown;
+		left = P2KeyLeft;
+		right = P2KeyRight;
+		jump = P2KeyJump;
+	}
+	else
+	{
+		up = P1KeyUp;
+		down = P1KeyDown;
+		left = P1KeyLeft;
+		right = P1KeyRight;
+		jump = P1KeyJump;
+	}
 
 	float RY = GetRotationY();
 
@@ -60,7 +89,7 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 		{
 			case 40:
 			case 43:
-				SoundManager::Instance().PlayPaso();
+				//SoundManager::Instance().PlayPaso();
 				break;
 		}
 	LastFrame = Model->GetCurrentFrame();
@@ -75,12 +104,12 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 	{
 		CurrentState = Standing;
 
-		if( Input::Instance().GetKeyState(KeyRight) )
+		if( Input::Instance().GetKeyState(right) )
 		{
 			RY -= RotationSpeed*ElapsedTime;
 			CurrentState = Running;
 		}
-		else if( Input::Instance().GetKeyState(KeyLeft) )
+		else if( Input::Instance().GetKeyState(left) )
 		{
 			RY += RotationSpeed*ElapsedTime;
 			CurrentState = Running;
@@ -88,9 +117,9 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 		SetRotationY(RY);
 
 
-		if( Input::Instance().GetKeyState(KeyUp) || Input::Instance().GetKeyState(KeyDown) )
+		if( Input::Instance().GetKeyState(up) || Input::Instance().GetKeyState(down) )
 		{
-			if( Input::Instance().GetKeyState(KeyUp) )
+			if( Input::Instance().GetKeyState(up) )
 				Velocity = BichoSpeed * ElapsedTime;
 			else
 				Velocity = -BichoSpeed * ElapsedTime;
@@ -113,13 +142,13 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 		this->Position = finalDest;
 		*/
 		
-		if( Input::Instance().IsKeyPressed(KeySpace) )
+		if( Input::Instance().IsKeyPressed(jump) )
 		{
 			if( CurrentState != Jumping )
 			{
 				CurrentState = Jumping;
 
-				Script::Instance().RaiseEvent("Heroe_OnJump");
+				Script::Instance().RaiseEvent("Heroe_OnJump", (char *)this->Id.c_str());
 				SoundManager::Instance().PlayBoing();
 				
 				vSpeed=vSpeedJump*ElapsedTime;
@@ -158,10 +187,14 @@ void Player::Update(float ElapsedTime, BSP::Q3BSP *Bsp)
 	// PENDIENTE: hay que calcular el AABB en cada ciclo teniendo en cuenta la rotacion del personaje.
 
 
+#ifdef SOLO_RAYO
+	Vector3d finalDest = Bsp->TraceRay(this->Position, dest);
+#else
 	Vector3d vMin(-25, 0, -25);
-	Vector3d vMax(25, 50, 25);
-	
+	Vector3d vMax(25, 10, 25);
 	Vector3d finalDest = Bsp->TraceBox(this->Position, dest, vMin, vMax);
+#endif
+
 	Position = finalDest;
 
 	if( CurrentState == Jumping )

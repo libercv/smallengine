@@ -993,8 +993,8 @@ void Q3BSP::CheckBrush(tBSPBrush *pBrush, Vector3d vStart, Vector3d vEnd)
 				// the normal of the plane has a Y value of 1, that means it's just the
 				// flat ground and we don't need to check if we can step over it, it's flat!
 
+				// PENDIENTE: deshabilito la escalada porque no funciona bien. Revisar.
 				/*
-				// PENDIENTE: deshabilito la escalada de momento
 				if((vStart.x != vEnd.x || vStart.z != vEnd.z) && pPlane->vNormal.y != 1)
 				{
 					// We can try and step over the wall we collided with
@@ -1268,11 +1268,13 @@ void Q3BSP::Destroy()
 		delete [] m_pTextures;		m_pTextures = NULL;
 	}	
 
+	// PENDIENTE: desde aquí no podemos liberar las texturas
+
 	// Free all the textures
-	glDeleteTextures(m_numOfTextures, m_textures);
+	// glDeleteTextures(m_numOfTextures, m_textures);
 
 	// Delete the lightmap textures
-	glDeleteTextures(m_numOfLightmaps, m_lightmaps);
+	// glDeleteTextures(m_numOfLightmaps, m_lightmaps);
 }
 
 

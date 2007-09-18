@@ -12,17 +12,18 @@ namespace Small
 		// Lo mas probable es que acabe estando en el engine, en el proceso de carga inicial.
 		memset(KeyMap, MAX_KEYS, 256);
 
-		KeyMap['S'] = KeyDown;		KeyMap[VK_DOWN] = KeyDown;
-		KeyMap['W'] = KeyUp;		KeyMap[VK_UP] = KeyUp;
-		KeyMap['D'] = KeyRight;		KeyMap[VK_RIGHT] = KeyRight;
-		KeyMap['A'] = KeyLeft;		KeyMap[VK_LEFT] = KeyLeft;
+		KeyMap['S'] = P1KeyDown;		KeyMap[VK_DOWN] = P2KeyDown;
+		KeyMap['W'] = P1KeyUp;			KeyMap[VK_UP] = P2KeyUp;
+		KeyMap['D'] = P1KeyRight;		KeyMap[VK_RIGHT] = P2KeyRight;
+		KeyMap['A'] = P1KeyLeft;		KeyMap[VK_LEFT] = P2KeyLeft;
+		KeyMap['A'] = P1KeyLeft;		KeyMap[VK_LEFT] = P2KeyLeft;
+		KeyMap[VK_TAB] = P1KeyJump;		KeyMap[VK_CONTROL] = P2KeyJump;
 		
 		KeyMap[VK_PAUSE] = KeyPause;
 		KeyMap[VK_END] = KeyEnd;
 		KeyMap[VK_HOME] = KeyHome;
 		KeyMap[VK_ESCAPE] = KeyEscape;
 		KeyMap[VK_RETURN] = KeyReturn;
-		KeyMap[VK_SPACE] = KeySpace;
 		KeyMap[VK_PRIOR] = KeyPgUp;
 		KeyMap[VK_NEXT] = KeyPgDown;
 		KeyMap[VK_INSERT] = KeyInsert;
