@@ -1,0 +1,54 @@
+<xml version="1.0">
+	<level id="001" title="Entrada a Abu Simbel" titleBitmap="resources/textures/entering.bmp">
+		<bsp file="resources/maps/level2.bsp" />
+
+		<paths>
+      <path id="path002">
+        <waypoint id="" x="-120.0" y="0.0" z="-180.0"/>
+        <waypoint id="" x="48.0" y="0.0" z="-180.0"/>
+        <waypoint id="" x="48.0" y="0.0" z="-68.0"/>
+        <waypoint id="" x="232.0" y="0.0" z="-68.0"/>
+        <waypoint id="" x="232.0" y="0.0" z="-180.0"/>
+        <waypoint id="" x="48.0" y="0.0" z="-180.0"/>
+        <waypoint id="" x="48.0" y="0.0" z="-68.0"/>
+        <waypoint id="" x="-120.0" y="0.0" z="-68.0"/>
+      </path>
+    </paths>
+
+    <players>
+      <player id="player1">
+        <position x="0.0" y="10.0" z="0.0" orientation="" />
+        <model file="resources/models/yoshi.md2"/>
+        <skin file="resources/models/redyoshi.jpg"/>
+        <animation id="Stand"/>
+      </player>
+      <player id="player2">
+        <position x="100.0" y="10.0" z="100.0" orientation="" />
+        <model file="resources/models/yoshi.md2"/>
+        <skin file="resources/models/cyanyoshi.jpg"/>
+        <animation id="Stand"/>
+      </player>
+    </players>
+
+		<enemies>
+      <enemy id="YoshiVerde" path="path002">
+        <model file="resources/models/yoshi.md2"/>
+        <skin file="resources/models/greenyoshi.jpg"/>
+        <animation id="CrouchWalk"/>
+      </enemy>
+    </enemies>
+
+		<cameras>
+      <camera id="">
+        <position x="600.0" y="1500.0" z="600.0" />
+        <target id="Yoshi" />
+      </camera>
+    </cameras>
+
+		<lights>
+			<light>
+				<position x="320.0" y="64.0" z="0.0" />
+			</light>
+		</lights>
+	</level>
+</xml>
