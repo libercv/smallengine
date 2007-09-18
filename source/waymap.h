@@ -44,15 +44,11 @@ namespace Small
 	class WayPath
 	{
 	public:
+		std::string Id;
 		vector<WayPoint>Points;
 
 		WayPath(void)
 		{
-			Points.push_back( WayPoint(730.0f, 0.0f, -32.0f) );
-			Points.push_back( WayPoint(860.0f, 0.0f, -32.0f) );
-			Points.push_back( WayPoint(860.0f, 0.0f, 32.0f) );
-			Points.push_back( WayPoint(930.0f, 0.0f, 32.0f) );
-			Points.push_back( WayPoint(730.0f, 0.0f, 32.0f) );
 		}
 
 		// PENDIENTE: llevar a Drawing3D (Drawing3D::Instance().DrawPath(this);)

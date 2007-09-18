@@ -66,7 +66,6 @@ void CTextureManager::Initialize( void )
 
 		m_texlist.push_back( tex );
 
-
 		// create a checker for the default texture
 		int i, j, c;				// temporary variable
 		unsigned char *checker;		// texture data
@@ -179,6 +178,7 @@ void CTextureManager::DeleteTexture( unsigned int id )
 		{
 			delete (*itor);
 			itor = m_texlist.erase( itor );
+			break;
 		}
 	}
 }
@@ -192,7 +192,10 @@ void CTextureManager::DeleteTexture( unsigned int id )
 
 void CTextureManager::CleanAllTextures( void )
 {
-	for( TListItor itor = m_texlist.begin(); itor != m_texlist.end(); ++itor )
+	if( m_texlist.size() <= 0 )
+		return;
+
+	for( TListItor itor = m_texlist.begin(); itor != m_texlist.end(); ++itor)
 	{
 		delete (*itor);
 		itor = m_texlist.erase( itor );

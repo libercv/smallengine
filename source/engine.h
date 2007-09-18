@@ -20,6 +20,8 @@ private:
 	Engine &operator=(Engine const&) {};
 
 public:
+	int Level; // PENDIENTE: hacer privada
+
 	EngineStateEnum CurrentState;
 
 	static Engine &Instance()

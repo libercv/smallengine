@@ -28,10 +28,7 @@ namespace Small
 	*/
 	void Drawing3D::Init(void)
 	{
-		glClearDepth(1.0);
-		glDepthFunc(GL_LESS);
-		glEnable(GL_DEPTH_TEST);
-		glDepthMask( GL_TRUE );
+		EnableDepthBuffer();
 
 		glEnable( GL_CULL_FACE );
 		glCullFace( GL_BACK );
@@ -40,10 +37,25 @@ namespace Small
 		glEnable(GL_TEXTURE_2D);
 	}
 
+	void Drawing3D::EnableDepthBuffer(void)
+	{
+		glClearDepth(1.0);
+		glDepthFunc(GL_LESS);
+		glEnable(GL_DEPTH_TEST);
+		glDepthMask( GL_TRUE );
+	}
+
+	void Drawing3D::DisableDepthBuffer(void)
+	{
+		glDisable(GL_DEPTH_TEST);
+	}
+
 	void Drawing3D::Clear(void)
 	{
 		glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// PENDIENTE: quitar cuando tengamos un skybox
+		// glClear( GL_DEPTH_BUFFER_BIT );
 	}
 
 	void Drawing3D::DrawFloor(void)
@@ -289,6 +301,11 @@ namespace Small
 	void Drawing3D::DrawPoint(void)
 	{
 		gluSphere(quadratic,0.05f,5,5);
+	}
+
+	void Drawing3D::DrawSphere(float radius)
+	{
+		gluSphere(quadratic,radius,10,10);
 	}
 
 	void Drawing3D::DrawBox(float x1, float y1, float z1, float x2, float y2, float z2)

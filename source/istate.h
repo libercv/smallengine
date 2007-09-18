@@ -5,7 +5,7 @@ namespace Small
 {
 typedef enum
 {
-	Menu=0, Game, Pause, Done
+	Menu=0, NextLevel, Game, Pause, Done
 } EngineStateEnum;
 
 class IState

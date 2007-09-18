@@ -51,7 +51,11 @@ namespace Small
 		void DrawSkyBox(float x, float y, float z, float width, float height, float length);
 		void DrawPoint(void);
 		void DrawBox(float x1, float y1, float z1, float x2, float y2, float z2);
+		void DrawSphere(float radius);
 		void DrawUnalignedBox(Vector4d Points[8]);
+		
+		void EnableDepthBuffer(void);
+		void DisableDepthBuffer(void);
 
 		void OrthoMode(int left, int top, int right, int bottom);
 		void PerspectiveMode(int WindowWidth, int WindowHeight);

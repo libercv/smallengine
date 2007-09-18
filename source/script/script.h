@@ -26,7 +26,7 @@ public:
 	Script();
 	~Script();
 
-	void RaiseEvent(char *Event);
+	void RaiseEvent(char *Event, char *Param);
 }; // class Script
 
 } // namespace Small

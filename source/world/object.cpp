@@ -69,6 +69,16 @@ void Object::Render(void)
 		*/
 		// Drawing3D::Instance().DrawBox(bbox[0],bbox[1],bbox[2], bbox[3],bbox[4],bbox[5]);
 	}
+	else
+	{
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+			glTranslatef(Position.x, Position.y, Position.z);
+			glColor3f(0.0f, 1.0f, 0.0f);
+			Drawing3D::Instance().DrawSphere(5.0f);
+			glColor3f(1.0f, 1.0f, 1.0f);
+		glPopMatrix();
+	}
 };
 
 void Object::RenderBoundingBox(void)

@@ -10,10 +10,12 @@ void Engine::Run(void)
 	// PENDIENTE: Implementar métodos init para todos los singleton.
 	// PENDIENTE: Llamar desde aquí a todos los Inits de forma lógica y ordenada.
 
-	// PENDIENTE: si en fullscreen indicamos una resolución que no se puede activar -> excepcion
-	Window::Instance().Open("Small Project", 0, 0, 800, 600, 32, true);
+	Level = 1;
 
-	StateGame::Instance().LoadLevel();
+	// PENDIENTE: si en fullscreen indicamos una resolución que no se puede activar -> excepcion
+	Window::Instance().Open("Small Project", 0, 0, 1024, 768, 32, true);
+
+	StateGame::Instance().LoadLevel("level001.xml");
 
 	Script::Instance();	// PENDIENTE: ñapa para forzar la inicialización. 
 
@@ -32,6 +34,25 @@ void Engine::Run(void)
 			case Menu:
 				CurrentState = StateMenu::Instance().Update(Timer::Instance().GetElapsedTime());
 				StateMenu::Instance().Render();
+				break;
+
+			case NextLevel:
+				if( ++Level > 2 )
+					Level = 1;
+
+				switch( Level )
+				{
+					case 2:
+						StateGame::Instance().LoadLevel("level002.xml");
+						StateGame::Instance().CrearBolitas();
+						break;
+
+					default:
+						StateGame::Instance().LoadLevel("level001.xml");
+						break;
+				}
+
+				CurrentState = Game;
 				break;
 
 			case Game:

@@ -6,19 +6,15 @@
 #include "sound/sound.h"	// PENDIENTE: 
 #include <cmath>
 
-
 namespace Small
 {
 
 StateGame::StateGame(void)
 {
 	// PENDIENTE: cuanto antes saquemos la carga del escenario a un fichero mejor.
-
-	iCamera = 0;
+	ActiveCamera = 0;
 
 	Bsp.frustum = &Frustum;
-
-	//Bsp.LoadBSP("resources/maps/Tutorial.bsp"); // PENDIENTE: controlar que se carga bien el BSP. 
 
 	/*
 	Player *NewPlayer = new Player();
@@ -30,42 +26,86 @@ StateGame::StateGame(void)
 	// NewPlayer->Model->ScaleModel( 1.0f );
 	// NewPlayer->SetPath( &Path );
 	Players.push_back(*NewPlayer);
-
-	Object *NewObject = new Object();
-	NewObject->Model = new CMD2Model();
-	NewObject->Model->LoadModel("resources/models/yoshi.md2");
-	NewObject->Model->LoadSkin("resources/models/greenyoshi.bmp");
-	NewObject->Model->SetAnim( CROUCH_WALK );
-	NewObject->SetPath( &Path );
-	Objects.push_back(*NewObject);
 	*/
 
-	Camera *NewCamera = new Camera();
-	NewCamera->Position.x = 400;
-	NewCamera->Position.y = 75;
-	NewCamera->Position.z = 350;
-	//NewCamera->SetPath( &Path );
-	Cameras.push_back(*NewCamera);
+	// trigger 1
+	Object *NewObject = new Object();
+	NewObject->Id = "trigger1";
+	NewObject->Position.Set(-70.0f, 10.0f, 0.0f);
+	Objects.push_back(*NewObject);
 
-	NewCamera = new Camera();
-	Cameras.push_back(*NewCamera);
+	// trigger 2
+	NewObject = new Object();
+	NewObject->Id = "trigger2";
+	NewObject->Position.Set(10.0f, 10.0f, 0.0f);
+	Objects.push_back(*NewObject);
 
 	Light *NewLight = new Light();
-	NewLight->Position.Set(320.0f, 64.0f, 0.0f);
-	//NewLight->SetPath( &Path );
+	NewLight->Position.Set(320.0f, 64.0f, 64.0f);
 	Lights.push_back(*NewLight);
+}
+
+void StateGame::CrearBolitas(void)
+{
+	char *Mapabolitas[] = { "............  ............",
+							".    .     .  .     .    .",
+							".    .     .  .     .    .", 
+							".    .     .  .     .    .", 
+							"..........................", 
+							".    .  .        .  .    .", 
+							".    .  .        .  .    .", 
+							"......  ....  ....  ......", 
+							"     .     .  .     .     ", 
+							"     .     .  .     .     ", 
+							"     .              .     ", 
+							"     .              .     ", 
+							"     .              .     ", 
+							"     .              .     ", 
+							"     .              .     ", 
+							"     .              .     ", 
+							"     .              .     ", 
+							"     .              .     ", 
+							"     .     .  .     .     ",
+							"     .     .  .     .     ", 
+							"......  ....  ....  ......", 
+							".    .  .        .  .    .", 
+							".    .  .        .  .    .", 
+							"..........................", 
+							".    .     .  .     .    .", 
+							".    .     .  .     .    .", 
+							".    .     .  .     .    .", 
+							"............  ............" };
+
+	for( char y=0; y<28; y++)
+		for( char x=0; x<26; x++)
+		{
+			if( *(Mapabolitas[y]+x) == '.' )
+			{
+				char nombre[256];
+				sprintf(nombre, "bola%d\0", y*30+x);
+				Object *NewObject = new Object();
+				NewObject->Id = nombre;
+				NewObject->Position.Set(x*32.0f - 120.0f, 10.0f, y*28.0f - 180.0f);
+				Objects.push_back(*NewObject);
+			}
+		}
 }
 
 EngineStateEnum StateGame::Update(float ElapsedTime)
 {
 	EngineStateEnum NextState = Game;
+	static float dt=0;
 
+	/*
 	int dx,dy;
 	Input::Instance().GetMouseMotion(&dx,&dy);
 	Cameras[iCamera].RotateView(dx,dy);
+	*/
 
+	/*
 	mouse = CTextureManager::GetInstance()->LoadTexture("resources/textures/mouse.tga");
 	mouseMask = CTextureManager::GetInstance()->LoadTexture("resources/textures/mouseMask.tga");
+	*/
 
 	// PENDIENTE: la pausa se debe implementar como otro estado más.
 	if( Engine::Instance().CurrentState == Pause )
@@ -75,24 +115,49 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 	}
 	else
 	{
+		dt += ElapsedTime;
+
 		// Propagamos el Update a todos los jugadores
 		for(vector<Player>::iterator PlayerItor=Players.begin(); PlayerItor!=Players.end(); PlayerItor++)
+		{
 			(*PlayerItor).Update(ElapsedTime, &Bsp);
+
+			if( dt >= 0.1f )
+			{
+				(*PlayerItor).Score -= 1;
+			}
+
+			// Chequeo de colisiones
+			// PENDIENTE: cada instancia puede tener su propio radio
+			float Radio = 10.0f;
+			Vector3d Distancia;
+
+			for(vector<Object>::iterator ObjectItor=Objects.begin(); ObjectItor!=Objects.end(); ObjectItor++)
+			{
+				if( !(*ObjectItor).Deleted )
+				{
+					(*ObjectItor).Position.Subtract((*PlayerItor).Position, Distancia);
+
+					if( abs(Distancia.GetLength()) < Radio*2 )
+					{
+						char evento[256];
+						sprintf(evento, "%s_OnCollision\0", (*PlayerItor).Id.c_str());
+						Script::Instance().RaiseEvent(evento, (char *)(*ObjectItor).Id.c_str());
+					}
+				}
+			}
+		}
+
+		if( dt >= 0.1f )
+		{
+			dt = 0;
+		}
 
 		// Propagamos el Update a todos los objetos
 		for(vector<Object>::iterator ObjectItor=Objects.begin(); ObjectItor!=Objects.end(); ObjectItor++)
 		{
-			(*ObjectItor).Update();
-
-			// Chequeo de colisiones
-			// PENDIENTE: cada instancia puede tener su propio radio
-			float Radio = 20.0f;
-			Vector3d Distancia;
-
-			(*ObjectItor).Position.Subtract(Players[0].Position, Distancia);
-
-			if( abs(Distancia.GetLength()) < Radio*2 )
-				Script::Instance().RaiseEvent("Heroe_OnCollision");
+			if( !(*ObjectItor).Deleted )
+				(*ObjectItor).Update();
 		}
 
 		// Propagamos el Update a todas las luces
@@ -102,7 +167,6 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 		// Propagamos el Update a todas las camaras
 		for(vector<Camera>::iterator CameraItor=Cameras.begin(); CameraItor!=Cameras.end(); CameraItor++)
 			(*CameraItor).Update();
-
 
 		if( Input::Instance().IsKeyPressed(KeyEscape) )
 		{
@@ -159,31 +223,32 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 
 		if( Input::Instance().GetKeyState(KeyPgUp) )
 		{
-			Cameras[0].Position.y += speed * ElapsedTime;
-			Cameras[0].View.y += speed * ElapsedTime;
+			Cameras[ActiveCamera].Position.y += speed * ElapsedTime;
+			Cameras[ActiveCamera].View.y += speed * ElapsedTime;
 		}
 		else if( Input::Instance().GetKeyState(KeyPgDown) )
 		{
-			Cameras[0].Position.y -= speed * ElapsedTime;
-			Cameras[0].View.y -= speed * ElapsedTime;
+			Cameras[ActiveCamera].Position.y -= speed * ElapsedTime;
+			Cameras[ActiveCamera].View.y -= speed * ElapsedTime;
 		}
 
 
 		if( Input::Instance().GetKeyState(KeySupr) )
 		{
-			Cameras[0].Position.z += speed * ElapsedTime;
-			Cameras[0].View.z += speed * ElapsedTime;
+			Cameras[ActiveCamera].Position.z += speed * ElapsedTime;
+			Cameras[ActiveCamera].View.z += speed * ElapsedTime;
 		}
 		else if( Input::Instance().GetKeyState(KeyInsert) )
 		{
-			Cameras[0].Position.z -= speed * ElapsedTime;
-			Cameras[0].View.z -= speed * ElapsedTime;
+			Cameras[ActiveCamera].Position.z -= speed * ElapsedTime;
+			Cameras[ActiveCamera].View.z -= speed * ElapsedTime;
 		}
 
 
+		/*
 		if( fSpeed || sSpeed )
 		{
-			Vector3d dest = Cameras[0].TryToMove(fSpeed, sSpeed);
+			Vector3d dest = Cameras[ActiveCamera].TryToMove(fSpeed, sSpeed);
 
 			// PENDIENTE: obtener el bounding box de la entidad/objeto
 			Vector3d vMax(10, 0, 10);
@@ -194,8 +259,9 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 
 			// PEDNDIENTE: no usar los accesors para miembros atómicos. Mejor pasar un vector3d
 			// o usar directamente los miembros
-			Cameras[0].Position = finalDest;
+			// Cameras[0].Position = finalDest;
 		}
+		*/
 		// ********************************************************************
 
 	}
@@ -216,11 +282,16 @@ EngineStateEnum StateGame::Update(float ElapsedTime)
 	Cameras[1].Position.y += 30;
 	Cameras[1].View.y += 30;
 	*/
-	
-	Cameras[0].Position.x = Players[0].Position.x;
+
+
+	/*
 	Cameras[0].View = Players[0].Position;
 
-	Lights[0].Position.Set(300, 64, 64);
+	Cameras[1].Position = Players[0].Position;
+	Cameras[1].Position.x += 200.0f;
+	Cameras[1].Position.y = 60.0f;
+	Cameras[1].View = Players[0].Position;
+	*/
 
 	return NextState;
 }
@@ -239,12 +310,9 @@ void StateGame::Render(void)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 
-	if( !iCamera )
-		glColor3f(1.0f, 1.0f, 1.0f);
-	else
-		glColor3f(0.0f, 1.0f, 0.0f);
+	glColor3f(1.0f, 1.0f, 1.0f);
 
-	Cameras[0].Apply();
+	Cameras[ActiveCamera].Apply();
 
 	glPushAttrib( GL_POLYGON_BIT );
 	{
@@ -257,7 +325,7 @@ void StateGame::Render(void)
 		//Cameras[1].Apply();
 		Frustum.CalculateFrustum();
 		//Cameras[0].Apply();
-		Bsp.RenderLevel(Cameras[iCamera].Position);
+		Bsp.RenderLevel(Cameras[ActiveCamera].Position);
 	}
 	glPopAttrib();
 
@@ -276,11 +344,12 @@ void StateGame::Render(void)
 
 	// Pintamos los Objetos
 	for(vector<Object>::iterator ObjectItor=Objects.begin(); ObjectItor!=Objects.end(); ObjectItor++)
-		(*ObjectItor).Render();
+		if( !(*ObjectItor).Deleted )
+			(*ObjectItor).Render();
 
 	// Pintamos las cámaras
 	for(vector<Camera>::size_type i=0; i<Cameras.size(); i++)
-		if( i != iCamera )
+		if( i != ActiveCamera )
 			Cameras[i].Render();
 
 	// Pintamos las luces
@@ -290,9 +359,9 @@ void StateGame::Render(void)
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 
-//	Path.Render();
+	// Path.Render();
 
-	Drawing3D::Instance().OrthoMode(0,0, 800,600);
+	Drawing3D::Instance().OrthoMode(0,0, Window::Instance().GetWidth(), Window::Instance().GetHeight());
 
 	/*
 	int x,y;
@@ -335,15 +404,23 @@ void StateGame::Render(void)
 	// PENDIENTE: pasar al Print la posicion y el color de la fuente por parámetros.
 	glColor3f(0.5f, 1.0f, 1.0f);
 
+	float pos=30;
+	for(vector<Player>::iterator PlayerItor=Players.begin(); PlayerItor!=Players.end(); PlayerItor++)
+	{
+		glRasterPos2f(10.0f, pos+=30);
+		Drawing3D::Instance().BigFont->Print("%s Score: %d Lives: %d ", (*PlayerItor).Id.c_str(), (*PlayerItor).Score, (*PlayerItor).Lives);
+	}
+
+
+	/*
 	glRasterPos2f(10.0f, 30.0f);
 	Drawing3D::Instance().BigFont->Print("%f %f %f", Players[0].Position.x, Players[0].Position.y, Players[0].Position.z );
 
 	glRasterPos2f(10.0f, 60.0f);
 	Drawing3D::Instance().BigFont->Print("fps = %d", Timer::Instance().GetFps());
+	*/
 
 	/*
-
-
 	glRasterPos2f(10.0f, (float)Window::Instance().GetHeight()-50);
 	Drawing3D::Instance().BigFont->Print("Height = %d", Window::Instance().GetHeight());
 
@@ -427,56 +504,172 @@ void StateGame::Render(void)
 	*/
 }
 
-void StateGame::KillPlayer(void)
+void StateGame::KillPlayer(char *PlayerId)
 {
-	SoundManager::Instance().PlayPlayerDead();
-	Players[0].Position.Set(0.0f, 10.0f, 0.0f);
-	Players[0].SetRotationY(0.0f);
+	for(vector<Player>::iterator PlayerItor=Players.begin(); PlayerItor!=Players.end(); PlayerItor++)
+		if( !strcmp((*PlayerItor).Id.c_str(), PlayerId) )
+		{
+			SoundManager::Instance().PlayPlayerDead();
+			(*PlayerItor).Position.Set(0.0f, 10.0f, 0.0f);
+			(*PlayerItor).SetRotationY(0.0f);
+			(*PlayerItor).Lives--;
+			break;
+		}
 }
 
-void StateGame::LoadLevel(void)
+void StateGame::KillObject(char *PlayerId, char *ObjectId)
 {
-    XMLNode xMainNode=XMLNode::openFileHelper("resources/levels/level001.xml");
+	for(vector<Player>::iterator PlayerItor=Players.begin(); PlayerItor!=Players.end(); PlayerItor++)
+		if( !strcmp((*PlayerItor).Id.c_str(), PlayerId) )
+		{
+ 			for(vector<Object>::iterator ObjectItor=Objects.begin(); ObjectItor!=Objects.end(); ++ObjectItor)
+				if( !strcmp((*ObjectItor).Id.c_str(), ObjectId) )
+				{
+					SoundManager::Instance().PlayBola();
+
+					(*ObjectItor).Deleted = true;	// PENDIENTE: Deleted no deberia ser publica
+
+					// PENDIENTE: así se borra un item de un vector
+					// delete (*itor);
+					// itor = m_texlist.erase( itor );
+					
+					(*PlayerItor).Score += 10;
+					break;
+				}			
+
+			break;
+		}
+}
+
+void StateGame::SetActiveCamera(int NewActiveCamera)
+{
+	if( NewActiveCamera<0 || NewActiveCamera>1 )
+		return;
+
+	ActiveCamera = NewActiveCamera;
+}
+
+
+void StateGame::LoadLevel(char *NewLevel)
+{
+	char name[256];
+	int i;
+
+	ClearLevel();
+
+	sprintf(name, "resources/levels/%s\0", NewLevel);
+
+	XMLNode xMainNode=XMLNode::openFileHelper(name);
 
 	// PENDIENTE: ¡¡¡ comprobaciones por un tubo !!! (una por cada dato crítico)
-
 	XMLNode NodeLevel=xMainNode.getChildNode("level");
 
 	// PENDIENTE: controlar que se carga bien el BSP. 
 	Bsp.LoadBSP(NodeLevel.getChildNode("bsp").getAttribute("file")); 
 
-	// Cargamos al héroe
-	XMLNode NodePlayer=NodeLevel.getChildNode("player");
+	// Cargamos los paths
+	XMLNode NodePaths=NodeLevel.getChildNode("paths");
+    int NumberOfPaths=NodePaths.nChildNode("path");
 
-	Player *NewPlayer = new Player();
-	NewPlayer->Model = new CMD2Model();
-	NewPlayer->Model->LoadModel(NodePlayer.getChildNode("model").getAttribute("file"));
-	NewPlayer->Model->LoadSkin((char *)NodePlayer.getChildNode("skin").getAttribute("file"));
-	NewPlayer->Model->SetAnim( RUN );	// PENDIENTE:
-	NewPlayer->Position.Set((float)atof(NodePlayer.getChildNode("position").getAttribute("x")), (float)atof(NodePlayer.getChildNode("position").getAttribute("y")), (float)atof(NodePlayer.getChildNode("position").getAttribute("z")));
-	Players.push_back(*NewPlayer);
+	Log::Instance().Write("paths: %d", NumberOfPaths);
+    
+    for(i=0; i<NumberOfPaths; i++)
+	{
+		XMLNode NodePath = NodePaths.getChildNode("path", i);
+		int NumberOfPoints = NodePath.nChildNode("waypoint");
+
+		Log::Instance().Write("points: %d", NumberOfPoints);
+
+		WayPath *NewPath = new WayPath();
+		NewPath->Id = NodePath.getAttribute("id");
+
+		for(int j=0; j<NumberOfPoints; j++)
+		{
+			XMLNode NodeWaypoint = NodePath.getChildNode("waypoint", j);
+			NewPath->Points.push_back( WayPoint((float)atof(NodeWaypoint.getAttribute("x")), (float)atof(NodeWaypoint.getAttribute("y")), (float)atof(NodeWaypoint.getAttribute("z"))) );
+		}
+
+		Paths.push_back(*NewPath);
+	}
+	
+
+	// Cargamos a los jugadores
+	XMLNode NodePlayers=NodeLevel.getChildNode("players");
+	int NumberOfPlayers=NodePlayers.nChildNode("player");
+
+	Log::Instance().Write("players: %d", NumberOfPlayers);
+
+	for( i=0; i<NumberOfPlayers; i++)
+	{
+		XMLNode NodePlayer=NodePlayers.getChildNode("player", i);
+
+		Player *NewPlayer = new Player();
+		NewPlayer->Id = NodePlayer.getAttribute("id");
+		NewPlayer->Score = 0;
+		NewPlayer->Lives = 3;
+		NewPlayer->Model = new CMD2Model();
+		NewPlayer->Model->LoadModel(NodePlayer.getChildNode("model").getAttribute("file"));
+		NewPlayer->Model->LoadSkin((char *)NodePlayer.getChildNode("skin").getAttribute("file"));
+		NewPlayer->Model->SetAnim( RUN );	// PENDIENTE: leer la animación desde el fichero XML
+		NewPlayer->Position.Set((float)atof(NodePlayer.getChildNode("position").getAttribute("x")), (float)atof(NodePlayer.getChildNode("position").getAttribute("y")), (float)atof(NodePlayer.getChildNode("position").getAttribute("z")));
+		Players.push_back(*NewPlayer);
+	}
 
 	// Cargamos a los malos
 	XMLNode NodeEnemies=NodeLevel.getChildNode("enemies");
     int NumberOfEnemies=NodeEnemies.nChildNode("enemy");
 
 	Log::Instance().Write("enemigos: %d", NumberOfEnemies);
-
-    int i,myIterator=0;
+    
     for(i=0; i<NumberOfEnemies; i++)
 	{
-		XMLNode NodeEnemy = NodeEnemies.getChildNode("enemy");
-		// printf("coeff %i=%s\n",i+1,xNode.getChildNode("NumericPredictor",&myIterator).getAttribute("coefficient"));
+		XMLNode NodeEnemy = NodeEnemies.getChildNode("enemy", i);
 		Object *NewObject = new Object();
+		NewObject->Id = NodeEnemy.getAttribute("id");
 		NewObject->Model = new CMD2Model();
 		NewObject->Model->LoadModel(NodeEnemy.getChildNode("model").getAttribute("file"));
 		NewObject->Model->LoadSkin((char *)NodeEnemy.getChildNode("skin").getAttribute("file"));
 		NewObject->Model->SetAnim( CROUCH_WALK );	// PENDIENTE
-		NewObject->SetPath( &Path ); // PENDIENTE
+
+
+		for(vector<WayPath>::iterator PathItor=Paths.begin(); PathItor!=Paths.end(); PathItor++)
+			if( !strcmp((*PathItor).Id.c_str(), NodeEnemy.getAttribute("path")) )
+			{
+				NewObject->SetPath( &(*PathItor) );
+				break;
+			}
+
 		// PENDIENTE: asignar velocidad, controlador, etc...
 		Objects.push_back(*NewObject);
 	}
 
+
+	// Cargamos las cámaras
+	XMLNode NodeCameras=NodeLevel.getChildNode("cameras");
+    int NumberOfCameras=NodeCameras.nChildNode("camera");
+
+	Log::Instance().Write("camaras: %d", NumberOfCameras);
+
+    for(i=0; i<NumberOfCameras; i++)
+	{
+		XMLNode NodeCamera = NodeCameras.getChildNode("camera", i);
+		Camera *NewCamera = new Camera();
+		NewCamera->Id = NodeCamera.getAttribute("id");
+		NewCamera->Position.Set((float)atof(NodeCamera.getChildNode("position").getAttribute("x")), (float)atof(NodeCamera.getChildNode("position").getAttribute("y")), (float)atof(NodeCamera.getChildNode("position").getAttribute("z")));
+		Cameras.push_back(*NewCamera);
+	}
+
 	xMainNode=XMLNode::emptyNode();
 }
+
+void StateGame::ClearLevel(void)
+{
+ 	Bsp.Destroy();
+	Objects.clear();
+	Cameras.clear();
+	// Lights.clear();
+	Players.clear();
+	Paths.clear();
+}
+
 } //namespace Small

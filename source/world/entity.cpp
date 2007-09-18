@@ -13,6 +13,7 @@ Entity::Entity(void)
 {
 	Path = NULL;
 	RotationY = 0;
+	Deleted = false;
 }
 
 void Entity::Update(void)
@@ -76,7 +77,7 @@ void Entity::FollowPath(void)
 	if( distance < 1.0f ) // PENDIENTE: sustituir 1.0f por un EPSILON configurable según la escala del mapa
 	{
 		// PENDIENTE: no es el sitio ni la forma adecuada para levantar un evento ¿ o si ?
-		Script::Instance().RaiseEvent("Enemy_OnWayPoint");
+		Script::Instance().RaiseEvent("Enemy_OnWayPoint", (char *)this->Id.c_str());
 
 		NextPoint++;
 
@@ -101,7 +102,7 @@ void Entity::FollowPath(void)
 		*/
 
 		// PENDIENTE: usar velocidad de la entidad en vez de 1.0f
-		float BichoSpeed = 50.0;	// unidades/segundo
+		float BichoSpeed = 150.0;	// unidades/segundo
 		Move(BichoSpeed * Timer::Instance().GetElapsedTime(), 0.0f);
 	}
 }
