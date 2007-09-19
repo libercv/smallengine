@@ -24,12 +24,12 @@ Input::Input(void)
 
 //	memset(KeysTranslated, MAX_KEYS, 65535*sizeof(Keys));
 	// Aqui definimos las teclas a usar en el motor
-	KeysTranslated[XK_Down] = KeyDown;
-	KeysTranslated[XK_Up] = KeyUp;
-	KeysTranslated[XK_Right] = KeyRight;
-	KeysTranslated[XK_Left] = KeyLeft;
+	KeysTranslated[XK_Down] = P1KeyDown;
+	KeysTranslated[XK_Up] = P1KeyUp;
+	KeysTranslated[XK_Right] = P1KeyRight;
+	KeysTranslated[XK_Left] = P1KeyLeft;
 	KeysTranslated[XK_Escape] = KeyEscape;
-	KeysTranslated[XK_space] = KeySpace;
+	KeysTranslated[XK_space] = P1KeyJump;
 	KeysTranslated[XK_Return] = KeyReturn;
 	KeysTranslated[XK_Pause] = KeyPause;
 	KeysTranslated[XK_End] = KeyEnd;
