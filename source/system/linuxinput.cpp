@@ -34,6 +34,16 @@ Input::Input(void)
 	KeysTranslated[XK_Pause] = KeyPause;
 	KeysTranslated[XK_End] = KeyEnd;
 	KeysTranslated[XK_Home] = KeyHome;
+
+	KeysTranslated[XK_S] = P2KeyDown;
+	KeysTranslated[XK_s] = P2KeyDown;
+	KeysTranslated[XK_W] = P2KeyUp;
+	KeysTranslated[XK_w] = P2KeyUp;
+	KeysTranslated[XK_D] = P2KeyRight;
+	KeysTranslated[XK_d] = P2KeyRight;
+	KeysTranslated[XK_A] = P2KeyLeft;
+	KeysTranslated[XK_a] = P2KeyLeft;
+
 };
 
 
